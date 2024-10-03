@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    /*nt base */
+    width: 100%;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+  }
+  #root {
+    width: 100%;
+    max-width: 90%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+}
