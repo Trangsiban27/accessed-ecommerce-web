@@ -1,70 +1,52 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  variantOptions: [],
+  variants: [],
   primaryVariantType: "",
   variantImages: [],
   variantOptionsTable: [],
 };
 
-export const VariantSlice = createSlice({
+export const variantSlice = createSlice({
   name: "variants",
   initialState,
   reducers: {
-    addVariant: (state) => {
-      state.variants = [
-        ...state.variants,
-        {
-          id: state.variants.length,
-          type: "",
-          values: [],
-        },
-      ];
-    },
-
-    setVariantType: (state, action) => {
-      const { id, new_type } = action.payload;
-      state.variants = state.variants.map((item) =>
-        item.id === id ? { ...item, type: new_type } : item
-      );
-    },
-
-    setVariantValue: (state, action) => {
-      const { id, new_value } = action.payload;
-      state.variants = state.variants.map((item) =>
-        item.id === id ? { ...item, values: [...item.values, new_value] } : item
-      );
-    },
-
-    removeVariantValue: (state, action) => {
-      const { id, remove_value } = action.payload;
-      state.variants = state.variants.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              values: item.values.filter((item) => item !== remove_value),
-            }
-          : item
-      );
-    },
-
-    initialVariants: (state, action) => {
+    // Payload: { variants: Array<Variant> }
+    // Ví dụ: dispatch(setInitialVariants({ variants: [{id: 1, type: 'Color', values: ['Red', 'Blue']}] }))
+    setInitialVariants: (state, action) => {
       state.variants = action.payload.variants;
     },
 
-    setPrimaryVariant: (state, action) => {
-      state.primaryVariant = action.payload.variant;
+    // Payload: { type: string }
+    // Ví dụ: dispatch(setPrimaryVariantType({ type: 'Color' }))
+    setPrimaryVariantType: (state, action) => {
+      state.primaryVariantType = action.payload.type;
     },
 
-    removeVariant: (state, action) => {
-      state.variants = state.variants
-        .filter((item) => item.id !== action.payload.id)
-        .map((item, index) => ({ ...item, id: index }));
+    // Payload: { variantId: number, value: string }
+    // Ví dụ: dispatch(addVariantValue({ variantId: 1, value: 'Green' }))
+    addVariantValue: (state, action) => {
+      const { variantId, value } = action.payload;
+      const variant = state.variants.find((v) => v.id === variantId);
+      if (variant) {
+        variant.values.push(value);
+      }
     },
 
-    initializeCombinations: (state, action) => {
-      state.variants = action.payload;
-      const variants = action.payload.reduce((acc, variant) => {
+    // Payload: { variantId: number, value: string }
+    // Ví dụ: dispatch(removeVariantValue({ variantId: 1, value: 'Green' }))
+    removeVariantValue: (state, action) => {
+      const { variantId, value } = action.payload;
+      const variant = state.variants.find((v) => v.id === variantId);
+      if (variant) {
+        variant.values = variant.values.filter((v) => v !== value);
+      }
+    },
+
+    // Payload: Không có
+    // Ví dụ: dispatch(generateVariantOptionsTable())
+    generateVariantOptionsTable: (state) => {
+      const variantTypes = state.variants.reduce((acc, variant) => {
         acc[variant.type] = variant.values;
         return acc;
       }, {});
@@ -84,65 +66,92 @@ export const VariantSlice = createSlice({
         return result;
       };
 
-      const allCombinations = generateCombinations(Object.values(variants));
+      const allCombinations = generateCombinations(Object.values(variantTypes));
 
       state.variantOptionsTable = allCombinations.map((combination) => {
         const combinationObject = {
           price: 0,
           salePrice: 0,
           quantity: 0,
-          mrspPrice: 0,
+          mrpPrice: 0,
           sku: "",
         };
-        Object.keys(variants).forEach((key, index) => {
+        Object.keys(variantTypes).forEach((key, index) => {
           combinationObject[key] = combination[index];
         });
         return combinationObject;
       });
     },
 
-    updateCombinationFieldValue: (state, action) => {
+    // Payload: { index: number, field: string, value: any }
+    // Ví dụ: dispatch(updateVariantOptionField({ index: 0, field: 'price', value: 100 }))
+    updateVariantOptionField: (state, action) => {
       const { index, field, value } = action.payload;
-      if (
-        field === "price" ||
-        field === "salePrice" ||
-        field === "mrspPrice" ||
-        field === "quantity"
-      ) {
-        state.variantOptionsTable[index][field] = Number(value);
-      } else {
-        state.variantOptionsTable[index][field] = value;
-      }
+      state.variantOptionsTable[index][field] = value;
     },
 
-    updateCombinationBaseValues: (state, action) => {
-      const { price, salePrice, quantity, mrspPrice, sku } = action.payload;
+    // Payload: { price: number, salePrice: number, quantity: number, mrpPrice: number, sku: string }
+    // Ví dụ: dispatch(updateAllVariantOptionBaseValues({ price: 100, salePrice: 90, quantity: 50, mrpPrice: 110, sku: 'SKU123' }))
+    updateAllVariantOptionBaseValues: (state, action) => {
+      const { price, salePrice, quantity, mrpPrice, sku } = action.payload;
       state.variantOptionsTable = state.variantOptionsTable.map((item) => ({
         ...item,
         price,
         salePrice,
         quantity,
-        mrspPrice,
+        mrpPrice,
         sku,
       }));
     },
 
-    updateVariantImages: (state, action) => {
-      state.variantWithImages = action.payload.variantImages;
+    // Payload: { variantImages: Array<string> }
+    // Ví dụ: dispatch(setVariantImages({ variantImages: ['https://example.com/image1.jpg', 'https://example.com/image2.jpg'] }))
+    setVariantImages: (state, action) => {
+      state.variantImages = action.payload.variantImages;
+    },
+
+    // Payload: Không có
+    // Ví dụ: dispatch(addVariant())
+    addVariant: (state) => {
+      state.variants.push({
+        id: state.variants.length,
+        type: "",
+        values: [],
+      });
+    },
+
+    // Payload: { id: number }
+    // Ví dụ: dispatch(removeVariant({ id: 1 }))
+    removeVariant: (state, action) => {
+      state.variants = state.variants
+        .filter((item) => item.id !== action.payload.id)
+        .map((item, index) => ({ ...item, id: index }));
+    },
+
+    // Payload: { id: number, type: string }
+    // Ví dụ: dispatch(setVariantType({ id: 1, type: 'Size' }))
+    setVariantType: (state, action) => {
+      const { id, type } = action.payload;
+      const variant = state.variants.find((v) => v.id === id);
+      if (variant) {
+        variant.type = type;
+      }
     },
   },
 });
 
 export const {
+  setInitialVariants,
+  setPrimaryVariantType,
+  addVariantValue,
+  removeVariantValue,
+  generateVariantOptionsTable,
+  updateVariantOptionField,
+  updateAllVariantOptionBaseValues,
+  setVariantImages,
   addVariant,
   removeVariant,
   setVariantType,
-  setPrimaryVariant,
-  setVariantValue,
-  removeVariantValue,
-  updateVariantImages,
-  updateCombinationBaseValues,
-  initializeCombinations,
-  updateCombinationFieldValue,
-  initialVariants,
-} = VariantSlice.actions;
+} = variantSlice.actions;
+
+export default variantSlice.reducer;

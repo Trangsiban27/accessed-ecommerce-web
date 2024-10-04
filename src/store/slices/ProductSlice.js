@@ -1,78 +1,118 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  name: "Smartphone 7",
-  brandName: "Apple",
-  description:
-    "A state-of-the-art smartphone A state-of-the-art A state-of-the-art smartphone fA state-of-the-art smartphone fA state-of-the-art smartphone fA state-of-the-art smartphone fA state-of-the-art smartphone f fA state-of-the-art smartphone fA state-of-the-art smartphone fA state-of-the-art smartphone fA state-of-the-art smartphone ff",
-  sku: "PRODUCT_Z_U",
+  name: "",
+  brandName: "",
+  description: "",
+  sellingType: "",
+  sku: "",
+  quantityAvailable: 0,
   originalPrice: 0,
   discountedPrice: 0,
   sellingPrice: 0,
   hasSpecification: false,
   hasCollection: false,
+  hasVariants: false,
   isFeatured: false,
-  sellingType: "ONLINE",
-  quantityAvailable: 500,
+  width: 0,
+  weight: 0,
+  length: 0,
+  breadth: 0,
+  unitWeight: "",
+  packageUnit: "",
   primaryImage: "",
   productImages: [],
   collections: [],
-  categoryIds: [
-    "66ed97714463802942e6cfab",
-    "66ed97214463802942e6cfa9",
-    "66ee46f0267d0a4e6af0704f",
-  ],
-  hasVariants: false,
-  productVariants: [
-    {
-      productType: "COLOR",
-      valueName: "Yellow",
-    },
-    {
-      productType: "RAM",
-      valueName: "16GB",
-    },
-  ],
-  specifications: [
-    {
-      name: "COLOR",
-      value: "Black",
-    },
-    {
-      name: "RAM",
-      value: "8GB",
-    },
-    {
-      name: "STORAGE",
-      value: "128GB",
-    },
-  ],
-  productDimension: {
-    width: 12.1,
-    weight: 12.1,
-    length: 12.1,
-    breadth: 12.1,
-    unitWeight: "kg",
-    packageUnit: "inch",
-  },
+  categoryIds: [],
+  specifications: [],
 };
 
-export const ProductSlice = createSlice({
+export const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    updateProductField: (state, action) => {
+    // Payload: { field: string, value: any }
+    // Ví dụ: dispatch(setProductField({ field: 'name', value: 'New Product Name' }))
+    setProductField: (state, action) => {
       const { field, value } = action.payload;
-      return {
-        ...state,
-        [field]: value,
-      };
+      state[field] = value;
     },
 
-    resetAroductData: () => initialState,
+    // Payload: Không có
+    // Ví dụ: dispatch(resetProductData())
+    resetProductData: () => initialState,
+
+    // Payload: { name: string, value: string }
+    // Ví dụ: dispatch(addSpecification({ name: 'Color', value: 'Red' }))
+    addSpecification: (state, action) => {
+      state.specifications.push(action.payload);
+    },
+
+    // Payload: string (tên của thông số kỹ thuật cần xóa)
+    // Ví dụ: dispatch(removeSpecification('Color'))
+    removeSpecification: (state, action) => {
+      state.specifications = state.specifications.filter(
+        (spec) => spec.name !== action.payload
+      );
+    },
+
+    // Payload: { name: string, value: string }
+    // Ví dụ: dispatch(updateSpecification({ name: 'Color', value: 'Blue' }))
+    updateSpecification: (state, action) => {
+      const { name, value } = action.payload;
+      const specIndex = state.specifications.findIndex(
+        (spec) => spec.name === name
+      );
+      if (specIndex !== -1) {
+        state.specifications[specIndex].value = value;
+      }
+    },
+
+    // Payload: string (URL hoặc đường dẫn của hình ảnh)
+    // Ví dụ: dispatch(addProductImage('https://example.com/image.jpg'))
+    addProductImage: (state, action) => {
+      state.productImages.push(action.payload);
+    },
+
+    // Payload: string (URL hoặc đường dẫn của hình ảnh)
+    // Ví dụ: dispatch(addProductImage('https://example.com/image.jpg'))
+    removeProductImage: (state, action) => {
+      state.productImages = state.productImages.filter(
+        (image) => image !== action.payload
+      );
+    },
+
+    // Payload: string (URL hoặc đường dẫn của hình ảnh chính)
+    // Ví dụ: dispatch(setPrimaryImage('https://example.com/main-image.jpg'))
+    setPrimaryImage: (state, action) => {
+      state.primaryImage = action.payload;
+    },
+
+    // Payload: Array<string> (mảng chứa các ID danh mục)
+    // Ví dụ: dispatch(setCategories(['category1', 'category2']))
+    setCategories: (state, action) => {
+      state.categoryIds = action.payload;
+    },
+
+    // Payload: Không có
+    // Ví dụ: dispatch(toggleHasVariants())
+    toggleHasVariants: (state) => {
+      state.hasVariants = !state.hasVariants;
+    },
   },
 });
 
-export const { updateProductField, resetProductData } = ProductSlice.actions;
+export const {
+  setProductField,
+  resetProductData,
+  addSpecification,
+  removeSpecification,
+  updateSpecification,
+  addProductImage,
+  removeProductImage,
+  setPrimaryImage,
+  setCategories,
+  toggleHasVariants,
+} = productSlice.actions;
 
-export default ProductSlice.reducer;
+export default productSlice.reducer;

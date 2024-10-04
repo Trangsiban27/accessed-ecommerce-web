@@ -1,16 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
-import { productSlice } from "./slices/ProductSlice";
-import { variantSlice } from "./slices/VariantSlice";
+import { ProductSlice } from "./slices/ProductSlice";
+import { VariantSlice } from "./slices/VariantSlice";
 
 export const store = configureStore({
   reducer: {
-    product: productSlice.reducer,
-    variants: variantSlice.reducer,
+    product: ProductSlice.reducer,
+    variants: VariantSlice.reducer,
   },
 });
-
-export const useAppDispatch = () => useDispatch();
-export const useAppSelector = () => useSelector();
 
 export default store;
