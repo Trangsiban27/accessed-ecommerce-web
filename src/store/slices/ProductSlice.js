@@ -23,7 +23,7 @@ const initialState = {
   primaryImage: "",
   productImages: [],
   collections: [],
-  categoryIds: [],
+  categories: [],
   specifications: [],
 };
 
@@ -91,7 +91,8 @@ export const productSlice = createSlice({
     // Payload: Array<string> (mảng chứa các ID danh mục)
     // Ví dụ: dispatch(setCategories(['category1', 'category2']))
     setCategories: (state, action) => {
-      state.categoryIds = action.payload;
+      console.log(action);
+      state.categories = action.payload;
     },
 
     // Payload: Không có
