@@ -4,7 +4,7 @@ const initialState = {
   name: "",
   brandName: "",
   description: "",
-  sellingType: "",
+  sellingType: "ONLINE",
   sku: "",
   quantityAvailable: null,
   originalPrice: null,

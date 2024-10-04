@@ -7,6 +7,7 @@ import ProdPackages from "./components/ProdPackages";
 import ProdPricing from "./components/ProdPricing";
 import ProdBranchFeature from "./components/ProdBranchFeature";
 import ProdInventory from "./components/ProdInventory";
+import ProdSellingType from "./components/ProdSellingType";
 
 const AddProduct = () => {
   const product = useSelector((state) => state.product);
@@ -28,8 +29,8 @@ const AddProduct = () => {
           <div className="w-1/2 flex flex-col items-center justify-start">
             <ProdBranchFeature />
             <ProdInventory />
-            {/*      <ProdSellingType />
-            <ProdImages />
+            <ProdSellingType />
+            {/*      <ProdImages />
             <ProdSpecification /> */}
           </div>
         </div>

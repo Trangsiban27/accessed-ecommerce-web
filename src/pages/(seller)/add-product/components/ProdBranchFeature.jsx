@@ -69,7 +69,7 @@ const ProdBranchFeature = () => {
           <label>
             <span
               aria-label="hasVariants"
-              className="cursor-pointer font-medium text-sm"
+              className="cursor-pointer font-medium"
             >
               Have variants?
             </span>
