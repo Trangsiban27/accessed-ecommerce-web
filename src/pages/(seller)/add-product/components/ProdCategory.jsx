@@ -46,7 +46,7 @@ const ProdCategory = () => {
       <p className="font-medium text-lg text-start">
         Category <span className="text-red-600"> *</span>
       </p>
-      <div className="border-[2px] border-solid border-gray-200 shadow-sm rounded-lg p-5 h-full flex flex-col gap-3">
+      <div className="border-[2px] border-solid mt-3 border-gray-200 shadow-sm rounded-lg p-5 h-full flex flex-col gap-3">
         <div>
           <p className="my-0 mb-1 text-[#212020] text-sm text-start">
             Product categories

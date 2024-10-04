@@ -5,6 +5,7 @@ import ProdCategory from "./components/ProdCategory";
 import { useSelector } from "react-redux";
 import ProdPackages from "./components/ProdPackages";
 import ProdPricing from "./components/ProdPricing";
+import ProdBranchFeature from "./components/ProdBranchFeature";
 
 const AddProduct = () => {
   const product = useSelector((state) => state.product);
@@ -24,8 +25,8 @@ const AddProduct = () => {
             <ProdPricing />
           </div>
           <div className="w-1/2 flex flex-col items-center justify-start">
-            {/* <ProdBranchFeature />
-            <ProdInventory />
+            <ProdBranchFeature />
+            {/*   <ProdInventory />
             <ProdSellingType />
             <ProdImages />
             <ProdSpecification /> */}
