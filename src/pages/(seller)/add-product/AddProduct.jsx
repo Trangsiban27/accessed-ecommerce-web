@@ -4,6 +4,7 @@ import ProdDescription from "./components/ProdDescription";
 import ProdCategory from "./components/ProdCategory";
 import { useSelector } from "react-redux";
 import ProdPackages from "./components/ProdPackages";
+import ProdPricing from "./components/ProdPricing";
 
 const AddProduct = () => {
   const product = useSelector((state) => state.product);
@@ -20,7 +21,7 @@ const AddProduct = () => {
               <ProdDescription />
             </MantineProvider>
             <ProdPackages />
-            {/* <ProdPricing /> */}
+            <ProdPricing />
           </div>
           <div className="w-1/2 flex flex-col items-center justify-start">
             {/* <ProdBranchFeature />
