@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import ProdPackages from "./components/ProdPackages";
 import ProdPricing from "./components/ProdPricing";
 import ProdBranchFeature from "./components/ProdBranchFeature";
+import ProdInventory from "./components/ProdInventory";
 
 const AddProduct = () => {
   const product = useSelector((state) => state.product);
@@ -26,8 +27,8 @@ const AddProduct = () => {
           </div>
           <div className="w-1/2 flex flex-col items-center justify-start">
             <ProdBranchFeature />
-            {/*   <ProdInventory />
-            <ProdSellingType />
+            <ProdInventory />
+            {/*      <ProdSellingType />
             <ProdImages />
             <ProdSpecification /> */}
           </div>
