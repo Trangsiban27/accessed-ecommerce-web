@@ -118,10 +118,8 @@ const FeatureProduct = ({ nameTitle }) => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="w-full my-16 pb-10">
-      <div className="text-3xl font-semibold mb-6 text-start">
-        Popular Product
-      </div>
+    <div className="w-full my-6 pb-10">
+      <div className="text-3xl font-bold mb-6 text-start">Popular Product</div>
       <div className="slider-container relative mx-[-10px] py-3 text-start">
         <Slider {...settings}>
           {products.map((product) => (
