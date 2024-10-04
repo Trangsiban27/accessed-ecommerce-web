@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const ImageData = [
   {
@@ -21,17 +21,31 @@ const ImageData = [
 ];
 
 const Gallery = ({ setImage }) => {
+  const [activeImage, setActiveImage] = useState({});
+
   useEffect(() => {
     setImage(ImageData[0]); // Set the first image as default when the component mounts
   }, [setImage]);
+
+  const handleImageClick = (image) => {
+    setImage(image);
+    setActiveImage(image); // Update the active image when a new image is clicked
+  };
+
+  const handleImageHover = (image) => {
+    setImage(image); // Update the active image when a mouse hovers over an image
+  };
 
   return (
     <ul className="w-[15%] flex flex-col gap-x-2 gap-y-4">
       {ImageData.map((Image) => (
         <li
           key={Image.id}
-          className="overflow-hidden rounded-md"
-          onClick={() => setImage(Image)}
+          className={`overflow-hidden rounded-lg cursor-pointer ${
+            activeImage.id === Image.id ? "border-[3px] border-black" : ""
+          }`}
+          onClick={() => handleImageClick(Image)}
+          onMouseEnter={() => handleImageHover(Image)}
         >
           <img src={Image.url} alt="" />
         </li>
