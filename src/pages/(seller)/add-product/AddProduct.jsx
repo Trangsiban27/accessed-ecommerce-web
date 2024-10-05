@@ -8,6 +8,7 @@ import ProdPricing from "./components/ProdPricing";
 import ProdBranchFeature from "./components/ProdBranchFeature";
 import ProdInventory from "./components/ProdInventory";
 import ProdSellingType from "./components/ProdSellingType";
+import ProdImages from "./components/ProdImages";
 
 const AddProduct = () => {
   const product = useSelector((state) => state.product);
@@ -30,8 +31,8 @@ const AddProduct = () => {
             <ProdBranchFeature />
             <ProdInventory />
             <ProdSellingType />
-            {/*      <ProdImages />
-            <ProdSpecification /> */}
+            <ProdImages />
+            {/* <ProdSpecification />  */}
           </div>
         </div>
         {/* <ProdVariants />
