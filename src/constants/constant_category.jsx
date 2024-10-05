@@ -1,7 +1,7 @@
-export const constant_category = [
+export const PRODUCT_CATEGORIES = [
   {
     id: 44,
-    name: "Smart Phone",
+    name: "SmartPhone",
     parentId: null,
     subCategories: [
       {

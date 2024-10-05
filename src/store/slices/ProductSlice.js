@@ -24,7 +24,7 @@ const initialState = {
   productImages: [],
   collections: [],
   categories: [],
-  specifications: [],
+  specifications: {},
 };
 
 export const productSlice = createSlice({
@@ -60,12 +60,7 @@ export const productSlice = createSlice({
     // Ví dụ: dispatch(updateSpecification({ name: 'Color', value: 'Blue' }))
     updateSpecification: (state, action) => {
       const { name, value } = action.payload;
-      const specIndex = state.specifications.findIndex(
-        (spec) => spec.name === name
-      );
-      if (specIndex !== -1) {
-        state.specifications[specIndex].value = value;
-      }
+      state.specifications[name] = value;
     },
 
     // Payload: string (URL hoặc đường dẫn của hình ảnh)

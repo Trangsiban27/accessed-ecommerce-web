@@ -1,4 +1,4 @@
-export const constant_specifications = {
+export const PRODUCT_SPECIFICATIONS = {
   IPHONE: {
     SPECIFICATION: [
       "Display",
@@ -10,21 +10,7 @@ export const constant_specifications = {
     CAMERA: ["Front Camera", "Rear Camera"],
     DIMENSION: ["Height", "Width", "Depth", "Weight"],
   },
-  BANNERS: {
-    SPECIFICATION: [
-      "display",
-      "processor",
-      "ram",
-      "storage",
-      "battery",
-      "operatingSystem",
-      "graphicsCard",
-      "ports",
-    ],
-    CAMERA: ["Front"],
-    DIMENSION: ["Height", "Width", "Depth", "Weight"],
-  },
-  ELECTRONIC: {
+  SMARTPHONE: {
     SPECIFICATION: [
       "display",
       "battery",
@@ -35,20 +21,6 @@ export const constant_specifications = {
       "healthTracking",
     ],
     CAMERA: [],
-    DIMENSION: ["height", "width", "depth", "weight"],
-  },
-  PHONE: {
-    SPECIFICATION: [
-      "display",
-      "processor",
-      "ram",
-      "storage",
-      "battery",
-      "operatingSystem",
-      "connectivity",
-      "stylusSupport",
-    ],
-    CAMERA: ["front", "rear"],
     DIMENSION: ["height", "width", "depth", "weight"],
   },
   LAPTOP: {
@@ -65,58 +37,6 @@ export const constant_specifications = {
     CAMERA: [],
     DIMENSION: ["Height", "Width", "Đepth", "Weight"],
   },
-  SPORTS: {
-    SPECIFICATION: [
-      "type",
-      "battery",
-      "connectivity",
-      "noiseCancellation",
-      "frequencyResponse",
-      "impedance",
-      "waterResistance",
-    ],
-    CAMERA: [],
-    DIMENSION: ["weight"],
-  },
-  WATCHES: {
-    SPECIFICATION: [
-      "type",
-      "battery",
-      "connectivity",
-      "noiseCancellation",
-      "frequencyResponse",
-      "impedance",
-      "waterResistance",
-    ],
-    CAMERA: [],
-    DIMENSION: ["weight"],
-  },
-  GAMES: {
-    SPECIFICATION: [
-      "type",
-      "battery",
-      "connectivity",
-      "noiseCancellation",
-      "frequencyResponse",
-      "impedance",
-      "waterResistance",
-    ],
-    CAMERA: [],
-    DIMENSION: ["weight"],
-  },
-  FURNITURE: {
-    SPECIFICATION: [
-      "type",
-      "battery",
-      "connectivity",
-      "noiseCancellation",
-      "frequencyResponse",
-      "impedance",
-      "waterResistance",
-    ],
-    CAMERA: [],
-    DIMENSION: ["weight"],
-  },
   SAMSUNG: {
     SPECIFICATION: [
       "type",
@@ -130,8 +50,7 @@ export const constant_specifications = {
     CAMERA: [],
     DIMENSION: ["weight"],
   },
-  BOOKS: {
-    // Sách
+  BOOK: {
     SPECIFICATION: [
       "author",
       "publisher",
@@ -143,17 +62,5 @@ export const constant_specifications = {
       "isbn",
     ],
     DIMENSION: ["height", "width", "depth", "weight"],
-  },
-  JEWELRY: {
-    // Trang sức
-    SPECIFICATION: [
-      "material",
-      "stoneType",
-      "weight",
-      "carat",
-      "style",
-      "gender",
-    ],
-    DIMENSION: ["length", "width", "height", "weight"],
   },
 };

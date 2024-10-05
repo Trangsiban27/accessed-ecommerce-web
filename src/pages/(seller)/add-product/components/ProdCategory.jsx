@@ -6,29 +6,29 @@ import {
   OutlinedInput,
   Select,
 } from "@mui/material";
-import { constant_category } from "../../../../constants/constant_category";
 import { setCategories } from "../../../../store/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { PRODUCT_CATEGORIES } from "../../../../constants/constant_category";
 
 const ProdCategory = () => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.product.categories);
-  const [firstCategories, setFirstCategories] = useState(constant_category);
+  const [firstCategories, setFirstCategories] = useState(PRODUCT_CATEGORIES);
   const [secondCategories, setSecondCategories] = useState([]);
 
   useEffect(() => {
     // call api get categories
-    setFirstCategories(constant_category);
+    setFirstCategories(PRODUCT_CATEGORIES);
   }, []);
 
   useEffect(() => {
     // call api get categories
     if (categories[0]) {
-      const category_index = constant_category.findIndex(
+      const category_index = PRODUCT_CATEGORIES.findIndex(
         (item) => item.id === categories[0]?.id
       );
       setSecondCategories(
-        constant_category[category_index]?.subCategories || []
+        PRODUCT_CATEGORIES[category_index]?.subCategories || []
       );
     }
   }, [categories]);
