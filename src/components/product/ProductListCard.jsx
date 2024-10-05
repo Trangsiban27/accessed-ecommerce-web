@@ -2,60 +2,25 @@ import React from "react";
 
 function ProductListCard({ product }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        gap: "20px",
-        border: "1px solid rgba(0, 0, 0, 0.3)",
-        padding: "10px",
-        borderRadius: "5px",
-        width: "80%",
-        marginLeft: "5rem",
-        marginTop: "1rem",
-        boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
-      }}
-    >
+    <div className="flex flex-row gap-5 border border-gray-300 p-2.5 rounded w-4/5 mt-4 shadow-lg hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 hover:cursor-pointer text-start items-center">
       <div>
-        {/* Display the product image */}
         <img
           src={product.image || "https://placehold.co/80x80"}
           alt={product.name}
-          style={{
-            width: "80px",
-            height: "80px",
-            borderRadius: "5px",
-            objectFit: "cover",
-          }}
+          className="w-[80px] h-[80px] object-cover rounded-[5px]"
         />
       </div>
       <div style={{ flex: "1" }}>
-        {/* Display product details */}
-        <h4
-          style={{
-            margin: "0px 0px 8px 0px",
-            fontSize: "18px",
-            fontWeight: "bold",
-            color: "#333",
-          }}
-        >
+        <h4 className="mb-[8px] text-[18px] font-bold text-[#333]">
           {product.name}
         </h4>
-        <p
-          style={{ margin: "0px 0px 4px 0px", fontSize: "14px", color: "#777" }}
-        >
-          {product.category}
-        </p>
-        <p
-          style={{ margin: "0px 0px 4px 0px", fontSize: "15px", color: "#000" }}
-        >
+        <p className="mb-[4px] text-[14px] text-[#777]">{product.category}</p>
+        <p className="mb-[4px] text-[15px] text-black">
           {product.price !== null && product.price !== undefined
             ? `$${product.price.toFixed(2)}`
             : "Price not available"}
         </p>
-        <p style={{ margin: "0px", fontSize: "15px", color: "#000" }}>
-          Quantity: {product.quantity}
-        </p>
+        <p className="text-[15px] text-black">Quantity: {product.quantity}</p>
       </div>
     </div>
   );
