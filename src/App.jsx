@@ -1,10 +1,11 @@
 import { Route, Routes } from "react-router-dom";
+
 import "./App.css";
+import Cart from "./pages/(buyer)/cart/Cart";
+import AddProduct from "./pages/(seller)/add-product/AddProduct";
+import ProductList from "./pages/(seller)/product-list/ProductList";
 import HomeLanding from "./pages/(buyer)/home-landing/HomeLanding";
 import ProductDetail from "./pages/(buyer)/product-detail/ProductDetail";
-import Cart from "./pages/(buyer)/cart/Cart";
-import ProductList from "./pages/(seller)/product-list/ProductList";
-import AddProduct from "./pages/(seller)/add-product/AddProduct";
 
 function App() {
   return (

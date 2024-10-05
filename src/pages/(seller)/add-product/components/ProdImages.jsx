@@ -1,8 +1,22 @@
-import { Button } from "@mui/material";
+import {
+  addProductImages,
+  removeProductImage,
+  replaceProductImage,
+  setPrimaryImage,
+  setProductField,
+} from "../../../../store/slices/productSlice";
 import { useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { setProductField } from "../../../../store/slices/productSlice";
+import { Star, Upload } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid2,
+} from "@mui/material";
 
 const ProdImages = () => {
   const dispatch = useDispatch();
@@ -10,10 +24,6 @@ const ProdImages = () => {
   const [openModal, setOpenModal] = useState(false);
   const primaryImage = useSelector((state) => state.product.primaryImage);
   const productImages = useSelector((state) => state.product.productImages);
-
-  const updateField = (field, value) => {
-    dispatch(setProductField({ field, value }));
-  };
 
   const onDrop = (acceptedFiles) => {
     const maxFiles = 10;
@@ -24,39 +34,32 @@ const ProdImages = () => {
       acceptedFiles = acceptedFiles.slice(0, filesToAdd);
     }
 
-    const newFiles = acceptedFiles.map((file) => ({
-      file: file,
-      url: URL.createObjectURL(file),
-    }));
-
-    const prev_images = productImages;
-    updateField("productImages", [...prev_images, ...newFiles]);
-    updateField(
-      "primaryImage",
-      prev_images.length > 0 ? prev_images[0] : newFiles[0]
+    const newImages = acceptedFiles.map((file) => URL.createObjectURL(file));
+    dispatch(addProductImages(newImages));
+    dispatch(
+      setPrimaryImage(
+        productImages.length > 0 ? productImages[0] : newImages[0]
+      )
     );
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const handleRemoveImage = () => {
-    const updatedImages = productImages.filter(
-      (item) => item.url !== primaryImage?.url
-    );
-    updateField("productImages", updatedImages);
-    updateField(
-      "primaryImage",
-      updatedImages.length > 0 ? updatedImages[0] : null
-    );
+  const updateField = (field, value) =>
+    dispatch(setProductField({ field, value }));
+
+  const RemoveImageInPopup = (url) => {
+    const newImageList = productImages.filter((item) => item !== url);
+    updateField("images", newImageList);
   };
 
-  const handleReplaceImage = (file) => {
-    const newImage = { file: file, url: URL.createObjectURL(file) };
-    const updatedImages = productImages.map((img) =>
-      img.url === primaryImage?.url ? newImage : img
+  const handleAddMore = (event) => {
+    const acceptedFiles = event.target.files;
+    if (!acceptedFiles) return;
+    const newFiles = Array.from(acceptedFiles).map((file) =>
+      URL.createObjectURL(file)
     );
-    updateField("productImages", updatedImages);
-    updateField("primaryImage", newImage);
+    dispatch(addProductImages(newFiles));
   };
 
   const handleReplaceClick = () => {
@@ -66,7 +69,7 @@ const ProdImages = () => {
     inputElement.onchange = (event) => {
       if (event.target && event.target.files) {
         const file = event.target.files[0];
-        handleReplaceImage(file);
+        dispatch(replaceProductImage(URL.createObjectURL(file)));
       }
     };
     inputElement.click();
@@ -81,8 +84,90 @@ const ProdImages = () => {
             [{productImages.length} / 10 files]
           </span>
         </p>
-        {/* <PopupImages openModal={openModal} setOpenModal={setOpenModal} /> */}
+        <Button onClick={() => setOpenModal(true)}>
+          <span className="capitalize"> All Images </span>
+        </Button>
+
+        <Dialog
+          open={openModal}
+          onOpenChange={setOpenModal}
+          fullWidth={true}
+          maxWidth="lg"
+        >
+          <DialogTitle>All Images</DialogTitle>
+          <DialogContent className="w-full h-[600px] p-6">
+            <div className="flex items-start justify-between w-full h-full">
+              <div className="w-1/2 p-3 h-full">
+                {productImages?.length > 0 && (
+                  <img
+                    src={primaryImage || productImages[0]}
+                    alt="Primary"
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                )}
+              </div>
+
+              <Grid2 className="w-1/2 p-3 max-h-full" container spacing={3}>
+                {productImages.map((item, index) => (
+                  <Grid2
+                    size={4}
+                    key={index}
+                    className={`w-1/4 h-[120px] p-2 relative ${
+                      primaryImage === item
+                        ? "border-blue-500 border-2 border-solid"
+                        : "border-gray-300 border border-dashed"
+                    } rounded-md`}
+                  >
+                    <img
+                      src={item}
+                      alt={`Image ${index + 1}`}
+                      className="w-full h-full object-cover rounded-lg cursor-pointer"
+                      onClick={() => dispatch(setPrimaryImage(item))}
+                    />
+
+                    {primaryImage === item ? (
+                      <div className="absolute -top-3 -right-3 w-6 h-6 bg-slate-300 flex items-center justify-center rounded-full">
+                        <Star className="w-4 h-4 text-orange-400 fill-current" />
+                      </div>
+                    ) : (
+                      <button
+                        className="absolute -top-3 -right-3 w-6 h-6 flex items-center justify-center bg-gray-500 rounded-full cursor-pointer hover:bg-gray-500/60"
+                        onClick={() => RemoveImageInPopup(item)}
+                      >
+                        <span className="text-white w-6 h-6 rounded-full">
+                          X
+                        </span>
+                      </button>
+                    )}
+                  </Grid2>
+                ))}
+              </Grid2>
+            </div>
+          </DialogContent>
+
+          <Box className="p-4 flex items-center justify-end w-full">
+            {productImages.length < 10 && (
+              <div className="relative">
+                <Button variant="outline" className="gap-2">
+                  <Upload className="w-4 h-4" />
+                  Add Images
+                </Button>
+                <input
+                  multiple
+                  type="file"
+                  accept="image/*"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  onChange={handleAddMore}
+                />
+              </div>
+            )}
+            <Button variant="outline" onClick={() => setOpenModal(false)}>
+              Close
+            </Button>
+          </Box>
+        </Dialog>
       </div>
+
       <div className="flex w-full items-center p-2 px-5 rounded-lg border-2 h-[325px] border-solid border-gray-200 gap-3 relative mt-3">
         <div
           {...getRootProps()}
@@ -96,9 +181,10 @@ const ProdImages = () => {
             isDragActive
               ? "border-blue-500 bg-gray-50"
               : "border-gray-300 bg-slate-100"
-          } h-[calc(100%-14px)] my-2 flex items-center justify-center border-[1px] border-dashed rounded-md transition-colors ${
+          } h-[calc(100%-14px)] my-2 flex items-center justify-center border-[1px] border-dashed rounded-md transition-colors cursor-pointer ${
             productImages.length >= 10 ? "hidden" : ""
           }`}
+          onClick={() => imageInputRef.current.click()}
         >
           <input
             {...getInputProps()}
@@ -109,6 +195,7 @@ const ProdImages = () => {
             Upload or Drag Image
           </p>
         </div>
+
         <div
           className={`${
             productImages.length >= 10
@@ -121,11 +208,11 @@ const ProdImages = () => {
           <div
             className={`${
               productImages.length === 1 ? "w-full" : "w-1/2"
-            } h-[calc(100%-14px)] flex items-center justify-center px-2 relative group`}
+            } h-full flex items-center justify-center px-2 py-1 relative group`}
           >
             <img
-              src={primaryImage?.url}
-              alt={`Image file ${primaryImage?.file?.name}`}
+              src={primaryImage}
+              alt={`Image file`}
               className="w-full h-full object-cover rounded-lg"
             />
             <div
@@ -142,43 +229,55 @@ const ProdImages = () => {
               <Button
                 className="text-white"
                 variant="contained"
-                onClick={() => handleRemoveImage()}
+                onClick={() => {
+                  dispatch(removeProductImage(primaryImage));
+                  dispatch(
+                    setPrimaryImage(
+                      productImages.length > 0 ? productImages[0] : ""
+                    )
+                  );
+                }}
               >
                 Remove
               </Button>
             </div>
           </div>
 
-          <div
+          <Grid2
+            container
             className={`${
               productImages.length === 1 ? "hidden" : "w-1/2"
-            } h-[calc(100%-14px)] flex flex-col items-between justify-start gap-2`}
+            } h-full flex flex-col items-between justify-start gap-2`}
           >
             {productImages
-              .filter((item) => item.url !== primaryImage?.url)
+              .filter((item) => item !== primaryImage)
               .slice(0, 2)
               .map((item, index) => {
                 return (
-                  <div className="w-full h-1/2 relative" key={index}>
+                  <Grid2
+                    size={12}
+                    className="w-full h-1/2 py-1 relative over"
+                    key={index}
+                  >
                     <img
-                      src={item.url}
-                      alt={`Image file ${item.file.name}`}
-                      className="w-full h-full object-cover rounded-md"
+                      src={item}
+                      alt={`Image file`}
+                      className="w-full h-full object-fill rounded-md"
                     />
                     <div
-                      className={`w-full h-full flex items-center justify-center bg-opacity-80 absolute bg-slate-600 top-0 left-0 text-lg font-semibold rounded-lg text-white ${
+                      className={`w-full h-full py-1 flex items-center justify-center bg-opacity-80 absolute bg-slate-600 top-0 left-0 text-lg font-semibold rounded-lg text-white ${
                         index === 1 && productImages.length > 3 ? "" : "hidden"
                       }`}
                       onClick={() => setOpenModal(true)}
                     >
-                      <span className="text-white opacity-1">
+                      <span className="text-white h-[30px] opacity-1">
                         + {productImages.length - 3}
                       </span>
                     </div>
-                  </div>
+                  </Grid2>
                 );
               })}
-          </div>
+          </Grid2>
         </div>
       </div>
     </div>

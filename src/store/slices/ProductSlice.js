@@ -69,9 +69,18 @@ export const productSlice = createSlice({
     },
 
     // Payload: string (URL hoặc đường dẫn của hình ảnh)
-    // Ví dụ: dispatch(addProductImage('https://example.com/image.jpg'))
-    addProductImage: (state, action) => {
-      state.productImages.push(action.payload);
+    // Ví dụ: dispatch(addProductImages(['https://example.com/image.jpg']))
+    addProductImages: (state, action) => {
+      state.productImages = [...state.productImages, ...action.payload];
+    },
+
+    // Payload: string (URL hoặc đường dẫn của hình ảnh)
+    // Ví dụ: dispatch(replaceProductImage(['https://example.com/image.jpg']))
+    replaceProductImage: (state, action) => {
+      state.productImages = state.productImages.map((img) =>
+        img === state.primaryImage ? action.payload : img
+      );
+      state.primaryImage = action.payload;
     },
 
     // Payload: string (URL hoặc đường dẫn của hình ảnh)
@@ -91,7 +100,6 @@ export const productSlice = createSlice({
     // Payload: Array<string> (mảng chứa các ID danh mục)
     // Ví dụ: dispatch(setCategories(['category1', 'category2']))
     setCategories: (state, action) => {
-      console.log(action);
       state.categories = action.payload;
     },
 
@@ -109,8 +117,9 @@ export const {
   addSpecification,
   removeSpecification,
   updateSpecification,
-  addProductImage,
+  addProductImages,
   removeProductImage,
+  replaceProductImage,
   setPrimaryImage,
   setCategories,
   toggleHasVariants,
