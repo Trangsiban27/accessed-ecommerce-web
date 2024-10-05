@@ -40,3 +40,69 @@
 .read-the-docs {
   color: #888;
 }
+
+.add-to-cart {
+  bottom: 10px;
+  right: 10px;
+  background-color: black;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.slick-slide > div {
+  margin: 0 15px;
+}
+
+.banner-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #ff5e63, #ffa142);
+  position: relative;
+}
+
+.banner-content {
+  flex: 1;
+  color: white;
+  position: absolute;
+  top: 130px;
+  left: 80px;
+}
+
+.banner-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.banner-content h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.banner-button {
+  background-color: #fff;
+  color: #000;
+  padding: 15px 30px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 8px;
+}
+
+.banner-container img {
+  max-width: 95%;
+  max-height: 95%;
+  position: absolute;
+  bottom: 450px;
+  right: 5px;
+  top: 50px;
+}
