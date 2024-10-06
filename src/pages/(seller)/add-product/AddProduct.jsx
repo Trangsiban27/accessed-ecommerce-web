@@ -1,8 +1,6 @@
 import { MantineProvider } from "@mantine/core";
-
 import ProdDescription from "./components/ProdDescription";
 import ProdCategory from "./components/ProdCategory";
-import { useSelector } from "react-redux";
 import ProdPackages from "./components/ProdPackages";
 import ProdPricing from "./components/ProdPricing";
 import ProdBranchFeature from "./components/ProdBranchFeature";
@@ -10,11 +8,9 @@ import ProdInventory from "./components/ProdInventory";
 import ProdSellingType from "./components/ProdSellingType";
 import ProdImages from "./components/ProdImages";
 import ProdSpecification from "./components/ProdSpecification";
+import ProdVariants from "./components/ProdVariants";
 
 const AddProduct = () => {
-  const product = useSelector((state) => state.product);
-
-  console.log(product);
   return (
     <div className="flex flex-col items-center justify-start w-full max-w-[1440px] h-full p-3 mx-auto">
       <div className="w-full h-full my-2 scrollBar">
@@ -36,8 +32,8 @@ const AddProduct = () => {
             <ProdSpecification />
           </div>
         </div>
-        {/* <ProdVariants />
-        <ProdVariantTable />
+        <ProdVariants />
+        {/*  <ProdVariantTable />
         <ActionButtons /> */}
       </div>
     </div>

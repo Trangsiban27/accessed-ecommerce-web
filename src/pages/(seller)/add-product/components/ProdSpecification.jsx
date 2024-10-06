@@ -27,15 +27,11 @@ const ProdSpecification = () => {
   const categories = useSelector((state) => state.product.categories);
   const specifications = useSelector((state) => state.product.specifications);
 
-  console.log(categories);
-
   const generateAccordionData = () => {
     const primaryCategory =
       categories[1]?.name?.toUpperCase() ||
       categories[0]?.name?.toUpperCase() ||
       "IPHONE";
-
-    console.log(primaryCategory);
 
     return Object.entries(PRODUCT_SPECIFICATIONS[primaryCategory]).map(
       ([key, value]) => {

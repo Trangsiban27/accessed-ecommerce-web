@@ -11,40 +11,35 @@ export const variantSlice = createSlice({
   name: "variants",
   initialState,
   reducers: {
-    // Payload: { variants: Array<Variant> }
-    // Ví dụ: dispatch(setInitialVariants({ variants: [{id: 1, type: 'Color', values: ['Red', 'Blue']}] }))
+    // dispatch(setInitialVariants( [{id: 1, type: 'Color', values: ['Red', 'Blue']}] ))
     setInitialVariants: (state, action) => {
-      state.variants = action.payload.variants;
+      state.variants = action.payload;
     },
 
-    // Payload: { type: string }
-    // Ví dụ: dispatch(setPrimaryVariantType({ type: 'Color' }))
+    // dispatch(setPrimaryVariantType('Color'))
     setPrimaryVariantType: (state, action) => {
-      state.primaryVariantType = action.payload.type;
+      state.primaryVariantType = action.payload;
     },
 
-    // Payload: { variantId: number, value: string }
-    // Ví dụ: dispatch(addVariantValue({ variantId: 1, value: 'Green' }))
+    // dispatch(addVariantValue({ type: "Color", value: 'Green' }))
     addVariantValue: (state, action) => {
-      const { variantId, value } = action.payload;
-      const variant = state.variants.find((v) => v.id === variantId);
+      const { type, value } = action.payload;
+      const variant = state.variants.find((v) => v.type === type);
       if (variant) {
         variant.values.push(value);
       }
     },
 
-    // Payload: { variantId: number, value: string }
-    // Ví dụ: dispatch(removeVariantValue({ variantId: 1, value: 'Green' }))
+    // dispatch(removeVariantValue({ type: "Color", value: 'Green' }))
     removeVariantValue: (state, action) => {
-      const { variantId, value } = action.payload;
-      const variant = state.variants.find((v) => v.id === variantId);
+      const { type, value } = action.payload;
+      const variant = state.variants.find((v) => v.type === type);
       if (variant) {
         variant.values = variant.values.filter((v) => v !== value);
       }
     },
 
-    // Payload: Không có
-    // Ví dụ: dispatch(generateVariantOptionsTable())
+    // dispatch(generateVariantOptionsTable())
     generateVariantOptionsTable: (state) => {
       const variantTypes = state.variants.reduce((acc, variant) => {
         acc[variant.type] = variant.values;
@@ -67,7 +62,6 @@ export const variantSlice = createSlice({
       };
 
       const allCombinations = generateCombinations(Object.values(variantTypes));
-
       state.variantOptionsTable = allCombinations.map((combination) => {
         const combinationObject = {
           price: 0,
@@ -83,15 +77,13 @@ export const variantSlice = createSlice({
       });
     },
 
-    // Payload: { index: number, field: string, value: any }
-    // Ví dụ: dispatch(updateVariantOptionField({ index: 0, field: 'price', value: 100 }))
+    // dispatch(updateVariantOptionField({ index: 0, field: 'price', value: 100 }))
     updateVariantOptionField: (state, action) => {
       const { index, field, value } = action.payload;
       state.variantOptionsTable[index][field] = value;
     },
 
-    // Payload: { price: number, salePrice: number, quantity: number, mrpPrice: number, sku: string }
-    // Ví dụ: dispatch(updateAllVariantOptionBaseValues({ price: 100, salePrice: 90, quantity: 50, mrpPrice: 110, sku: 'SKU123' }))
+    // dispatch(updateAllVariantOptionBaseValues({ price: 100, salePrice: 90, quantity: 50, mrpPrice: 110, sku: 'SKU123' }))
     updateAllVariantOptionBaseValues: (state, action) => {
       const { price, salePrice, quantity, mrpPrice, sku } = action.payload;
       state.variantOptionsTable = state.variantOptionsTable.map((item) => ({
@@ -104,14 +96,34 @@ export const variantSlice = createSlice({
       }));
     },
 
-    // Payload: { variantImages: Array<string> }
-    // Ví dụ: dispatch(setVariantImages({ variantImages: ['https://example.com/image1.jpg', 'https://example.com/image2.jpg'] }))
+    // dispatch(setVariantImages([{type: "Color" , value: "Blue" , images: ['url1']}]))
     setVariantImages: (state, action) => {
-      state.variantImages = action.payload.variantImages;
+      state.variantImages = action.payload;
     },
 
-    // Payload: Không có
-    // Ví dụ: dispatch(addVariant())
+    // dispatch(addNewVariantImages({value: "Blue" , new_images: ['url1']}))
+    addNewVariantImages: (state, action) => {
+      const { value, new_images } = action.payload;
+      state.variantImages = state.variantImages.map((item) =>
+        item.value === value
+          ? { ...item, images: [...item.images, ...new_images] } // Return a new object with updated images
+          : item
+      );
+    },
+
+    // dispatch(removeVariantImage({value: "Blue" , remove_image: 'url1'}))
+    removeVariantImage: (state, action) => {
+      const { value, remove_image } = action.payload;
+      state.variantImages = state.variantImages.map((item) =>
+        item.value === value
+          ? {
+              ...item,
+              images: item.images.filter((url) => url !== remove_image),
+            }
+          : item
+      );
+    },
+    // dispatch(addVariant())
     addVariant: (state) => {
       state.variants.push({
         id: state.variants.length,
@@ -120,16 +132,14 @@ export const variantSlice = createSlice({
       });
     },
 
-    // Payload: { id: number }
-    // Ví dụ: dispatch(removeVariant({ id: 1 }))
+    // dispatch(removeVariant({ id: 1 }))
     removeVariant: (state, action) => {
       state.variants = state.variants
         .filter((item) => item.id !== action.payload.id)
         .map((item, index) => ({ ...item, id: index }));
     },
 
-    // Payload: { id: number, type: string }
-    // Ví dụ: dispatch(setVariantType({ id: 1, type: 'Size' }))
+    // dispatch(setVariantType({ id: 1, type: 'Size' }))
     setVariantType: (state, action) => {
       const { id, type } = action.payload;
       const variant = state.variants.find((v) => v.id === id);
@@ -152,6 +162,8 @@ export const {
   addVariant,
   removeVariant,
   setVariantType,
+  addNewVariantImages,
+  removeVariantImage,
 } = variantSlice.actions;
 
 export default variantSlice.reducer;
