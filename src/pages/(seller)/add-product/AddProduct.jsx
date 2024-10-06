@@ -9,6 +9,7 @@ import ProdSellingType from "./components/ProdSellingType";
 import ProdImages from "./components/ProdImages";
 import ProdSpecification from "./components/ProdSpecification";
 import ProdVariants from "./components/ProdVariants";
+import ProdVariantTable from "./components/ProdVariantTable";
 
 const AddProduct = () => {
   return (
@@ -33,8 +34,8 @@ const AddProduct = () => {
           </div>
         </div>
         <ProdVariants />
-        {/*  <ProdVariantTable />
-        <ActionButtons /> */}
+        <ProdVariantTable />
+        {/*     <ActionButtons /> */}
       </div>
     </div>
   );

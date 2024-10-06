@@ -64,10 +64,10 @@ export const variantSlice = createSlice({
       const allCombinations = generateCombinations(Object.values(variantTypes));
       state.variantOptionsTable = allCombinations.map((combination) => {
         const combinationObject = {
-          price: 0,
-          salePrice: 0,
-          quantity: 0,
-          mrpPrice: 0,
+          sellingPrice: 0,
+          discountedPrice: 0,
+          quantityAvailable: 0,
+          originalPrice: 0,
           sku: "",
         };
         Object.keys(variantTypes).forEach((key, index) => {
@@ -85,13 +85,19 @@ export const variantSlice = createSlice({
 
     // dispatch(updateAllVariantOptionBaseValues({ price: 100, salePrice: 90, quantity: 50, mrpPrice: 110, sku: 'SKU123' }))
     updateAllVariantOptionBaseValues: (state, action) => {
-      const { price, salePrice, quantity, mrpPrice, sku } = action.payload;
+      const {
+        sellingPrice,
+        discountedPrice,
+        quantityAvailable,
+        originalPrice,
+        sku,
+      } = action.payload;
       state.variantOptionsTable = state.variantOptionsTable.map((item) => ({
         ...item,
-        price,
-        salePrice,
-        quantity,
-        mrpPrice,
+        sellingPrice,
+        discountedPrice,
+        quantityAvailable,
+        originalPrice,
         sku,
       }));
     },

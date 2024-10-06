@@ -8,7 +8,6 @@ import {
   Checkbox,
   InputBase,
   Alert,
-  Typography,
 } from "@mui/material";
 import {
   addVariantValue,
@@ -270,9 +269,9 @@ const ProdVariants = () => {
 
   return (
     <Box className="w-full rounded-lg mb-2 px-5">
-      <Typography variant="h6" className="font-medium text-lg text-start mb-2">
+      <p className="font-medium text-lg text-start mb-3">
         Product Variants <span className="text-red-600">*</span>
-      </Typography>
+      </p>
 
       <Box className="border-2 border-solid border-gray-200 shadow-sm rounded-lg p-5 space-y-4">
         <div className="flex items-center w-full">
