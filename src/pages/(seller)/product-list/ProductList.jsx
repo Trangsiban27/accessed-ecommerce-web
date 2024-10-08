@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { Button } from "@mui/material";
+import { Button, List, Typography } from "@mui/material";
 // import CreateProduct from "./createProduct/CreateProduct";
 import ProductListCard from "../../../components/product/ProductListCard";
 
-function ProductList() {
+const ProductList = () => {
   // const width = useRef(window.innerWidth).current;
 
   const [products, setProducts] = useState([]);
@@ -12,11 +12,11 @@ function ProductList() {
   const [isLoading, setIsLoading] = useState(true);
   console.log("products", products);
 
-  const hasFetched = useRef(false); // Sử dụng useRef để ngăn chặn việc gọi API nhiều lần
+  // const hasFetched = useRef(false); // Sử dụng useRef để ngăn chặn việc gọi API nhiều lần
 
   useEffect(() => {
-    if (hasFetched.current) return; // Nếu API đã được gọi, không thực hiện lại
-    hasFetched.current = true; // Đánh dấu API đã được gọi
+    // if (hasFetched.current) return; //
+    // hasFetched.current = true;
 
     const getAllProducts = async () => {
       try {
@@ -39,43 +39,30 @@ function ProductList() {
   // }
 
   return (
-    // <div className="flex bg-[#F9F9F9] w-full h-screen">
-    // <div className="flex w-full bg-white h-auto">
     <div className="flex flex-col w-full h-full items-center">
       <div className="flex justify-between w-4/5 mt-[30px] items-center">
-        <h3 className="text-2xl font-bold">Product List</h3>
+        <Typography variant="h5" sx={{ fontWeight: "600" }}>
+          Product List
+        </Typography>
         <Button
           variant="contained"
           color="primary"
-          onClick={() => setIsAddingProduct(true)}
+          // onClick={() => setIsAddingProduct(true)}
         >
           Add Product
         </Button>
       </div>
-      {isLoading ? (
-        <p>Loading...</p> // Hiển thị loading khi đang tải dữ liệu
-      ) : (
-        products.map(
-          (
-            product // Hiển thị tất cả sản phẩm
-          ) => (
-            <ProductListCard
-              key={product.id}
-              product={{
-                name: product.title,
-                image: product.image,
-                category: product.category,
-                price: product.price,
-                quantity: product.quantity,
-              }}
-            />
-          )
-        )
-      )}
+      <List className="w-4/5">
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          products.map((item) => (
+            <ProductListCard key={item.id} product={item} />
+          ))
+        )}
+      </List>
     </div>
-    // </div>
-    // </div>
   );
-}
+};
 
 export default ProductList;
