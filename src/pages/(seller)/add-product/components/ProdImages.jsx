@@ -1,10 +1,4 @@
-import {
-  addProductImages,
-  removeProductImage,
-  replaceProductImage,
-  setPrimaryImage,
-  setProductField,
-} from "../../../../store/slices/productSlice";
+import { addProductImages } from "../../../../store/slices/productSlice";
 import { useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Star, Upload } from "@mui/icons-material";
@@ -17,6 +11,13 @@ import {
   DialogTitle,
   Grid2,
 } from "@mui/material";
+import {
+  addNewProducImages,
+  dropNewProductImage,
+  removeProductPrimaryImage,
+  replaceProductPrimaryImage,
+  updateProductField,
+} from "../../../../servicea/productService";
 
 const ProdImages = () => {
   const dispatch = useDispatch();
@@ -26,40 +27,14 @@ const ProdImages = () => {
   const productImages = useSelector((state) => state.product.productImages);
 
   const onDrop = (acceptedFiles) => {
-    const maxFiles = 10;
-    const totalFiles = productImages.length + acceptedFiles.length;
-
-    if (totalFiles > maxFiles) {
-      const filesToAdd = maxFiles - productImages.length;
-      acceptedFiles = acceptedFiles.slice(0, filesToAdd);
-    }
-
-    const newImages = acceptedFiles.map((file) => URL.createObjectURL(file));
-    dispatch(addProductImages(newImages));
-    dispatch(
-      setPrimaryImage(
-        productImages.length > 0 ? productImages[0] : newImages[0]
-      )
-    );
+    dropNewProductImage(dispatch, productImages, acceptedFiles);
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const updateField = (field, value) =>
-    dispatch(setProductField({ field, value }));
-
   const RemoveImageInPopup = (url) => {
     const newImageList = productImages.filter((item) => item !== url);
-    updateField("images", newImageList);
-  };
-
-  const handleAddMore = (event) => {
-    const acceptedFiles = event.target.files;
-    if (!acceptedFiles) return;
-    const newFiles = Array.from(acceptedFiles).map((file) =>
-      URL.createObjectURL(file)
-    );
-    dispatch(addProductImages(newFiles));
+    updateProductField(dispatch, "images", newImageList);
   };
 
   const handleReplaceClick = () => {
@@ -69,7 +44,7 @@ const ProdImages = () => {
     inputElement.onchange = (event) => {
       if (event.target && event.target.files) {
         const file = event.target.files[0];
-        dispatch(replaceProductImage(URL.createObjectURL(file)));
+        replaceProductPrimaryImage(URL.createObjectURL(file));
       }
     };
     inputElement.click();
@@ -122,7 +97,9 @@ const ProdImages = () => {
                       src={item}
                       alt={`Image ${index + 1}`}
                       className="w-full h-full object-cover rounded-lg cursor-pointer"
-                      onClick={() => dispatch(setPrimaryImage(item))}
+                      onClick={() =>
+                        updateProductField(dispatch, "primaryImage", item)
+                      }
                     />
 
                     {primaryImage === item ? (
@@ -157,7 +134,9 @@ const ProdImages = () => {
                   type="file"
                   accept="image/*"
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  onChange={handleAddMore}
+                  onChange={(e) =>
+                    addNewProducImages(dispatch, productImages, e.target.files)
+                  }
                 />
               </div>
             )}
@@ -229,14 +208,13 @@ const ProdImages = () => {
               <Button
                 className="text-white"
                 variant="contained"
-                onClick={() => {
-                  dispatch(removeProductImage(primaryImage));
-                  dispatch(
-                    setPrimaryImage(
-                      productImages.length > 0 ? productImages[0] : ""
-                    )
-                  );
-                }}
+                onClick={() =>
+                  removeProductPrimaryImage(
+                    dispatch,
+                    primaryImage,
+                    productImages
+                  )
+                }
               >
                 Remove
               </Button>

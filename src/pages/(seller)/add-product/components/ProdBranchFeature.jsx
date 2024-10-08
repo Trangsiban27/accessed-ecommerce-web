@@ -6,9 +6,20 @@ import {
   Select,
   Switch,
 } from "@mui/material";
-import { setProductField } from "../../../../store/slices/productSlice";
 import ProdCollections from "./ProdCollections";
 import { useDispatch, useSelector } from "react-redux";
+import { updateProductField } from "../../../../servicea/productService";
+
+const phoneBrands = [
+  "Apple",
+  "Samsung",
+  "Xiaomi",
+  "Oppo",
+  "Vivo",
+  "Realme",
+  "Huawei",
+  "OnePlus",
+];
 
 const ProdBranchFeature = () => {
   const dispatch = useDispatch();
@@ -30,12 +41,7 @@ const ProdBranchFeature = () => {
               inputProps={{ "aria-label": "Without label" }}
               value={brandName || ""}
               onChange={(e) =>
-                dispatch(
-                  setProductField({
-                    field: "brandName",
-                    value: e.target.value,
-                  })
-                )
+                updateProductField(dispatch, "brandName", e.target.value)
               }
               input={<OutlinedInput id="select-multiple-chip" />}
               className="h-[40px] w-full cursor-pointer"
@@ -77,14 +83,9 @@ const ProdBranchFeature = () => {
           <Switch
             checked={hasVariants}
             id="hasVariants"
-            onChange={(e) => {
-              dispatch(
-                setProductField({
-                  field: "hasVariants",
-                  value: e.target.checked,
-                })
-              );
-            }}
+            onChange={(e) =>
+              updateProductField(dispatch, "hasVariants", e.target.value)
+            }
           />
         </div>
       </div>
@@ -93,14 +94,3 @@ const ProdBranchFeature = () => {
 };
 
 export default ProdBranchFeature;
-
-const phoneBrands = [
-  "Apple",
-  "Samsung",
-  "Xiaomi",
-  "Oppo",
-  "Vivo",
-  "Realme",
-  "Huawei",
-  "OnePlus",
-];

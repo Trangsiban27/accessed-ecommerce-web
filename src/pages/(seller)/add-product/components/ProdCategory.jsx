@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   FormControl,
@@ -6,40 +7,28 @@ import {
   OutlinedInput,
   Select,
 } from "@mui/material";
-import { setCategories } from "../../../../store/slices/productSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { PRODUCT_CATEGORIES } from "../../../../constants/constant_category";
+import {
+  getCagegories,
+  getSubCategoriesById,
+} from "../../../../servicea/categoriesService";
+import { updateProductField } from "../../../../servicea/productService";
 
 const ProdCategory = () => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.product.categories);
-  const [firstCategories, setFirstCategories] = useState(PRODUCT_CATEGORIES);
-  const [secondCategories, setSecondCategories] = useState([]);
+  const [mainCategories, setMainCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
 
   useEffect(() => {
-    // call api get categories
-    setFirstCategories(PRODUCT_CATEGORIES);
+    const response = getCagegories();
+    setMainCategories(response);
   }, []);
 
   useEffect(() => {
-    // call api get categories
-    if (categories[0]) {
-      const category_index = PRODUCT_CATEGORIES.findIndex(
-        (item) => item.id === categories[0]?.id
-      );
-      setSecondCategories(
-        PRODUCT_CATEGORIES[category_index]?.subCategories || []
-      );
-    }
+    if (!categories[0]) return;
+    const subCategories = getSubCategoriesById(categories[0]);
+    setSubCategories(subCategories);
   }, [categories]);
-
-  const handleFirstCategoryChange = (e) => {
-    dispatch(setCategories([e.target.value]));
-  };
-
-  const handleSecondCategoryChange = (e) => {
-    dispatch(setCategories([...categories, e.target.value]));
-  };
 
   return (
     <div className="w-full rounded-lg mb-2 p-3">
@@ -57,7 +46,9 @@ const ProdCategory = () => {
               id="demo-multiple-chip"
               inputProps={{ "aria-label": "Without label" }}
               value={categories[0] || ""}
-              onChange={handleFirstCategoryChange}
+              onChange={(e) =>
+                updateProductField(dispatch, "categories", [e.target.value])
+              }
               input={<OutlinedInput id="select-multiple-chip" />}
               className="h-[40px] w-full cursor-pointer"
               MenuProps={{
@@ -77,7 +68,7 @@ const ProdCategory = () => {
                 </Box>
               )}
             >
-              {firstCategories.map((item) => (
+              {mainCategories.map((item) => (
                 <MenuItem key={item.id} value={item}>
                   {item?.name}
                 </MenuItem>
@@ -92,18 +83,23 @@ const ProdCategory = () => {
             {"'s"} categories
           </p>
           <FormControl className="w-full relative">
-            {secondCategories?.length === 0 && (
+            {subCategories?.length === 0 && (
               <div className="absolute z-100 cursor-not-allowed top-0 right-0 left-0 bottom-0 flex items-center justify-center bg-slate-100 text-sm font-light text-gray-300">
                 No sub-category
               </div>
             )}
             <Select
-              disabled={secondCategories?.length === 0}
+              disabled={subCategories?.length === 0}
               displayEmpty
               id="demo-multiple-chip"
               inputProps={{ "aria-label": "Without label" }}
               value={categories[1] || ""}
-              onChange={handleSecondCategoryChange}
+              onChange={(e) =>
+                updateProductField(dispatch, "categories", [
+                  ...categories,
+                  e.target.value,
+                ])
+              }
               input={<OutlinedInput id="select-multiple-chip" />}
               className="h-[40px] w-full cursor-pointer"
               MenuProps={{
@@ -122,7 +118,7 @@ const ProdCategory = () => {
                 </Box>
               )}
             >
-              {secondCategories?.map((item) => (
+              {subCategories?.map((item) => (
                 <MenuItem key={item.id} value={item}>
                   {item?.name}
                 </MenuItem>

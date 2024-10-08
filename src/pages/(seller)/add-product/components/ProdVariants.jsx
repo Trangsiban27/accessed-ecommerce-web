@@ -9,23 +9,22 @@ import {
   InputBase,
   Alert,
 } from "@mui/material";
+
 import {
-  addVariantValue,
-  removeVariantValue,
-  setInitialVariants,
-  setPrimaryVariantType,
-  generateVariantOptionsTable,
-  setVariantImages,
-  addNewVariantImages,
-  removeVariantImage,
-} from "../../../../store/slices/VariantSlice";
+  addProductVariantValue,
+  initialProductVariantsByCategory,
+  initialProductVariantImages,
+  removeProductVariantValue,
+  updatePrimaryVariantType,
+  removeProductVariantImage,
+  addProductVariantImage,
+} from "../../../../servicea/variantsService";
+import { PlusOne } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { PRODUCT_VARIANTS } from "../../../../constants/constant_variants";
-import { PlusOne } from "@mui/icons-material";
-import PropTypes from "prop-types";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import PropTypes from "prop-types";
 
 const VariantOption = ({ type, values }) => {
   const dispatch = useDispatch();
@@ -36,54 +35,36 @@ const VariantOption = ({ type, values }) => {
     (state) => state.variants.primaryVariantType
   );
 
-  useEffect(() => {
-    if (type === primaryVariantType)
-      dispatch(
-        setVariantImages(
-          values.map((item) => ({
-            type,
-            value: item,
-            images: [],
-          }))
-        )
-      );
-  }, [dispatch, primaryVariantType, values, type]);
-
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  };
-
   const handleInputKeyDown = (event) => {
     if (
       (event.key === "Enter" || event.key === ",") &&
       inputValue.trim() !== ""
     ) {
       event.preventDefault();
-      if (values?.includes(inputValue.trim())) {
-        return;
-      }
-      dispatch(addVariantValue({ type, value: inputValue.trim() }));
+      if (values?.includes(inputValue.trim())) return;
+      addProductVariantValue(dispatch, type, inputValue);
       setInputValue("");
-    }
-
-    if (
+    } else if (
       event.key === "Backspace" &&
       inputValue.trim() === "" &&
       values?.length > 0
     ) {
-      dispatch(removeVariantValue({ type, value: values[values.length - 1] }));
+      removeProductVariantValue(dispatch, type, values[values.length - 1]);
       setInputValue("");
     }
   };
 
   const handleInputBlur = () => {
     if (inputValue.trim() === "") return;
-    if (values?.includes(inputValue.trim())) {
-      return;
-    }
-    dispatch(addVariantValue({ type, value: inputValue.trim() }));
+    if (values?.includes(inputValue.trim())) return;
+    addProductVariantValue(dispatch, type, inputValue);
     setInputValue("");
   };
+
+  useEffect(() => {
+    if (type === primaryVariantType)
+      initialProductVariantImages(dispatch, values);
+  }, [dispatch, primaryVariantType, values, type]);
 
   return (
     <Box className="variant-option">
@@ -92,8 +73,7 @@ const VariantOption = ({ type, values }) => {
           <Checkbox
             checked={primaryVariantType === type}
             onChange={() => {
-              dispatch(setPrimaryVariantType(type));
-              dispatch(generateVariantOptionsTable());
+              updatePrimaryVariantType(dispatch, type);
             }}
             className="hover:bg-blue-50"
           />
@@ -128,16 +108,14 @@ const VariantOption = ({ type, values }) => {
               label={chip}
               size="small"
               className="px-1 bg-blue-50 hover:bg-blue-100"
-              onDelete={() =>
-                dispatch(removeVariantValue({ type, value: chip }))
-              }
+              onDelete={() => removeProductVariantValue(dispatch, type, chip)}
             />
           ))}
           <TextField
             size="small"
             variant="standard"
             value={inputValue}
-            onChange={handleInputChange}
+            onChange={(event) => setInputValue(event.target.value)}
             onKeyDown={handleInputKeyDown}
             onBlur={handleInputBlur}
             className="flex-grow min-w-[50px] mt-1"
@@ -192,12 +170,7 @@ const VariantOption = ({ type, values }) => {
                       <button
                         className="absolute -top-3 -right-3 w-6 h-6 flex items-center justify-center bg-gray-500 rounded-full cursor-pointer hover:bg-gray-500/60"
                         onClick={() => {
-                          dispatch(
-                            removeVariantImage({
-                              value: item.value,
-                              remove_image: url,
-                            })
-                          );
+                          removeProductVariantImage(dispatch, item.value, url);
                         }}
                       >
                         <span className="text-white w-6 h-6 rounded-full">
@@ -218,13 +191,10 @@ const VariantOption = ({ type, values }) => {
                       multiple
                       onChange={(e) => {
                         const files = Array.from(e.target.files);
-                        dispatch(
-                          addNewVariantImages({
-                            value: item.value,
-                            new_images: files.map((file) =>
-                              URL.createObjectURL(file)
-                            ),
-                          })
+                        addProductVariantImage(
+                          dispatch,
+                          item.value,
+                          files.map((file) => URL.createObjectURL(file))
                         );
                       }}
                     />
@@ -249,20 +219,7 @@ const ProdVariants = () => {
   const categories = useSelector((state) => state.product.categories);
 
   useEffect(() => {
-    const primaryCategory =
-      categories[1]?.name?.toUpperCase() ||
-      categories[0]?.name?.toUpperCase() ||
-      "IPHONE";
-
-    const productVariant = PRODUCT_VARIANTS.find(
-      (item) => item.name.toUpperCase() === primaryCategory
-    );
-
-    if (productVariant?.default_variants) {
-      dispatch(setInitialVariants(productVariant.default_variants));
-      dispatch(setPrimaryVariantType(productVariant.default_variants[0].type));
-      // dispatch(generateVariantOptionsTable());
-    }
+    initialProductVariantsByCategory(dispatch, categories);
   }, [categories, dispatch]);
 
   if (!hasVariants) return null;

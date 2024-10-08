@@ -7,7 +7,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { setProductField } from "../../../../store/slices/productSlice";
+import { updateProductField } from "../../../../servicea/productService";
 
 const ProdPackages = () => {
   const dispatch = useDispatch();
@@ -16,14 +16,6 @@ const ProdPackages = () => {
   const height = useSelector((state) => state.product.height);
   const breadth = useSelector((state) => state.product.breadth);
   const weightUnit = useSelector((state) => state.product.weightUnit);
-
-  const handleDimensionChange = (dimension, value) => {
-    dispatch(setProductField({ field: dimension, value }));
-  };
-
-  const handleWeightUnitChange = (e) => {
-    dispatch(setProductField({ field: "weightUnit", value: e.target.value }));
-  };
 
   return (
     <div className="w-full rounded-lg mb-2 p-3">
@@ -41,9 +33,7 @@ const ProdPackages = () => {
               className="h-[40px]"
               value={weight}
               onChange={(e) =>
-                dispatch(
-                  setProductField({ field: "weight", value: e.target.value })
-                )
+                updateProductField(dispatch, "weight", e.target.value)
               }
             />
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
@@ -51,7 +41,9 @@ const ProdPackages = () => {
               size="small"
               className="outline-none"
               value={weightUnit || "Kg"}
-              onChange={handleWeightUnitChange}
+              onChange={(e) =>
+                updateProductField(dispatch, "weightUnit", e.target.value)
+              }
               sx={{
                 "& .MuiOutlinedInput-notchedOutline": {
                   border: "none",
@@ -92,7 +84,9 @@ const ProdPackages = () => {
                       ? breadth
                       : height
                   }
-                  onChange={(e) => handleDimensionChange(dim, e.target.value)}
+                  onChange={(e) =>
+                    updateProductField(dispatch, dim, e.target.value)
+                  }
                 />
               </div>
             ))}

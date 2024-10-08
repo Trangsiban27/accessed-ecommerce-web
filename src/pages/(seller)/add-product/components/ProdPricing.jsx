@@ -1,16 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import { TextField, InputAdornment, Box } from "@mui/material";
-import { setProductField } from "../../../../store/slices/productSlice";
+import { updateProductField } from "../../../../servicea/productService";
 
 const ProdPricing = () => {
   const dispatch = useDispatch();
+  const hasVariants = useSelector((state) => state.product.hasVariants);
   const pricing = useSelector((state) => ({
     originalPrice: state.product.originalPrice,
     discountedPrice: state.product.discountedPrice,
     sellingPrice: state.product.sellingPrice,
   }));
 
-  const hasVariants = useSelector((state) => state.product.hasVariants);
   if (hasVariants) return <></>;
 
   return (
@@ -51,18 +51,15 @@ const ProdPricing = () => {
                     ? pricing.originalPrice
                     : pricing.discountedPrice
                 }
-                onChange={(e) => {
-                  const value = e.target.value;
-                  dispatch(
-                    setProductField({
-                      field:
-                        label === "originalPrice"
-                          ? "originalPrice"
-                          : "discountedPrice",
-                      value,
-                    })
-                  );
-                }}
+                onChange={(e) =>
+                  updateProductField(
+                    dispatch,
+                    label === "originalPrice"
+                      ? "originalPrice"
+                      : "discountedPrice",
+                    e.target.value
+                  )
+                }
               />
             </div>
           ))}
@@ -90,15 +87,9 @@ const ProdPricing = () => {
             placeholder="00.00"
             className="w-full rounded-md"
             value={pricing.sellingPrice}
-            onChange={(e) => {
-              const value = e.target.value;
-              dispatch(
-                setProductField({
-                  field: "sellingPrice",
-                  value,
-                })
-              );
-            }}
+            onChange={(e) =>
+              updateProductField(dispatch, "sellingPrice", e.target.value)
+            }
           />
         </div>
       </div>

@@ -1,19 +1,15 @@
 import { TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { setProductField } from "../../../../store/slices/productSlice";
+import { updateProductField } from "../../../../servicea/productService";
 
 const ProdInventory = () => {
   const dispatch = useDispatch();
+  const sku = useSelector((state) => state.product.sku);
+  const hasVariants = useSelector((state) => state.product.hasVariants);
   const quantityAvailable = useSelector(
     (state) => state.product.quantityAvailable
   );
-  const sku = useSelector((state) => state.product.sku);
 
-  function updateField(field, value) {
-    dispatch(setProductField({ field, value }));
-  }
-
-  const hasVariants = useSelector((state) => state.product.hasVariants);
   if (hasVariants) return <></>;
 
   return (
@@ -41,7 +37,11 @@ const ProdInventory = () => {
                 }
               }}
               onChange={(e) =>
-                updateField("quantityAvailable", Number(e.target.value) || null)
+                updateProductField(
+                  dispatch,
+                  "quantityAvailable",
+                  Number(e.target.value)
+                )
               }
             />
           </div>
@@ -55,7 +55,9 @@ const ProdInventory = () => {
               required
               size="small"
               value={sku}
-              onChange={(e) => updateField("sku", e.target.value || "")}
+              onChange={(e) =>
+                updateProductField(dispatch, "sku", e.target.value || "")
+              }
             />
           </div>
         </div>
