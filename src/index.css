@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --mantine-color-scheme: light; /* hoặc dark, tùy vào mục đích */
+  }
   body {
     /*nt base */
     width: 100%;
@@ -11,6 +14,7 @@
     justify-content: center;
   }
   #root {
+    color-scheme: var(--mantine-color-scheme);
     width: 100%;
     max-width: 90%;
     margin: 0;
