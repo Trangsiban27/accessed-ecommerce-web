@@ -40,7 +40,6 @@ export const constant_product_detail = {
         "https://cdn2.cellphones.com.vn/x/media/catalog/product/s/a/samsung-galaxy-z-fold-6-xanh_7_.png",
         "https://cdn2.cellphones.com.vn/x/media/catalog/product/s/a/samsung-galaxy-z-fold-6-xanh_3_.png",
         "https://cdn2.cellphones.com.vn/x/media/catalog/product/s/a/samsung-galaxy-z-fold-6-xanh_1_.png",
-        "https://plus.unsplash.com/premium_photo-1674777843441-04dd6cd672ee?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fG1hbiUyMGZhc2hpb258ZW58MHx8MHx8fDA%3D",
       ],
       variantOptions: [
         {

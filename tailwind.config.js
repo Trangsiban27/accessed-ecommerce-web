@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         subTitle: "#b9b7b8",
+        like: "#f9669a",
       },
     },
   },
