@@ -9,8 +9,13 @@ const ProductList = () => {
 
   const [products, setProducts] = useState([]);
   const [isAddingProduct, setIsAddingProduct] = useState(false);
+  const [visibleProducts, setVisibleProducts] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
   console.log("products", products);
+
+  const handleShowMore = () => {
+    setVisibleProducts((prev) => prev + 5);
+  };
 
   // const hasFetched = useRef(false); // Sử dụng useRef để ngăn chặn việc gọi API nhiều lần
 
@@ -56,11 +61,16 @@ const ProductList = () => {
         {isLoading ? (
           <p>Loading...</p>
         ) : (
-          products.map((item) => (
-            <ProductListCard key={item.id} product={item} />
-          ))
+          products
+            .slice(0, visibleProducts)
+            .map((item) => <ProductListCard key={item.id} product={item} />)
         )}
       </List>
+      {visibleProducts < products.length && (
+        <Button onClick={handleShowMore} variant="outlined" className="mt-4">
+          Xem thêm
+        </Button>
+      )}
     </div>
   );
 };
