@@ -38,7 +38,9 @@ const ProdVariantTable = () => {
 
   useEffect(() => {
     generateProductVariantOptionsTable(dispatch);
-  }, [dispatch]);
+  }, [dispatch, variants]);
+
+  console.log(JSON.stringify(variants, null, 2));
 
   if (!hasVariants) return <></>;
 

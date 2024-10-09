@@ -6,6 +6,7 @@ import {
   addVariantValue,
   generateVariantOptionsTable,
   removeVariantImage,
+  removeVariantValue,
   setInitialVariants,
   setPrimaryVariantType,
   setVariantImages,
@@ -18,7 +19,7 @@ export function addProductVariantValue(dispatch, type, value) {
 }
 
 export function removeProductVariantValue(dispatch, type, value) {
-  return dispatch(addVariantValue({ type, value: value.trim() }));
+  return dispatch(removeVariantValue({ type, value: value.trim() }));
 }
 
 export function generateProductVariantOptionsTable(dispatch) {

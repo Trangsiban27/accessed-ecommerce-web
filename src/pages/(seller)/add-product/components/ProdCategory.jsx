@@ -26,9 +26,11 @@ const ProdCategory = () => {
 
   useEffect(() => {
     if (!categories[0]) return;
-    const subCategories = getSubCategoriesById(categories[0]);
+    const subCategories = getSubCategoriesById(categories[0].id);
     setSubCategories(subCategories);
   }, [categories]);
+
+  console.log(JSON.stringify(categories, null, 2));
 
   return (
     <div className="w-full rounded-lg mb-2 p-3">
@@ -96,7 +98,7 @@ const ProdCategory = () => {
               value={categories[1] || ""}
               onChange={(e) =>
                 updateProductField(dispatch, "categories", [
-                  ...categories,
+                  categories[0],
                   e.target.value,
                 ])
               }

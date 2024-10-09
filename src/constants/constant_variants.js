@@ -27,7 +27,6 @@ export const PRODUCT_VARIANTS = [
       {
         id: 1,
         type: "storage",
-        unit: "GB",
         values: ["64", "128", "256"],
       },
     ],
@@ -60,13 +59,11 @@ export const PRODUCT_VARIANTS = [
       {
         id: 1,
         type: "ram",
-        unit: "GB",
         values: ["4", "8", "16"],
       },
       {
         id: 2,
         type: "storage",
-        unit: "inches",
         values: ["16", "32", "64"],
       },
     ],
@@ -83,7 +80,6 @@ export const PRODUCT_VARIANTS = [
       {
         id: 1,
         type: "ram",
-        unit: "GB",
         values: ["64", "128", "256"],
       },
     ],

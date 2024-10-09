@@ -31,6 +31,8 @@ const VariantOption = ({ type, values }) => {
   const [show, setShow] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const variantImages = useSelector((state) => state.variants.variantImages);
+  const variants = useSelector((state) => state.variants.variants);
+  const categories = useSelector((state) => state.product.categories);
   const primaryVariantType = useSelector(
     (state) => state.variants.primaryVariantType
   );
@@ -64,7 +66,9 @@ const VariantOption = ({ type, values }) => {
   useEffect(() => {
     if (type === primaryVariantType)
       initialProductVariantImages(dispatch, values);
-  }, [dispatch, primaryVariantType, values, type]);
+  }, [dispatch, primaryVariantType, values, type, variants]);
+
+  console.log(categories);
 
   return (
     <Box className="variant-option">
@@ -122,7 +126,6 @@ const VariantOption = ({ type, values }) => {
             placeholder={values?.length === 0 ? "Enter values" : ""}
             InputProps={{
               disableUnderline: true,
-              className: "px-2",
             }}
           />
         </Box>
