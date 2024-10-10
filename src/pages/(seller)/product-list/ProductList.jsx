@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Button, List, Typography } from "@mui/material";
 // import CreateProduct from "./createProduct/CreateProduct";
-import ProductListCard from "../../../components/product/ProductListCard";
+import ProductListCard from "./components/ProductListCard";
 
 const ProductList = () => {
   // const width = useRef(window.innerWidth).current;

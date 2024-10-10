@@ -1,10 +1,5 @@
 import { ListItem, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-// import ListItem from "@mui/material/ListItem";
-// import Divider from "@mui/material/Divider";
-// import ListItemText from "@mui/material/ListItemText";
-// import ListItemAvatar from "@mui/material/ListItemAvatar";
-// import Avatar from "@mui/material/Avatar";
 
 const ProductListCard = ({ product }) => {
   const { id, title, category, price, quantity, image } = product;

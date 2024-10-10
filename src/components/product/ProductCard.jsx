@@ -1,31 +1,52 @@
-const ProductCard = () => {
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import StarIcon from "@mui/icons-material/Star";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { Typography } from "@mui/material";
+
+const ProductCard = ({ product }) => {
+  const { id, title, category, price, sold, image, rating } = product;
+
+  const [favorites, setFavorites] = useState({});
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/products/${id}`);
+  };
+
+  const handleAddFavorite = (productId) => {
+    setFavorites((prevFavorites) => ({
+      ...prevFavorites,
+      [productId]: !prevFavorites[productId],
+    }));
+  };
+
+  const handleAddToCart = (productName) => {
+    alert(`${productName} added to cart!`);
+  };
+
   return (
-    <div
-      className="bg-white shadow-lg hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 rounded-xl p-3 my-5 mx-5 flex flex-col"
-      key={product.id}
-    >
-      <div
-        onClick={() => {
-          window.location.href = `/ProductDetail/${product.id}`;
-        }}
-        className="cursor-pointer"
-      >
+    <div>
+      <div onClick={handleClick} className="cursor-pointer">
         <div
-          className={`rounded-[10px] h-[300px] flex justify-center items-center product-id-${product.id} relative`}
+          className={`rounded-[10px] h-[300px] flex justify-center items-center product-id-${id} relative`}
         >
           <img
-            src={product.image}
-            alt={product.title}
+            src={image}
+            alt={title}
             className="max-w-[240px] max-h-[300px] bg-[#efefef]"
           />
           <button
             onClick={(e) => {
               e.stopPropagation();
-              handleAddFavorite(product.id);
+              handleAddFavorite(id);
             }}
             className="absolute top-3 left-3 rounded-full bg-white p-2"
           >
-            {favorites[product.id] ? (
+            {favorites[id] ? (
               <FavoriteIcon sx={{ color: "rgb(247 74 73)" }} />
             ) : (
               <FavoriteBorderIcon
@@ -37,7 +58,7 @@ const ProductCard = () => {
       </div>
 
       <div className="flex-grow">
-        <h3
+        {/* <h3
           className="font-bold text-xl mt-3"
           style={{
             display: "-webkit-box",
@@ -47,34 +68,36 @@ const ProductCard = () => {
             textOverflow: "ellipsis",
           }}
         >
-          {product.title}
-        </h3>
-        <p className="text-sm text-zinc-400 mt-2">{product.category}</p>
+          {title}
+        </h3> */}
+        <Typography
+          variant="h6"
+          sx={{ fontWeight: "600", marginTop: 3 }}
+          className=" truncate"
+        >
+          {title}
+        </Typography>
+
+        <Typography variant="caption" gutterBottom className="text-zinc-400">
+          {category}
+        </Typography>
+
         <div className="flex justify-between">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="flex justify-between gap-2 mt-2">
-                <div className="flex justify-center items-center gap-1">
-                  <StarIcon style={{ color: "#FF9A27" }} />
-                  {/* <p>{product.productVariants.avgRating?.rate || "N/A"}</p> */}
-                  <p>
-                    {product.productVariants &&
-                    product.productVariants.avgRating
-                      ? product.productVariants.avgRating.rate
-                      : "N/A"}
-                  </p>
-                </div>
-                <p className="leading-snug">|</p>
-                <p className="bg-slate-300 rounded-md px-2">
-                  {product.sold || "N/A"} Sold
-                </p>
-              </div>
-              <div className="flex gap-4 mt-2">
-                <p className="line-through text-zinc-400">{product.price}</p>
-                <p className="price font-bold">{product.price}</p>
-              </div>
+          <div>
+            <div className="flex justify-between gap-2 mt-2">
+              <StarIcon style={{ color: "#FF9A27" }} />
+              <p>{rating ? rating.rate : "N/A"}</p>
+              <p className="leading-snug">|</p>
+              <p className="bg-slate-300 rounded-md px-2">
+                {sold || "N/A"} Sold
+              </p>
+            </div>
+            <div className="flex gap-4 mt-2">
+              <p className="line-through text-zinc-400">{price}</p>
+              <p className="price font-bold">{price}</p>
             </div>
           </div>
+
           <div
             className="add-to-cart cursor-pointer"
             onClick={() => handleAddToCart(product.title)}

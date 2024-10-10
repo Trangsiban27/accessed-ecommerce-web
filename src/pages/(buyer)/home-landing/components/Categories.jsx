@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as MaterialIcons from "@mui/icons-material"; // Import tất cả các icon
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline"; // Icon mặc định
 import icon from "../../../../assets/smartphone-svgrepo-com.png";
+import { Typography } from "@mui/material";
 
 function Categories() {
   const [categories, setCategories] = useState([]); // Lưu trữ danh sách danh mục
@@ -70,56 +71,26 @@ function Categories() {
 
   return (
     <div className="my-6">
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "20px",
-        }}
-      >
-        <h2 className="text-3xl font-bold mb-3 text-start">
+      <div className="flex justify-between items-center mb-5">
+        <Typography variant="h5" sx={{ fontWeight: "600" }}>
           Our Top Categories
-        </h2>
-        <button
-          style={{
-            textDecoration: "none",
-            fontSize: "16px",
-            fontWeight: "500",
-          }}
-        >
-          See All
-        </button>
+        </Typography>
+        <button className="no-underline text-base font-medium">See All</button>
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-        }}
-      >
+      <div className="flex justify-between flex-wrap">
         {/* {categories.map((cate) => ( */}
         <div
-          // key={cate.id}
           className="flex flex-col justify-center items-center"
           style={{ margin: "10px" }}
         >
-          <div
-            className="bg-slate-200 rounded-full flex justify-center items-center text-xl cursor-pointer p-3"
-            style={{
-              textAlign: "center",
-              marginBottom: "10px",
-              width: "80px",
-              height: "80px",
-            }}
-          >
+          <div className="bg-slate-200 rounded-full flex justify-center items-center text-xl cursor-pointer p-3 mb-2 w-20 h-20">
             {/* {getIconComponent(cate.icon)} */}
             <img src={icon} alt="" />
           </div>
           {/* <div>{cate.name}</div> */}
           Smartphone
-          {/* {console.log("cate name: " + cate.name)} */}
         </div>
+
         {/* ))} */}
       </div>
     </div>
