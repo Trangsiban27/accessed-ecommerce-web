@@ -1,5 +1,8 @@
+import { useSelector } from "react-redux";
 import ProductImage from "./components/product-image/ProductImage";
 import ProductInfor from "./components/product-infor/ProductInfor";
+import ReviewModal from "./components/review/components/ReviewModal";
+import AddReviewModal from "./components/review/components/AddReviewModal";
 
 const OPTIONS = { loop: true };
 
@@ -23,10 +26,13 @@ const ImageData = [
 ];
 
 const ProductDetail = () => {
+  const { isShowModal, isShowAddModal } = useSelector((state) => state.review);
   return (
     <div className="w-[100%] mt-10 flex gap-x-8 mx-auto">
       <ProductImage slides={ImageData} options={OPTIONS}></ProductImage>
       <ProductInfor></ProductInfor>
+      {isShowModal && <ReviewModal></ReviewModal>}
+      {isShowAddModal && <AddReviewModal></AddReviewModal>}
     </div>
   );
 };
