@@ -1,8 +1,16 @@
 import { Link } from "react-router-dom";
 import StarIcon from "@mui/icons-material/Star";
 import { Button } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { setIsShowModal } from "../../../../../store/slices/ReviewSlice";
 
 const Review = () => {
+  const dispatch = useDispatch();
+
+  const handleShowModal = () => {
+    dispatch(setIsShowModal(true));
+  };
+
   return (
     <div className="w-full p-4 mt-10 bg-white rounded-lg shadow-md">
       <div className="flex items-center justify-between">
@@ -26,6 +34,7 @@ const Review = () => {
           color: "#000",
           borderRadius: "6px",
         }}
+        onClick={handleShowModal}
       >
         Show all
       </Button>
