@@ -3,7 +3,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import usePrevNextButtons from "../../../../../../hooks/usePrevNextButtons";
 
-const ImageMain = ({ emblaMainRef, slides, emblaApi }) => {
+const ImageMain = ({ emblaMainRef, slides = [], emblaApi }) => {
   const {
     prevBtnDisabled,
     nextBtnDisabled,
@@ -14,11 +14,11 @@ const ImageMain = ({ emblaMainRef, slides, emblaApi }) => {
   return (
     <div className="relative gallery__viewport" ref={emblaMainRef}>
       <div className="gallery__container">
-        {slides.map((slide, index) => (
+        {slides?.map((slide, index) => (
           <div className="gallery__slide" key={index}>
             <img
-              className="object-cover w-full h-full"
-              src={slide.url}
+              className="object-contain w-full h-full"
+              src={slide}
               alt="product image"
             />
           </div>
