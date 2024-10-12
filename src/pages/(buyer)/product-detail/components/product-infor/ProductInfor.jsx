@@ -5,9 +5,10 @@ import ProductInforHead from "./components/ProductInforHead";
 import ProductSpecification from "./components/ProductSpecification";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import PropTypes from "prop-types";
 import { useState } from "react";
 
-const ProductInfor = () => {
+const ProductInfor = ({ productDetail = {} }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const handleFavorite = () => {
@@ -16,11 +17,19 @@ const ProductInfor = () => {
 
   return (
     <div className="w-2/5 h-[500px] overflow-y-scroll px-4 pb-10">
-      <ProductInforHead></ProductInforHead>
+      <ProductInforHead
+        name={productDetail?.name}
+        brandName={productDetail?.brandName}
+      ></ProductInforHead>
 
-      <ProductVariant></ProductVariant>
+      <ProductVariant
+        options={productDetail?.options}
+        primaryVariantType={productDetail?.primaryVariantType}
+      ></ProductVariant>
 
-      <ProductSpecification></ProductSpecification>
+      <ProductSpecification
+        specifications={productDetail?.productSpecifications}
+      ></ProductSpecification>
 
       <Review></Review>
 
@@ -38,6 +47,7 @@ const ProductInfor = () => {
         >
           Add to cart
         </Button>
+
         <Button
           variant="outlined"
           sx={{
@@ -58,6 +68,10 @@ const ProductInfor = () => {
       </div>
     </div>
   );
+};
+
+ProductInfor.propTypes = {
+  productDetail: PropTypes.object.isRequired,
 };
 
 export default ProductInfor;

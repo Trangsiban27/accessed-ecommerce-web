@@ -15,7 +15,7 @@ const GalleryItem = (props) => {
         type="button"
         className="embla-thumbs__slide__number"
       >
-        <img src={slide.url} alt="" />
+        <img src={slide} alt="" />
       </button>
     </div>
   );

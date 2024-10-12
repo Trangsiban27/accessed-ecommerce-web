@@ -1,0 +1,189 @@
+{
+  "id": "66fd44851be5d72093fdd67e",
+  "name": "Samsung Galaxy S24 hdtjrdut xyz",
+  "discountedPrice": 300.13,
+  "sellingPrice": 500.14,
+  "sumSoldQuantity": 131610,
+  "quantityAvailable": 500,
+  "brandName": "SamSung",
+  "description": "Samsung Galaxy S24 Ultra is the smartest Galaxy phone ever, with the power to connect, the power to create, and the power to entertain, all powered by Galaxy AI. The all-new design from the classy Titan frame, super camera with resolution up to 200MP and Snapdragon 8 Gen 3 for Galaxy processor will bring you an unprecedented exciting experience.f",
+  "productDimension": {
+    "length": 162.3,
+    "width": 79.0,
+    "breadth": 8.6,
+    "weight": 232.0,
+    "unitWeight": "kg",
+    "packageUnit": "inch"
+  },
+  "sellingType": "ONLINE",
+  "countOfReviews": 0,
+  "categories": [
+    {
+      "id": "66f6f3da4c4068332bc28c41",
+      "name": "SamSung",
+      "isFeatured": false
+    },
+    {
+      "id": "66ed97214463802942e6cfa9",
+      "name": "Phone",
+      "isFeatured": false
+    }
+  ],
+  "images": [
+    "https://firebasestorage.googleapis.com/v0/b/ecom-accessed.appspot.com/o/products%2F1727460983421-71WcjsOVOmL._AC_SX679_-removebg-preview.png?alt=media",
+    "https://firebasestorage.googleapis.com/v0/b/ecom-accessed.appspot.com/o/products%2F1727461918533-71ZoDT7a2wL._AC_SX679_-removebg-preview.png?alt=media",
+    "https://firebasestorage.googleapis.com/v0/b/ecom-accessed.appspot.com/o/products%2F1727460983421-71WcjsOVOmL._AC_SX679_-removebg-preview.png?alt=media"
+  ],
+  "primaryImage": "https://firebasestorage.googleapis.com/v0/b/ecom-accessed.appspot.com/o/products%2F1727460983421-71WcjsOVOmL._AC_SX679_-removebg-preview.png?alt=media",
+  "primaryVariantType": "COLOR",
+  "productVariants": [
+    {
+      "id": "66fd44851be5d72093fdd67b",
+      "quantityAvailable": 230,
+      "sku": "OKLA_SKU-1",
+      "soldQuantity": 120,
+      "sellingPrice": 500.14,
+      "originalPrice": 150.12,
+      "discountedPrice": 300.13,
+      "productId": null,
+      "images": [
+        "https://firebasestorage.googleapis.com/v0/b/ecom-accessed.appspot.com/o/products%2F1727461588626-71qeTVe5d1L._AC_SX679_-removebg-preview.png?alt=media"
+      ],
+      "variantOptions": [
+        {
+          "productType": "COLOR",
+          "valueName": "Titanium Violet"
+        },
+        {
+          "productType": "RAM",
+          "valueName": "16GB"
+        },
+        {
+          "productType": "STORAGE",
+          "valueName": "256GB"
+        }
+      ]
+    },
+    {
+      "id": "66fd44851be5d72093fdd67c",
+      "quantityAvailable": 200,
+      "sku": "OKLA_SKU-2",
+      "soldQuantity": 1000,
+      "sellingPrice": 5000.14,
+      "originalPrice": 150.12,
+      "discountedPrice": 4000.13,
+      "productId": null,
+      "images": [
+        "https://firebasestorage.googleapis.com/v0/b/ecom-accessed.appspot.com/o/products%2F1727461918533-71ZoDT7a2wL._AC_SX679_-removebg-preview.png?alt=media",
+        "https://firebasestorage.googleapis.com/v0/b/ecom-accessed.appspot.com/o/products%2F1727460983421-71WcjsOVOmL._AC_SX679_-removebg-preview.png?alt=media"
+      ],
+      "variantOptions": [
+        {
+          "productType": "COLOR",
+          "valueName": "Titanium Yellow"
+        },
+        {
+          "productType": "RAM",
+          "valueName": "8GB"
+        },
+        {
+          "productType": "STORAGE",
+          "valueName": "521GB"
+        }
+      ]
+    },
+    {
+      "id": "66fd44851be5d72093fdd67d",
+      "quantityAvailable": 300,
+      "sku": "OKLA_SKU-3",
+      "soldQuantity": 500,
+      "sellingPrice": 1299.14,
+      "originalPrice": 150.12,
+      "discountedPrice": 1040.13,
+      "productId": null,
+      "images": [
+        "https://firebasestorage.googleapis.com/v0/b/ecom-accessed.appspot.com/o/products%2F1727461987896-71-EnPs_uQL._AC_SX679_-removebg-preview.png?alt=media"
+      ],
+      "variantOptions": [
+        {
+          "productType": "COLOR",
+          "valueName": "Titanium Gray"
+        },
+        {
+          "productType": "RAM",
+          "valueName": "12GB"
+        },
+        {
+          "productType": "STORAGE",
+          "valueName": "512GB"
+        }
+      ]
+    }
+  ],
+  "productSpecifications": [
+    {
+      "name": "COLOR",
+      "value": "Titanium Black"
+    },
+    {
+      "name": "RAM",
+      "value": "12GB"
+    },
+    {
+      "name": "STORAGE",
+      "value": "256GB"
+    },
+    {
+      "name": "BATTERY",
+      "value": "5000mAh"
+    },
+    {
+      "name": "DISPLAY",
+      "value": "6.8 inches"
+    },
+    {
+      "name": "OS",
+      "value": "Android 14"
+    },
+    {
+      "name": "NETWORK",
+      "value": "5G"
+    },
+    {
+      "name": "SIZE",
+      "value": "79 x 162.3 x 8.6 mm"
+    },
+    {
+      "name": "WEIGHT",
+      "value": "232g"
+    },
+    {
+      "name": "CPU",
+      "value": "1 x 3.39 GHz + 2 x 3.1 GHz + 3 x 2.9 GHz + 2 x 2.2 GHz"
+    }
+  ],
+  "hasVariants": true,
+  "hasDimensions": true,
+  "hasSpecification": true,
+  "hasReviews": false,
+  "reviewOptions": [
+    {
+      "id": "66eed840bdbfe921b3240db8",
+      "type": "RECOMMENDED",
+      "value": ["YES", "NO"]
+    },
+    {
+      "id": "66eed840bdbfe921b3240db9",
+      "type": "DELIVERY",
+      "value": ["DELAY", "ONTIME"]
+    }
+  ],
+  "options": {
+    "COLOR": ["Titanium Yellow", "Titanium Violet", "Titanium Gray"],
+    "RAM": ["8GB", "16GB", "12GB"],
+    "STORAGE": ["512GB", "256GB", "521GB"]
+  },
+  "createdAt": "2024-10-02T13:03:01.929Z",
+  "updatedAt": "2024-10-02T13:03:01.929Z",
+  "sku": "PRODUCT_Z_U"
+}
