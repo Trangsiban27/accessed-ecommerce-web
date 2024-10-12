@@ -32,12 +32,12 @@ const ProductCard = ({ product }) => {
     <div>
       <div onClick={handleClick} className="cursor-pointer">
         <div
-          className={`rounded-[10px] h-[300px] flex justify-center items-center product-id-${id} relative`}
+          className={`rounded-[10px] h-[250px] flex justify-center items-center product-id-${id} relative`}
         >
           <img
             src={image}
             alt={title}
-            className="max-w-[240px] max-h-[300px] bg-[#efefef]"
+            className="max-w-[240px] max-h-[250px] bg-[#efefef] object-cover"
           />
           <button
             onClick={(e) => {
@@ -73,7 +73,7 @@ const ProductCard = ({ product }) => {
         <Typography
           variant="h6"
           sx={{ fontWeight: "600", marginTop: 3 }}
-          className=" truncate"
+          className="truncate"
         >
           {title}
         </Typography>
@@ -82,7 +82,7 @@ const ProductCard = ({ product }) => {
           {category}
         </Typography>
 
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <div>
             <div className="flex justify-between gap-2 mt-2">
               <StarIcon style={{ color: "#FF9A27" }} />
@@ -93,8 +93,8 @@ const ProductCard = ({ product }) => {
               </p>
             </div>
             <div className="flex gap-4 mt-2">
-              <p className="line-through text-zinc-400">{price}</p>
-              <p className="price font-bold">{price}</p>
+              <p className="line-through text-zinc-400">${price}</p>
+              <p className="price font-bold">${price}</p>
             </div>
           </div>
 
