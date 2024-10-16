@@ -9,6 +9,7 @@ import {
 } from "../../../store/slices/ProductDetailSlice";
 import { useEffect, useState } from "react";
 import getImagesForMatchingVariant from "./utils/getImagesForVariant";
+import ProductList from "../../../components/product/ProductList";
 
 const OPTIONS = { loop: true };
 
@@ -60,15 +61,20 @@ const ProductDetail = () => {
   console.log("imagesVariant", imagesVariant);
 
   return (
-    <div className="w-[100%] mt-10 flex gap-x-8 mx-auto">
-      <ProductImage
-        slides={imagesVariant !== null ? imagesVariant : productDetail?.images}
-        options={OPTIONS}
-      ></ProductImage>
-      <ProductInfor productDetail={productDetail}></ProductInfor>
-      {isShowModal && <ReviewModal></ReviewModal>}
-      {isShowAddModal && <AddReviewModal></AddReviewModal>}
-    </div>
+    <>
+      <div className="w-[100%] mt-10 flex gap-x-8 mx-auto">
+        <ProductImage
+          slides={
+            imagesVariant !== null ? imagesVariant : productDetail?.images
+          }
+          options={OPTIONS}
+        ></ProductImage>
+        <ProductInfor productDetail={productDetail}></ProductInfor>
+        {isShowModal && <ReviewModal></ReviewModal>}
+        {isShowAddModal && <AddReviewModal></AddReviewModal>}
+      </div>
+      <ProductList></ProductList>
+    </>
   );
 };
 

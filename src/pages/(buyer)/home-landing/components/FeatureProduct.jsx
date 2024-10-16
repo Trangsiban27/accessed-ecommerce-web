@@ -118,8 +118,8 @@ const FeatureProduct = ({ nameTitle }) => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="w-full my-6 pb-10">
-      <div className="text-3xl font-bold mb-6 text-start">Popular Product</div>
+    <div className="w-full pb-10 my-6">
+      <div className="mb-6 text-3xl font-bold text-start">Popular Product</div>
       <div className="slider-container relative mx-[-10px] py-3 text-start">
         <Slider {...settings}>
           {products.map((product) => (
@@ -129,7 +129,7 @@ const FeatureProduct = ({ nameTitle }) => {
             >
               <div
                 onClick={() => {
-                  window.location.href = `/ProductDetail/${product.id}`;
+                  window.location.href = `/${product.id}`;
                 }}
                 className="cursor-pointer"
               >
@@ -146,7 +146,7 @@ const FeatureProduct = ({ nameTitle }) => {
                       e.stopPropagation();
                       handleAddFavorite(product.id);
                     }}
-                    className="absolute top-3 left-3 rounded-full bg-white p-2"
+                    className="absolute p-2 bg-white rounded-full top-3 left-3"
                   >
                     {favorites[product.id] ? (
                       <FavoriteIcon sx={{ color: "rgb(247 74 73)" }} />
@@ -161,7 +161,7 @@ const FeatureProduct = ({ nameTitle }) => {
 
               <div className="flex-grow">
                 <h3
-                  className="font-bold text-xl mt-3"
+                  className="mt-3 text-xl font-bold"
                   style={{
                     display: "-webkit-box",
                     WebkitBoxOrient: "vertical",
@@ -172,12 +172,12 @@ const FeatureProduct = ({ nameTitle }) => {
                 >
                   {product.title}
                 </h3>
-                <p className="text-sm text-zinc-400 mt-2">{product.category}</p>
+                <p className="mt-2 text-sm text-zinc-400">{product.category}</p>
                 <div className="flex justify-between">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="flex justify-between gap-2 mt-2">
-                        <div className="flex justify-center items-center gap-1">
+                        <div className="flex items-center justify-center gap-1">
                           <StarIcon style={{ color: "#FF9A27" }} />
                           {/* <p>{product.productVariants.avgRating?.rate || "N/A"}</p> */}
                           <p>
@@ -188,7 +188,7 @@ const FeatureProduct = ({ nameTitle }) => {
                           </p>
                         </div>
                         <p className="leading-snug">|</p>
-                        <p className="bg-slate-300 rounded-md px-2">
+                        <p className="px-2 rounded-md bg-slate-300">
                           {product.sold || "N/A"} Sold
                         </p>
                       </div>
@@ -196,12 +196,12 @@ const FeatureProduct = ({ nameTitle }) => {
                         <p className="line-through text-zinc-400">
                           {product.price}
                         </p>
-                        <p className="price font-bold">{product.price}</p>
+                        <p className="font-bold price">{product.price}</p>
                       </div>
                     </div>
                   </div>
                   <div
-                    className="add-to-cart cursor-pointer"
+                    className="cursor-pointer add-to-cart"
                     onClick={() => handleAddToCart(product.title)}
                   >
                     +
