@@ -83,16 +83,22 @@ const FeaturedProduct = ({ nameTitle, productData }) => {
         {nameTitle}
       </Typography>
       <div className="slider-container relative mx-[-10px] py-3 text-start">
-        <Slider {...settings}>
-          {products.map((item) => (
-            <div
-              className="bg-white shadow-lg hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 rounded-xl p-3 my-5 flex flex-col"
-              key={item.id}
-            >
-              <ProductCard product={item}></ProductCard>
-            </div>
-          ))}
-        </Slider>
+        {products.length > 0 ? (
+          <Slider {...settings}>
+            {products.map((item) => (
+              <div
+                className="bg-white shadow-lg hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 rounded-xl p-3 my-5 flex flex-col"
+                key={item.id}
+              >
+                <ProductCard product={item}></ProductCard>
+              </div>
+            ))}
+          </Slider>
+        ) : (
+          <Typography variant="body1" className="text-center">
+            No products available
+          </Typography>
+        )}
       </div>
     </div>
   );
