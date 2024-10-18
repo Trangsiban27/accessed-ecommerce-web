@@ -3,15 +3,18 @@ import axios from "axios";
 import { Button, List, Typography } from "@mui/material";
 // import CreateProduct from "./createProduct/CreateProduct";
 import ProductListCard from "./components/ProductListCard";
+import { fetchAllProducts } from "../../../store/slices/ProductListSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProductList = () => {
   // const width = useRef(window.innerWidth).current;
+  const dispatch = useDispatch();
 
-  const [products, setProducts] = useState([]);
+  const listProducts = useSelector((state) => state.productList);
+  // const [products, setProducts] = useState([]);
   const [isAddingProduct, setIsAddingProduct] = useState(false);
   const [visibleProducts, setVisibleProducts] = useState(5);
-  const [isLoading, setIsLoading] = useState(true);
-  console.log("products", products);
+  console.log("products", listProducts);
 
   const handleShowMore = () => {
     setVisibleProducts((prev) => prev + 5);
@@ -19,22 +22,26 @@ const ProductList = () => {
 
   // const hasFetched = useRef(false); // Sử dụng useRef để ngăn chặn việc gọi API nhiều lần
 
+  // useEffect(() => {
+  // if (hasFetched.current) return; //
+  // hasFetched.current = true;
+
+  //   const getAllProducts = async () => {
+  //     try {
+  //       const response = await axios.get("https://fakestoreapi.com/products");
+  //       setProducts(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching products:", error.message);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   getAllProducts();
+  // }, []);
+
   useEffect(() => {
-    // if (hasFetched.current) return; //
-    // hasFetched.current = true;
-
-    const getAllProducts = async () => {
-      try {
-        const response = await axios.get("https://fakestoreapi.com/products");
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Error fetching products:", error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getAllProducts();
+    dispatch(fetchAllProducts());
   }, []);
 
   // if (isAddingProduct) {
@@ -58,15 +65,19 @@ const ProductList = () => {
         </Button>
       </div>
       <List className="w-4/5">
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          products
-            .slice(0, visibleProducts)
-            .map((item) => <ProductListCard key={item.id} product={item} />)
+        {listProducts.isLoading && <p>Loading...</p>}
+
+        {!listProducts.isLoading && listProducts.error && (
+          <p>Error: {listProducts.error}</p>
         )}
+
+        {!listProducts.isLoading &&
+          listProducts.productList.length > 0 &&
+          listProducts.productList
+            .slice(0, visibleProducts)
+            .map((item) => <ProductListCard key={item.id} product={item} />)}
       </List>
-      {visibleProducts < products.length && (
+      {visibleProducts < listProducts.productList.length && (
         <Button onClick={handleShowMore} variant="outlined" className="mt-4">
           Xem thêm
         </Button>

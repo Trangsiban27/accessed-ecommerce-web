@@ -7,7 +7,16 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Typography } from "@mui/material";
 
 const ProductCard = ({ product }) => {
-  const { id, title, category, price, sold, image, rating } = product;
+  const {
+    id,
+    name,
+    brandName,
+    maxSellingPrice,
+    maxDiscountedPrice,
+    sumSoldQuantity,
+    image,
+    avgRating,
+  } = product;
 
   const [favorites, setFavorites] = useState({});
 
@@ -28,6 +37,13 @@ const ProductCard = ({ product }) => {
     alert(`${productName} added to cart!`);
   };
 
+  const formatSoldQuantity = (quantity) => {
+    if (quantity >= 1000) {
+      return `${Math.floor(quantity / 1000)}K`;
+    }
+    return quantity || "N/A";
+  };
+
   return (
     <div>
       <div onClick={handleClick} className="cursor-pointer">
@@ -36,8 +52,8 @@ const ProductCard = ({ product }) => {
         >
           <img
             src={image}
-            alt={title}
-            className="max-w-[240px] max-h-[250px] bg-[#efefef] object-cover"
+            alt={name}
+            className="max-w-[200px] max-h-[200px] bg-[#efefef] object-cover"
           />
           <button
             onClick={(e) => {
@@ -58,49 +74,37 @@ const ProductCard = ({ product }) => {
       </div>
 
       <div className="flex-grow">
-        {/* <h3
-          className="mt-3 text-xl font-bold"
-          style={{
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            WebkitLineClamp: 1,
-            textOverflow: "ellipsis",
-          }}
-        >
-          {title}
-        </h3> */}
         <Typography
           variant="h6"
-          sx={{ fontWeight: "600", marginTop: 3 }}
+          sx={{ fontWeight: "600", marginTop: 1 }}
           className="truncate"
         >
-          {title}
+          {name}
         </Typography>
 
         <Typography variant="caption" gutterBottom className="text-zinc-400">
-          {category}
+          {brandName || "N/A"}
         </Typography>
 
         <div className="flex items-center justify-between">
           <div>
             <div className="flex justify-between gap-2 mt-2">
               <StarIcon style={{ color: "#FF9A27" }} />
-              <p>{rating ? rating.rate : "N/A"}</p>
+              <p>{avgRating ? avgRating.rate : "N/A"}</p>
               <p className="leading-snug">|</p>
-              <p className="px-2 rounded-md bg-slate-300">
-                {sold || "N/A"} Sold
+              <p className="px-2 rounded-md bg-slate-300 text-nowrap	">
+                {formatSoldQuantity(sumSoldQuantity)} Sold
               </p>
             </div>
             <div className="flex gap-4 mt-2">
-              <p className="line-through text-zinc-400">${price}</p>
-              <p className="font-bold price">${price}</p>
+              <p className="line-through text-zinc-400">${maxSellingPrice}</p>
+              <p className="font-bold price">${maxDiscountedPrice}</p>
             </div>
           </div>
 
           <div
             className="cursor-pointer add-to-cart"
-            onClick={() => handleAddToCart(product.title)}
+            onClick={() => handleAddToCart(name)}
           >
             +
           </div>
