@@ -4,6 +4,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import constant_product_detail from "../../constants/constant_product_detail.json";
+import ProductServices from "../../services/producServices";
 
 const productDetailAdapter = createEntityAdapter();
 
@@ -14,6 +15,14 @@ export const getProductDetail = createAsyncThunk(
   }
 );
 
+export const getProductSuggestions = createAsyncThunk(
+  "productDetail/getProductSuggestions",
+  async () => {
+    const response = await ProductServices.getProductSuggestions();
+    return response;
+  }
+);
+
 export const productDetailSlice = createSlice({
   name: "productDetail",
   initialState: productDetailAdapter.getInitialState({
@@ -21,6 +30,7 @@ export const productDetailSlice = createSlice({
     error: null,
     message: null,
     loading: false,
+    productSuggestions: null,
     selectedPrimaryVariant: null,
     imagesVariant: null,
   }),
@@ -39,10 +49,16 @@ export const productDetailSlice = createSlice({
       state.error = null;
       state.message = "get product detail successfully";
     });
+    builder.addCase(getProductSuggestions.fulfilled, (state, action) => {
+      state.loading = false;
+      state.productSuggestions = action.payload;
+    });
   },
 });
 
 export const selecteProductDetail = ({ productDetail }) => productDetail?.data;
+export const selecteProductSuggestions = (state) =>
+  state.productDetail?.productSuggestions;
 
 export const { setSelectedPrimaryVariant, setImagesVariant } =
   productDetailSlice.actions;
