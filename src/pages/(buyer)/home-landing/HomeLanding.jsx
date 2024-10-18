@@ -6,8 +6,6 @@ import axios from "axios";
 
 const HomeLanding = () => {
   const [productData, setProductData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   console.log("data", productData);
 
   useEffect(() => {

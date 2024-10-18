@@ -12,7 +12,7 @@ const ImageMain = ({ emblaMainRef, slides = [], emblaApi }) => {
   } = usePrevNextButtons(emblaApi);
 
   return (
-    <div className="relative gallery__viewport" ref={emblaMainRef}>
+    <div className="relative shadow-md gallery__viewport" ref={emblaMainRef}>
       <div className="gallery__container">
         {slides?.map((slide, index) => (
           <div className="gallery__slide" key={index}>

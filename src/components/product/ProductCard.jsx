@@ -14,7 +14,7 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/products/${id}`);
+    navigate(`/${id}`);
   };
 
   const handleAddFavorite = (productId) => {
@@ -44,7 +44,7 @@ const ProductCard = ({ product }) => {
               e.stopPropagation();
               handleAddFavorite(id);
             }}
-            className="absolute top-3 left-3 rounded-full bg-white p-2"
+            className="absolute p-2 bg-white rounded-full top-3 left-3"
           >
             {favorites[id] ? (
               <FavoriteIcon sx={{ color: "rgb(247 74 73)" }} />
@@ -59,7 +59,7 @@ const ProductCard = ({ product }) => {
 
       <div className="flex-grow">
         {/* <h3
-          className="font-bold text-xl mt-3"
+          className="mt-3 text-xl font-bold"
           style={{
             display: "-webkit-box",
             WebkitBoxOrient: "vertical",
@@ -82,24 +82,24 @@ const ProductCard = ({ product }) => {
           {category}
         </Typography>
 
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <div>
             <div className="flex justify-between gap-2 mt-2">
               <StarIcon style={{ color: "#FF9A27" }} />
               <p>{rating ? rating.rate : "N/A"}</p>
               <p className="leading-snug">|</p>
-              <p className="bg-slate-300 rounded-md px-2">
+              <p className="px-2 rounded-md bg-slate-300">
                 {sold || "N/A"} Sold
               </p>
             </div>
             <div className="flex gap-4 mt-2">
               <p className="line-through text-zinc-400">${price}</p>
-              <p className="price font-bold">${price}</p>
+              <p className="font-bold price">${price}</p>
             </div>
           </div>
 
           <div
-            className="add-to-cart cursor-pointer"
+            className="cursor-pointer add-to-cart"
             onClick={() => handleAddToCart(product.title)}
           >
             +
