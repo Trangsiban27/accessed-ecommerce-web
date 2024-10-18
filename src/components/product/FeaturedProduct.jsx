@@ -1,13 +1,11 @@
-import { Link } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 
-import ProductCard from "../../../../components/product/ProductCard";
+import ProductCard from "./ProductCard";
 import { Typography } from "@mui/material";
 
 function SampleNextArrow(props) {
@@ -34,7 +32,7 @@ function SamplePrevArrow(props) {
   );
 }
 
-const FeatureProduct = ({ nameTitle, productData }) => {
+const FeaturedProduct = ({ nameTitle, productData }) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -100,4 +98,4 @@ const FeatureProduct = ({ nameTitle, productData }) => {
   );
 };
 
-export default FeatureProduct;
+export default FeaturedProduct;

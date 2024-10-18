@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import Banner from "./components/Banner";
 import Categories from "./components/Categories";
-import FeatureProduct from "./components/FeatureProduct";
+import FeaturedProduct from "../../../components/product/FeaturedProduct";
 import axios from "axios";
 
 const HomeLanding = () => {
   const [productData, setProductData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   console.log("data", productData);
 
   useEffect(() => {
@@ -33,14 +31,14 @@ const HomeLanding = () => {
     <div className="mx-auto w-[80%]">
       <Banner></Banner>
       <Categories></Categories>
-      <FeatureProduct
+      <FeaturedProduct
         nameTitle="Popular Product"
         productData={productData}
-      ></FeatureProduct>
-      <FeatureProduct
+      ></FeaturedProduct>
+      <FeaturedProduct
         nameTitle="Feature Product"
         productData={productData}
-      ></FeatureProduct>
+      ></FeaturedProduct>
     </div>
   );
 };
