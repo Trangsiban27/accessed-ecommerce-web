@@ -5,11 +5,13 @@ import ReviewModal from "./components/review/components/ReviewModal";
 import AddReviewModal from "./components/review/components/AddReviewModal";
 import {
   getProductDetail,
+  getProductSuggestions,
   selecteProductDetail,
+  selecteProductSuggestions,
 } from "../../../store/slices/ProductDetailSlice";
 import { useEffect, useState } from "react";
 import getImagesForMatchingVariant from "./utils/getImagesForVariant";
-import ProductList from "../../../components/product/ProductList";
+import FeaturedProduct from "../../../components/product/FeaturedProduct";
 
 const OPTIONS = { loop: true };
 
@@ -36,6 +38,7 @@ const ProductDetail = () => {
   const [imagesVariant, setImagesVariant] = useState([]);
   const { isShowModal, isShowAddModal } = useSelector((state) => state.review);
   const productDetail = useSelector(selecteProductDetail);
+  const productSuggestions = useSelector(selecteProductSuggestions);
   const { selectedPrimaryVariant } = useSelector(
     (state) => state.productDetail
   );
@@ -43,6 +46,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     dispatch(getProductDetail());
+    dispatch(getProductSuggestions());
   }, [dispatch]);
 
   useEffect(() => {
@@ -55,10 +59,7 @@ const ProductDetail = () => {
     }
   }, [productDetail, selectedPrimaryVariant]);
 
-  console.log("productDetail", productDetail?.images);
-  console.log("selecselectedPrimaryVariant", selectedPrimaryVariant);
-  console.log("productDetail.productVariants", productDetail?.productVariants);
-  console.log("imagesVariant", imagesVariant);
+  console.log("productSuggestions", productSuggestions);
 
   return (
     <>
@@ -73,7 +74,12 @@ const ProductDetail = () => {
         {isShowModal && <ReviewModal></ReviewModal>}
         {isShowAddModal && <AddReviewModal></AddReviewModal>}
       </div>
-      <ProductList></ProductList>
+      <div className="mt-16">
+        <FeaturedProduct
+          nameTitle="You may also know"
+          productData={productSuggestions}
+        ></FeaturedProduct>
+      </div>
     </>
   );
 };
