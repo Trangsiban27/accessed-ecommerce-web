@@ -10,7 +10,7 @@ import ProdImages from "./components/ProdImages";
 import ProdSpecification from "./components/ProdSpecification";
 import ProdVariants from "./components/ProdVariants";
 import ProdVariantTable from "./components/ProdVariantTable";
-
+//dad
 const AddProduct = () => {
   return (
     <div className="flex flex-col items-center justify-start w-full max-w-[1440px] h-full p-3 mx-auto">
