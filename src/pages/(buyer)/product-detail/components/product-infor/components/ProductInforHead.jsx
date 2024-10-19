@@ -1,7 +1,8 @@
 import { Typography } from "@mui/material";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import PropTypes from "prop-types";
 
-const ProductInforHead = () => {
+const ProductInforHead = ({ name, brandName }) => {
   return (
     <div className="w-full">
       <Typography
@@ -10,8 +11,7 @@ const ProductInforHead = () => {
         className=" text-start"
         sx={{ fontWeight: "600" }}
       >
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus,
-        officia!
+        {name ? name : "name"}
       </Typography>
 
       <Typography
@@ -20,7 +20,7 @@ const ProductInforHead = () => {
         className=" text-start"
         sx={{ fontWeight: "600", color: "#b9b7b8" }}
       >
-        Rolex
+        {brandName ? brandName : "brandName"}
       </Typography>
 
       <div className="mt-6">
@@ -46,6 +46,11 @@ const ProductInforHead = () => {
       </div>
     </div>
   );
+};
+
+ProductInforHead.propTypes = {
+  name: PropTypes.string,
+  brandName: PropTypes.string,
 };
 
 export default ProductInforHead;
