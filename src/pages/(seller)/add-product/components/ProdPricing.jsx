@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { TextField, InputAdornment, Box } from "@mui/material";
-import { updateProductField } from "../../../../servicea/productService";
+import { setProductField } from "../../../../store/slices/productSlice";
 
 const ProdPricing = () => {
   const dispatch = useDispatch();
@@ -52,12 +52,14 @@ const ProdPricing = () => {
                     : pricing.discountedPrice
                 }
                 onChange={(e) =>
-                  updateProductField(
-                    dispatch,
-                    label === "originalPrice"
-                      ? "originalPrice"
-                      : "discountedPrice",
-                    e.target.value
+                  dispatch(
+                    setProductField({
+                      field:
+                        label === "originalPrice"
+                          ? "originalPrice"
+                          : "discountedPrice",
+                      value: e.target.value,
+                    })
                   )
                 }
               />
@@ -88,7 +90,13 @@ const ProdPricing = () => {
             className="w-full rounded-md"
             value={pricing.sellingPrice}
             onChange={(e) =>
-              updateProductField(dispatch, "sellingPrice", e.target.value)
+              // updateProductField(dispatch, "sellingPrice", e.target.value)
+              dispatch(
+                setProductField({
+                  field: "sellingPrice",
+                  value: e.target.value,
+                })
+              )
             }
           />
         </div>

@@ -16,7 +16,7 @@ import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import SubScript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
-import { updateProductField } from "../../../../servicea/productService";
+import { setProductField } from "../../../../store/slices/productSlice";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -55,7 +55,12 @@ const ProdDescription = () => {
   const editor = useEditor({
     content: description,
     onUpdate: ({ editor: _editor }) =>
-      updateProductField(dispatch, "descriptions", _editor.getHTML()),
+      dispatch(
+        setProductField({
+          field: "descriptions",
+          value: _editor.getHTML(),
+        })
+      ),
     extensions: [
       StarterKit,
       Underline,
@@ -84,8 +89,13 @@ const ProdDescription = () => {
           .replace(/'/g, "&#039;")
           .replace(/\n/g, "<br>")
           .replace(/ {2,}/g, (match) => "&nbsp;".repeat(match.length));
-        updateProductField(dispatch, "descriptions", htmlContent);
-        editor?.commands.setContent(htmlContent);
+        dispatch(
+          setProductField({
+            field: "descriptions",
+            value: htmlContent,
+          })
+        ),
+          editor?.commands.setContent(htmlContent);
         if (fileInputRef.current) fileInputRef.current.value = "";
       };
       reader.readAsText(file);
@@ -111,7 +121,12 @@ const ProdDescription = () => {
             size="small"
             value={name}
             onChange={(e) =>
-              updateProductField(dispatch, "name", e.target.value)
+              dispatch(
+                setProductField({
+                  field: "name",
+                  value: e.target.value,
+                })
+              )
             }
           />
         </div>

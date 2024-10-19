@@ -10,29 +10,29 @@ import {
   Alert,
 } from "@mui/material";
 
-import {
-  addProductVariantValue,
-  initialProductVariantsByCategory,
-  initialProductVariantImages,
-  removeProductVariantValue,
-  updatePrimaryVariantType,
-  removeProductVariantImage,
-  addProductVariantImage,
-} from "../../../../servicea/variantsService";
 import { PlusOne } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PropTypes from "prop-types";
+import {
+  addNewVariantImages,
+  addVariantValue,
+  removeVariantImage,
+  removeVariantValue,
+  setInitialVariants,
+  setPrimaryVariantType,
+  setVariantImages,
+} from "../../../../store/slices/variantsSlice";
+import { PRODUCT_VARIANTS } from "../../../../constants/constant_variants";
 
 const VariantOption = ({ type, values }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const variantImages = useSelector((state) => state.variants.variantImages);
   const variants = useSelector((state) => state.variants.variants);
-  const categories = useSelector((state) => state.product.categories);
+  const variantImages = useSelector((state) => state.variants.variantImages);
   const primaryVariantType = useSelector(
     (state) => state.variants.primaryVariantType
   );
@@ -44,14 +44,16 @@ const VariantOption = ({ type, values }) => {
     ) {
       event.preventDefault();
       if (values?.includes(inputValue.trim())) return;
-      addProductVariantValue(dispatch, type, inputValue);
+      dispatch(addVariantValue({ type, value: inputValue.trim() }));
       setInputValue("");
     } else if (
       event.key === "Backspace" &&
       inputValue.trim() === "" &&
       values?.length > 0
     ) {
-      removeProductVariantValue(dispatch, type, values[values.length - 1]);
+      dispatch(
+        removeVariantValue({ type, value: values[values.length - 1].trim() })
+      );
       setInputValue("");
     }
   };
@@ -59,16 +61,20 @@ const VariantOption = ({ type, values }) => {
   const handleInputBlur = () => {
     if (inputValue.trim() === "") return;
     if (values?.includes(inputValue.trim())) return;
-    addProductVariantValue(dispatch, type, inputValue);
+    dispatch(addVariantValue({ type, value: inputValue.trim() }));
     setInputValue("");
   };
 
   useEffect(() => {
-    if (type === primaryVariantType)
-      initialProductVariantImages(dispatch, values);
+    if (type === primaryVariantType) {
+      const variantImages = values?.map((item) => ({
+        type,
+        value: item,
+        images: [],
+      }));
+      dispatch(setVariantImages({ variantImages }));
+    }
   }, [dispatch, primaryVariantType, values, type, variants]);
-
-  console.log(categories);
 
   return (
     <Box className="variant-option">
@@ -77,7 +83,7 @@ const VariantOption = ({ type, values }) => {
           <Checkbox
             checked={primaryVariantType === type}
             onChange={() => {
-              updatePrimaryVariantType(dispatch, type);
+              dispatch(setPrimaryVariantType(type));
             }}
             className="hover:bg-blue-50"
           />
@@ -112,7 +118,9 @@ const VariantOption = ({ type, values }) => {
               label={chip}
               size="small"
               className="px-1 bg-blue-50 hover:bg-blue-100"
-              onDelete={() => removeProductVariantValue(dispatch, type, chip)}
+              onDelete={() =>
+                dispatch(removeVariantValue({ type, value: chip.trim() }))
+              }
             />
           ))}
           <TextField
@@ -173,7 +181,12 @@ const VariantOption = ({ type, values }) => {
                       <button
                         className="absolute -top-3 -right-3 w-6 h-6 flex items-center justify-center bg-gray-500 rounded-full cursor-pointer hover:bg-gray-500/60"
                         onClick={() => {
-                          removeProductVariantImage(dispatch, item.value, url);
+                          dispatch(
+                            removeVariantImage({
+                              value: item.value,
+                              remove_image: url,
+                            })
+                          );
                         }}
                       >
                         <span className="text-white w-6 h-6 rounded-full">
@@ -194,10 +207,13 @@ const VariantOption = ({ type, values }) => {
                       multiple
                       onChange={(e) => {
                         const files = Array.from(e.target.files);
-                        addProductVariantImage(
-                          dispatch,
-                          item.value,
-                          files.map((file) => URL.createObjectURL(file))
+                        dispatch(
+                          addNewVariantImages({
+                            value: item.value,
+                            new_images: files.map((file) =>
+                              URL.createObjectURL(file)
+                            ),
+                          })
                         );
                       }}
                     />
@@ -222,7 +238,21 @@ const ProdVariants = () => {
   const categories = useSelector((state) => state.product.categories);
 
   useEffect(() => {
-    initialProductVariantsByCategory(dispatch, categories);
+    const primaryCategory =
+      categories[1]?.name?.toUpperCase() ||
+      categories[0]?.name?.toUpperCase() ||
+      "BOOK";
+
+    const productVariant = PRODUCT_VARIANTS.find(
+      (item) => item.name.toUpperCase() === primaryCategory
+    );
+
+    dispatch(setInitialVariants({ variants: productVariant.default_variants }));
+    dispatch(
+      setPrimaryVariantType({
+        primaryVariant: productVariant.default_variants[0].type,
+      })
+    );
   }, [categories, dispatch]);
 
   if (!hasVariants) return null;

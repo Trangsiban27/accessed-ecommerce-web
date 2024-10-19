@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { updateProductField } from "../../../../servicea/productService";
+import { setProductField } from "../../../../store/slices/productSlice";
 
 const ProdInventory = () => {
   const dispatch = useDispatch();
@@ -37,10 +37,16 @@ const ProdInventory = () => {
                 }
               }}
               onChange={(e) =>
-                updateProductField(
-                  dispatch,
-                  "quantityAvailable",
-                  Number(e.target.value)
+                // updateProductField(
+                //   dispatch,
+                //   "quantityAvailable",
+                //   Number(e.target.value)
+                // )
+                dispatch(
+                  setProductField({
+                    field: "quantityAvailable",
+                    value: Number(e.target.value),
+                  })
                 )
               }
             />
@@ -56,7 +62,13 @@ const ProdInventory = () => {
               size="small"
               value={sku}
               onChange={(e) =>
-                updateProductField(dispatch, "sku", e.target.value || "")
+                // updateProductField(dispatch, "sku", e.target.value || "")
+                dispatch(
+                  setProductField({
+                    field: "sku",
+                    value: e.target.value || "",
+                  })
+                )
               }
             />
           </div>

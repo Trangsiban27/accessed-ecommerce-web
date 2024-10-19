@@ -5,10 +5,6 @@ import {
   Box,
   Grid2,
 } from "@mui/material";
-import {
-  updateProductSpecification,
-  generateSpecificationForm,
-} from "../../../../servicea/productService";
 import { useDispatch, useSelector } from "react-redux";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
@@ -17,12 +13,30 @@ import {
   IconId,
   IconRuler,
 } from "@tabler/icons-react";
+import { setSpecificationField } from "../../../../store/slices/productSlice";
+import { PRODUCT_SPECIFICATIONS } from "../../../../constants/constant_specification";
 
 const SECTION_ICONS = {
   SPECIFICATION: <IconDeviceLaptop size={22} />,
   CAMERA: <IconCamera size={22} />,
   DIMENSION: <IconRuler size={22} />,
 };
+
+function generateSpecificationForm(categories) {
+  const primaryCategory =
+    categories[1]?.name?.toUpperCase() ||
+    categories[0]?.name?.toUpperCase() ||
+    "IPHONE";
+
+  return Object.entries(PRODUCT_SPECIFICATIONS[primaryCategory]).map(
+    ([key, value]) => {
+      return {
+        title: key,
+        fields: value,
+      };
+    }
+  );
+}
 
 const ProdSpecification = () => {
   const dispatch = useDispatch();
@@ -58,10 +72,8 @@ const ProdSpecification = () => {
                     size="small"
                     value={(specifications && specifications[field]) || ""}
                     onChange={(e) =>
-                      updateProductSpecification(
-                        dispatch,
-                        field,
-                        e.target.value
+                      dispatch(
+                        setSpecificationField({ field, value: e.target.value })
                       )
                     }
                   />

@@ -44,7 +44,7 @@ const ProductImage = (props) => {
   }, [emblaMainApi, onSelect]);
 
   return (
-    <div className="gallery">
+    <div className="gallery w-[80%]">
       <Gallery
         emblaThumbsRef={emblaThumbsRef}
         slides={slides}

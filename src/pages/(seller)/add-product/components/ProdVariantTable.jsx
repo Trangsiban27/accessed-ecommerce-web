@@ -6,20 +6,23 @@ import {
   TableBody,
   Table,
 } from "@mui/material";
-import {
-  generateProductVariantOptionsTable,
-  updateAllProductVariantOptionBaseValues,
-  updateProductVariantOptionField,
-} from "../../../../servicea/variantsService";
 import { styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, Divider, TextField } from "@mui/material";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import {
+  generateVariantOptionsTable,
+  updateAllVariantOptionBaseValues,
+  updateVariantOptionField,
+} from "../../../../store/slices/variantsSlice";
 
 const ProdVariantTable = () => {
   const dispatch = useDispatch();
   const variants = useSelector((state) => state.variants.variants);
+  const primaryVariantType = useSelector(
+    (state) => state.variants.primaryVariantType
+  );
   const hasVariants = useSelector((state) => state.product.hasVariants);
   const variantOptionsTable = useSelector(
     (state) => state.variants.variantOptionsTable
@@ -33,12 +36,12 @@ const ProdVariantTable = () => {
   });
 
   const handleInputChange = (index, field, value) => {
-    updateProductVariantOptionField(dispatch, index, field, value);
+    dispatch(updateVariantOptionField({ index, field, value }));
   };
 
   useEffect(() => {
-    generateProductVariantOptionsTable(dispatch);
-  }, [dispatch, variants]);
+    dispatch(generateVariantOptionsTable());
+  }, [dispatch, variants, primaryVariantType]);
 
   console.log(JSON.stringify(variants, null, 2));
 
@@ -122,7 +125,7 @@ const ProdVariantTable = () => {
           variant="contained"
           className="bg-[drakGreen] text-white"
           onClick={() => {
-            updateAllProductVariantOptionBaseValues(dispatch, baseValues);
+            dispatch(updateAllVariantOptionBaseValues(baseValues));
           }}
         >
           Apply all

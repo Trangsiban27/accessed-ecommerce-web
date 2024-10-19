@@ -7,7 +7,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { updateProductField } from "../../../../servicea/productService";
+import { setProductField } from "../../../../store/slices/productSlice";
 
 const ProdPackages = () => {
   const dispatch = useDispatch();
@@ -33,7 +33,12 @@ const ProdPackages = () => {
               className="h-[40px]"
               value={weight}
               onChange={(e) =>
-                updateProductField(dispatch, "weight", e.target.value)
+                dispatch(
+                  setProductField({
+                    field: "weight",
+                    value: e.target.value || "",
+                  })
+                )
               }
             />
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
@@ -42,7 +47,12 @@ const ProdPackages = () => {
               className="outline-none"
               value={weightUnit || "Kg"}
               onChange={(e) =>
-                updateProductField(dispatch, "weightUnit", e.target.value)
+                dispatch(
+                  setProductField({
+                    field: "weightUnit",
+                    value: e.target.value,
+                  })
+                )
               }
               sx={{
                 "& .MuiOutlinedInput-notchedOutline": {
@@ -85,7 +95,12 @@ const ProdPackages = () => {
                       : height
                   }
                   onChange={(e) =>
-                    updateProductField(dispatch, dim, e.target.value)
+                    dispatch(
+                      setProductField({
+                        field: dim,
+                        value: e.target.value,
+                      })
+                    )
                   }
                 />
               </div>

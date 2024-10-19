@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import { updateProductField } from "../../../../servicea/productService";
+import { setProductField } from "../../../../store/slices/productSlice";
 
 // Define the constants
 const ONLINE = "Online selling only";
@@ -23,7 +23,12 @@ const ProdSellingType = () => {
               <Checkbox
                 checked={sellingType === "ONLINE"}
                 onChange={() =>
-                  updateProductField(dispatch, "sellingType", "ONLINE")
+                  dispatch(
+                    setProductField({
+                      field: "sellingType",
+                      value: "ONLINE",
+                    })
+                  )
                 }
                 value={ONLINE}
                 size="small"
@@ -36,7 +41,12 @@ const ProdSellingType = () => {
               <Checkbox
                 checked={sellingType === "OFFLINE"}
                 onChange={() =>
-                  updateProductField(dispatch, "sellingType", "OFFLINE")
+                  dispatch(
+                    setProductField({
+                      field: "sellingType",
+                      value: "OFFLINE",
+                    })
+                  )
                 }
                 size="small"
                 value={OFFLINE}
@@ -50,7 +60,12 @@ const ProdSellingType = () => {
                 checked={sellingType === "BOTH"}
                 size="small"
                 onChange={() =>
-                  updateProductField(dispatch, "sellingType", "BOTH")
+                  dispatch(
+                    setProductField({
+                      field: "sellingType",
+                      value: "BOTH",
+                    })
+                  )
                 }
                 value={BOTH}
               />

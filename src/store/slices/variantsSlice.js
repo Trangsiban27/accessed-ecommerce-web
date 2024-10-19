@@ -5,7 +5,7 @@ const initialState = {
   primaryVariantType: "",
   variantImages: [],
   variantOptionsTable: [],
-};  
+};
 
 export const variantSlice = createSlice({
   name: "variants",
@@ -87,7 +87,8 @@ export const variantSlice = createSlice({
     },
 
     setVariantImages: (state, action) => {
-      state.variantImages = action.payload;
+      const { variantImages } = action.payload;
+      state.variantImages = variantImages;
     },
 
     addNewVariantImages: (state, action) => {

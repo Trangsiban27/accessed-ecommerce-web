@@ -7,17 +7,22 @@ import {
   OutlinedInput,
   Select,
 } from "@mui/material";
-import {
-  getCagegories,
-  getSubCategoriesById,
-} from "../../../../servicea/categoriesService";
-import { updateProductField } from "../../../../servicea/productService";
+import { getCagegories } from "../../../../services/categoriesService";
+import { setProductField } from "../../../../store/slices/productSlice";
+import { PRODUCT_CATEGORIES } from "../../../../constants/constant_category";
 
 const ProdCategory = () => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.product.categories);
   const [mainCategories, setMainCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
+
+  const getSubCategoriesById = (id) => {
+    const categoryIndex = PRODUCT_CATEGORIES.findIndex(
+      (item) => item.id === id
+    );
+    return PRODUCT_CATEGORIES[categoryIndex]?.subCategories || [];
+  };
 
   useEffect(() => {
     const response = getCagegories();
@@ -49,7 +54,12 @@ const ProdCategory = () => {
               inputProps={{ "aria-label": "Without label" }}
               value={categories[0] || ""}
               onChange={(e) =>
-                updateProductField(dispatch, "categories", [e.target.value])
+                dispatch(
+                  setProductField({
+                    field: "categories",
+                    value: [e.target.value],
+                  })
+                )
               }
               input={<OutlinedInput id="select-multiple-chip" />}
               className="h-[40px] w-full cursor-pointer"
@@ -97,10 +107,12 @@ const ProdCategory = () => {
               inputProps={{ "aria-label": "Without label" }}
               value={categories[1] || ""}
               onChange={(e) =>
-                updateProductField(dispatch, "categories", [
-                  categories[0],
-                  e.target.value,
-                ])
+                dispatch(
+                  setProductField({
+                    field: "categories",
+                    value: [categories[0], e.target.value],
+                  })
+                )
               }
               input={<OutlinedInput id="select-multiple-chip" />}
               className="h-[40px] w-full cursor-pointer"

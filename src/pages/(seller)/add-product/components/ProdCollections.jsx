@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Box, Checkbox, TextField, Autocomplete } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { getCollections } from "../../../../servicea/collectionsService";
-import { updateProductField } from "../../../../servicea/productService";
+import { getCollections } from "../../../../services/collectionsService";
 
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import { setProductField } from "../../../../store/slices/productSlice";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -34,7 +34,12 @@ function ProdCollections() {
         disableCloseOnSelect
         value={selectedCollections}
         onChange={(event, newValue) => {
-          updateProductField(dispatch, "collections", newValue);
+          dispatch(
+            setProductField({
+              field: "collections",
+              value: newValue,
+            })
+          );
         }}
         getOptionLabel={(option) => option.name}
         isOptionEqualToValue={(option, value) => option.id === value.id}

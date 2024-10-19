@@ -3,7 +3,7 @@ import GalleryItem from "./GalleryItem";
 
 const Gallery = ({
   emblaThumbsRef,
-  slides,
+  slides = [],
   onThumbClick,
   selectedIndex,
   onThumbHover,
@@ -12,7 +12,7 @@ const Gallery = ({
     <div className="gallery-thumbs">
       <div className="gallery-thumbs__viewport" ref={emblaThumbsRef}>
         <div className="gallery-thumbs__container">
-          {slides.map((slide, index) => (
+          {slides?.map((slide, index) => (
             <GalleryItem
               key={index}
               onClick={() => onThumbClick(index)}
