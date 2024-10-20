@@ -1,3 +1,4 @@
+import { MantineProvider } from "@mantine/core";
 import ProdDescription from "./components/ProdDescription";
 import ProdCategory from "./components/ProdCategory";
 import ProdPackages from "./components/ProdPackages";
@@ -18,7 +19,9 @@ const AddProduct = () => {
         <div className="w-full flex items-start justify-center p-2 gap-3">
           <div className="w-1/2 flex flex-col items-center justify-start">
             <ProdCategory />
-            <ProdDescription />
+            <MantineProvider>
+              <ProdDescription />
+            </MantineProvider>
             <ProdPackages />
             <ProdPricing />
           </div>

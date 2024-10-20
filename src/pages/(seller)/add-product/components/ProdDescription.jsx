@@ -1,14 +1,22 @@
-import { useRef, useState } from "react";
-import { Editor } from "react-draft-wysiwyg";
-import { EditorState, convertToRaw, ContentState } from "draft-js";
-import draftToHtml from "draftjs-to-html";
-import htmlToDraft from "html-to-draftjs";
+import { Color } from "@tiptap/extension-color";
+import { useRef } from "react";
 import { styled } from "@mui/material/styles";
-import { useDispatch, useSelector } from "react-redux";
-import { Button, TextField } from "@mui/material";
 import { IconUpload } from "@tabler/icons-react";
+import { Button, TextField } from "@mui/material";
+import { RichTextEditor, Link } from "@mantine/tiptap";
+import { BubbleMenu, useEditor } from "@tiptap/react";
+import { useDispatch, useSelector } from "react-redux";
+
+import "@mantine/core/styles.css";
+import "@mantine/tiptap/styles.css";
+import Highlight from "@tiptap/extension-highlight";
+import StarterKit from "@tiptap/starter-kit";
+import TextStyle from "@tiptap/extension-text-style";
+import Underline from "@tiptap/extension-underline";
+import TextAlign from "@tiptap/extension-text-align";
+import SubScript from "@tiptap/extension-subscript";
+import Superscript from "@tiptap/extension-superscript";
 import { setProductField } from "../../../../store/slices/productSlice";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -22,36 +30,49 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
+const colorList = [
+  "#25262b",
+  "#868e96",
+  "#fa5252",
+  "#e64980",
+  "#be4bdb",
+  "#7950f2",
+  "#4c6ef5",
+  "#228be6",
+  "#15aabf",
+  "#12b886",
+  "#40c057",
+  "#82c91e",
+  "#fab005",
+  "#fd7e14",
+];
+
 const ProdDescription = () => {
   const dispatch = useDispatch();
   const name = useSelector((state) => state.product.name);
   const description = useSelector((state) => state.product.description);
   const fileInputRef = useRef(null);
-
-  // Convert initial HTML content to DraftJS EditorState
-  const [editorState, setEditorState] = useState(() => {
-    const contentBlock = htmlToDraft(description || "");
-    if (contentBlock) {
-      const contentState = ContentState.createFromBlockArray(
-        contentBlock.contentBlocks
-      );
-      return EditorState.createWithContent(contentState);
-    }
-    return EditorState.createEmpty();
+  const editor = useEditor({
+    content: description,
+    onUpdate: ({ editor: _editor }) =>
+      dispatch(
+        setProductField({
+          field: "descriptions",
+          value: _editor.getHTML(),
+        })
+      ),
+    extensions: [
+      StarterKit,
+      Underline,
+      Color,
+      Link,
+      Superscript,
+      SubScript,
+      Highlight,
+      TextStyle,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+    ],
   });
-
-  const onEditorStateChange = (newEditorState) => {
-    setEditorState(newEditorState);
-    const htmlContent = draftToHtml(
-      convertToRaw(newEditorState.getCurrentContent())
-    );
-    dispatch(
-      setProductField({
-        field: "descriptions",
-        value: htmlContent,
-      })
-    );
-  };
 
   const handleParseTxtFile = (event) => {
     const file = event.target.files?.[0];
@@ -59,6 +80,7 @@ const ProdDescription = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
         const content = e.target?.result;
+
         const htmlContent = content
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
@@ -67,21 +89,13 @@ const ProdDescription = () => {
           .replace(/'/g, "&#039;")
           .replace(/\n/g, "<br>")
           .replace(/ {2,}/g, (match) => "&nbsp;".repeat(match.length));
-
-        const contentBlock = htmlToDraft(htmlContent);
-        if (contentBlock) {
-          const contentState = ContentState.createFromBlockArray(
-            contentBlock.contentBlocks
-          );
-          const newEditorState = EditorState.createWithContent(contentState);
-          setEditorState(newEditorState);
-          dispatch(
-            setProductField({
-              field: "descriptions",
-              value: htmlContent,
-            })
-          );
-        }
+        dispatch(
+          setProductField({
+            field: "descriptions",
+            value: htmlContent,
+          })
+        ),
+          editor?.commands.setContent(htmlContent);
         if (fileInputRef.current) fileInputRef.current.value = "";
       };
       reader.readAsText(file);
@@ -117,7 +131,7 @@ const ProdDescription = () => {
           />
         </div>
         <div>
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center justify-between gap-3 ">
             <p className="my-0 pb-1 text-[#212020] text-sm">
               Business Description <span className="text-red-600"> *</span>
             </p>
@@ -138,48 +152,63 @@ const ProdDescription = () => {
               />
             </Button>
           </div>
-          <div className="border border-gray-300 rounded-md">
-            <Editor
-              editorState={editorState}
-              onEditorStateChange={onEditorStateChange}
-              wrapperClassName="wrapper-class"
-              editorClassName="editor-class h-[300px] px-4"
-              toolbarClassName="toolbar-class"
-              toolbar={{
-                options: [
-                  "inline",
-                  "blockType",
-                  "fontSize",
-                  "fontFamily",
-                  "list",
-                  "textAlign",
-                  "colorPicker",
-                  "link",
-                  "emoji",
-                  "history",
-                ],
-                inline: {
-                  options: [
-                    "bold",
-                    "italic",
-                    "underline",
-                    "strikethrough",
-                    "superscript",
-                    "subscript",
-                  ],
-                },
-                textAlign: {
-                  inDropdown: false,
-                  options: ["left", "center", "right"],
-                },
-                link: {
-                  inDropdown: false,
-                  showOpenOptionOnHover: true,
-                  defaultTargetOption: "_blank",
-                },
-              }}
-            />
-          </div>
+          <RichTextEditor
+            editor={editor}
+            w="100%"
+            styles={{
+              content: {
+                height: "302px",
+                overflowY: "scroll",
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
+                overflowWrap: "break-word",
+                textAlign: "start",
+              },
+            }}
+          >
+            <RichTextEditor.Toolbar>
+              <RichTextEditor.ColorPicker colors={colorList} />
+
+              <RichTextEditor.ControlsGroup>
+                <RichTextEditor.Bold />
+                <RichTextEditor.Italic />
+                <RichTextEditor.Underline />
+                <RichTextEditor.Strikethrough />
+                <RichTextEditor.Highlight />
+              </RichTextEditor.ControlsGroup>
+
+              <RichTextEditor.ControlsGroup>
+                <RichTextEditor.H1 />
+                <RichTextEditor.H2 />
+                <RichTextEditor.H3 />
+                <RichTextEditor.H4 />
+              </RichTextEditor.ControlsGroup>
+
+              <RichTextEditor.ControlsGroup>
+                <RichTextEditor.Link />
+                <RichTextEditor.Unlink />
+              </RichTextEditor.ControlsGroup>
+
+              <RichTextEditor.ControlsGroup>
+                <RichTextEditor.AlignLeft />
+                <RichTextEditor.AlignCenter />
+                <RichTextEditor.AlignRight />
+              </RichTextEditor.ControlsGroup>
+            </RichTextEditor.Toolbar>
+
+            {editor && (
+              <BubbleMenu editor={editor}>
+                <RichTextEditor.ControlsGroup>
+                  <RichTextEditor.Bold />
+                  <RichTextEditor.Italic />
+                  <RichTextEditor.Underline />
+                  <RichTextEditor.Link />
+                </RichTextEditor.ControlsGroup>
+              </BubbleMenu>
+            )}
+
+            <RichTextEditor.Content />
+          </RichTextEditor>
         </div>
       </div>
     </div>
