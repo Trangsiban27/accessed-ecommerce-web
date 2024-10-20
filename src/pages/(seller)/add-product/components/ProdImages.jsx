@@ -25,8 +25,6 @@ const ProdImages = () => {
   const primaryImage = useSelector((state) => state.product.primaryImage);
   const productImages = useSelector((state) => state.product.productImages);
 
-  console.log(productImages, primaryImage);
-
   const onDrop = (acceptedFiles) => {
     const maxFiles = 10;
     const totalFiles = productImages.length + acceptedFiles.length;
@@ -75,8 +73,8 @@ const ProdImages = () => {
   };
 
   const handleRemovePrimaryImage = () => {
-    dispatch(removePrimaryImage())
-  }
+    dispatch(removePrimaryImage());
+  };
 
   return (
     <div className={`w-full rounded-lg mb-2 p-3`}>

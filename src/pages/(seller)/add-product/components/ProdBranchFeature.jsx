@@ -9,26 +9,26 @@ import {
 import ProdCollections from "./ProdCollections";
 import { useDispatch, useSelector } from "react-redux";
 import { setProductField } from "../../../../store/slices/productSlice";
+import { getBrandNames } from "../../../../services/brandNameService";
+import { useEffect, useState } from "react";
 
-const phoneBrands = [
-  "Apple",
-  "Samsung",
-  "Xiaomi",
-  "Oppo",
-  "Vivo",
-  "Realme",
-  "Huawei",
-  "OnePlus",
-];
+
 
 const ProdBranchFeature = () => {
   const dispatch = useDispatch();
   const brandName = useSelector((state) => state.product.brandName);
   const hasVariants = useSelector((state) => state.product.hasVariants);
+  const [brandNames, setbrandNames] = useState([]);
 
+  useEffect(() => {
+    const response = getBrandNames();
+    const parseBrandName = response.data.map(item => item.name) 
+    setbrandNames(parseBrandName)
+  }, [])
+  
   return (
     <div className="w-full rounded-lg mb-2 p-3">
-      <p className="font-medium text-lg text-start">Brand and Featured</p>
+      <p className="font-medium text-lg text-start">Brand and Collections</p>
       <div className="border-[2px] border-solid mt-3 border-gray-200 shadow-sm rounded-lg p-5 h-full flex flex-col gap-3">
         <div>
           <p className="my-0 mb-1 text-[#212020] text-sm text-start">
@@ -39,7 +39,7 @@ const ProdBranchFeature = () => {
             <Select
               id="demo-multiple-chip"
               inputProps={{ "aria-label": "Without label" }}
-              value={brandName || ""}
+              value={brandNames || ""}
               onChange={(e) =>
                 dispatch(
                   setProductField({ field: "brandName", value: e.target.value })
@@ -62,7 +62,7 @@ const ProdBranchFeature = () => {
               }}
               displayEmpty
             >
-              {phoneBrands.map((item, index) => (
+              {brandNames.map((item, index) => (
                 <MenuItem key={index} value={item}>
                   {item}
                 </MenuItem>
@@ -85,9 +85,9 @@ const ProdBranchFeature = () => {
           <Switch
             checked={hasVariants}
             id="hasVariants"
-            onChange={(e) =>
+            onChange={() =>
               dispatch(
-                setProductField({ field: "hasVariants", value: e.target.value })
+                setProductField({ field: "hasVariants", value: !hasVariants })
               )
             }
           />
