@@ -1,15 +1,16 @@
-// import { MantineProvider } from "@mantine/core";
-// import ProdDescription from "./components/ProdDescription";
+import { MantineProvider } from "@mantine/core";
+import ProdDescription from "./components/ProdDescription";
 import ProdCategory from "./components/ProdCategory";
-// import ProdPackages from "./components/ProdPackages";
-// import ProdPricing from "./components/ProdPricing";
-// import ProdBranchFeature from "./components/ProdBranchFeature";
-// import ProdInventory from "./components/ProdInventory";
-// import ProdSellingType from "./components/ProdSellingType";
-// import ProdImages from "./components/ProdImages";
+import ProdPackages from "./components/ProdPackages";
+import ProdPricing from "./components/ProdPricing";
+import ProdBranchFeature from "./components/ProdBranchFeature";
+import ProdInventory from "./components/ProdInventory";
+import ProdSellingType from "./components/ProdSellingType";
+import ProdImages from "./components/ProdImages";
 import ProdSpecification from "./components/ProdSpecification";
 import ProdVariants from "./components/ProdVariants";
 import ProdVariantTable from "./components/ProdVariantTable";
+import { Button } from "@mui/material";
 
 const AddProduct = () => {
   return (
@@ -18,22 +19,34 @@ const AddProduct = () => {
         <div className="w-full flex items-start justify-center p-2 gap-3">
           <div className="w-1/2 flex flex-col items-center justify-start">
             <ProdCategory />
-            {/* <MantineProvider>
+            <MantineProvider>
               <ProdDescription />
             </MantineProvider>
             <ProdPackages />
-            <ProdPricing /> */}
+            <ProdPricing />
           </div>
           <div className="w-1/2 flex flex-col items-center justify-start">
-            {/* <ProdBranchFeature />
+            <ProdBranchFeature />
             <ProdInventory />
             <ProdSellingType />
-            <ProdImages /> */}
+            <ProdImages />
             <ProdSpecification />
           </div>
         </div>
         <ProdVariants />
         <ProdVariantTable />
+        <div className="w-full items-center justify-end gap-3 flex px-4 my-[30px] mb-[10px]">
+          <Button className="rounded-md capitalize" variant="outlined">
+            Discard
+          </Button>
+          <Button
+            className="rounded-md capitalize"
+            variant="contained"
+            onClick={() => {}}
+          >
+            Add Product
+          </Button>
+        </div>
       </div>
     </div>
   );

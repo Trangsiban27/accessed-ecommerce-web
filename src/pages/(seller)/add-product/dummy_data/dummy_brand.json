@@ -1,0 +1,19 @@
+{
+  "data": [
+        {
+            "id": "66ed9bd041ea025cb2915f2b",
+            "name": "Apple",
+            "description": "This is Apple brand"
+        },
+        {
+            "id": "66ed9bdd41ea025cb2915f2c",
+            "name": "Samsung",
+            "description": "This is a Samsung brand"
+        },
+        {
+            "id": "66efa57b0d2e0d7ddc3d987d",
+            "name": "Nokia",
+            "description": "This is Nokia brand"
+        }
+    ]
+}
