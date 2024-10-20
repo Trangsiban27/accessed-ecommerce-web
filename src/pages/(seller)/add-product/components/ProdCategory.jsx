@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { getCagegories, getSubCategoriesById } from "../../../../services/categoriesService";
 import { setProductField } from "../../../../store/slices/productSlice";
+import { setInitialVariants, setPrimaryVariantType } from "../../../../store/slices/variantsSlice";
 
 const ProdCategory = () => {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ const ProdCategory = () => {
     const createInitialVariants = (variantOptions) =>
       variantOptions?.map(item => ({
         type: item,
-        values: ""
+        values: []
       }));
   
     const category = getCategoryData();
@@ -58,7 +59,8 @@ const ProdCategory = () => {
     const initialSpecifications = createInitialSpecifications(category.specificationOptions);
     const initialVariants = createInitialVariants(category.variantOptions);
     dispatch(setProductField({ field: "specifications", value: initialSpecifications }));
-    dispatch(setProductField({ field: "variants", value: initialVariants }));
+    dispatch(setInitialVariants({ "variants": initialVariants }));
+    dispatch(setPrimaryVariantType({ primaryVariant: initialVariants[0].type }));
   
   }, [categoryIds, mainCategories, subCategories, dispatch]);
 

@@ -8,8 +8,8 @@ import ProdCategory from "./components/ProdCategory";
 // import ProdSellingType from "./components/ProdSellingType";
 // import ProdImages from "./components/ProdImages";
 import ProdSpecification from "./components/ProdSpecification";
-// import ProdVariants from "./components/ProdVariants";
-// import ProdVariantTable from "./components/ProdVariantTable";
+import ProdVariants from "./components/ProdVariants";
+import ProdVariantTable from "./components/ProdVariantTable";
 
 const AddProduct = () => {
   return (
@@ -32,8 +32,8 @@ const AddProduct = () => {
             <ProdSpecification />
           </div>
         </div>
-        {/* <ProdVariants />
-        <ProdVariantTable /> */}
+        <ProdVariants />
+        <ProdVariantTable />
       </div>
     </div>
   );

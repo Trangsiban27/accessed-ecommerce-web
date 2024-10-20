@@ -21,11 +21,9 @@ import {
   addVariantValue,
   removeVariantImage,
   removeVariantValue,
-  setInitialVariants,
   setPrimaryVariantType,
   setVariantImages,
 } from "../../../../store/slices/variantsSlice";
-import { PRODUCT_VARIANTS } from "../../../../constants/constant_variants";
 
 const VariantOption = ({ type, values }) => {
   const dispatch = useDispatch();
@@ -83,7 +81,7 @@ const VariantOption = ({ type, values }) => {
           <Checkbox
             checked={primaryVariantType === type}
             onChange={() => {
-              dispatch(setPrimaryVariantType(type));
+              dispatch(setPrimaryVariantType({ primaryVariant: type }));
             }}
             className="hover:bg-blue-50"
           />
@@ -176,7 +174,7 @@ const VariantOption = ({ type, values }) => {
                       <img
                         src={url}
                         alt={`Preview`}
-                        className="w-full h-32 object-cover rounded-lg"
+                        className="w-full h-32 object-contain rounded-lg"
                       />
                       <button
                         className="absolute -top-3 -right-3 w-6 h-6 flex items-center justify-center bg-gray-500 rounded-full cursor-pointer hover:bg-gray-500/60"
@@ -232,30 +230,10 @@ const VariantOption = ({ type, values }) => {
 };
 
 const ProdVariants = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const variants = useSelector((state) => state.variants.variants);
-  const hasVariants = useSelector((state) => state.product.hasVariants);
-  const categories = useSelector((state) => state.product.categories);
-
-  useEffect(() => {
-    const primaryCategory =
-      categories[1]?.name?.toUpperCase() ||
-      categories[0]?.name?.toUpperCase() ||
-      "BOOK";
-
-    const productVariant = PRODUCT_VARIANTS.find(
-      (item) => item.name.toUpperCase() === primaryCategory
-    );
-
-    dispatch(setInitialVariants({ variants: productVariant.default_variants }));
-    dispatch(
-      setPrimaryVariantType({
-        primaryVariant: productVariant.default_variants[0].type,
-      })
-    );
-  }, [categories, dispatch]);
-
-  if (!hasVariants) return null;
+  // const hasVariants = useSelector((state) => state.product.hasVariants);
+  // if (!hasVariants) return null;
 
   return (
     <Box className="w-full rounded-lg mb-2 px-5">
