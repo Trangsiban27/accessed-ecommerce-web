@@ -1,8 +1,8 @@
 import {
   addProductImages,
-  removePrimaryImage,
   removeProductImage,
-  replacePrimaryImage,
+  replaceProductImage,
+  setPrimaryImage,
   setProductField,
 } from "../../../../store/slices/productSlice";
 import { useRef, useState } from "react";
@@ -35,45 +35,44 @@ const ProdImages = () => {
     }
 
     const newImages = acceptedFiles.map((file) => URL.createObjectURL(file));
-    dispatch(addProductImages({ images: newImages }));
+    dispatch(addProductImages(newImages));
+    dispatch(
+      setPrimaryImage(
+        productImages.length > 0 ? productImages[0] : newImages[0]
+      )
+    );
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const addImageInPopup = (acceptedFiles) => {
-    if (!acceptedFiles) return;
-    const maxFiles = 10;
-    const totalFiles = productImages.length + acceptedFiles.length;
-
-    if (totalFiles > maxFiles) {
-      const filesToAdd = maxFiles - productImages.length;
-      acceptedFiles = acceptedFiles.slice(0, filesToAdd);
-    }
-    const newImages = Array.from(acceptedFiles).map((file) =>
-      URL.createObjectURL(file)
-    );
-    dispatch(addProductImages({ images: newImages }));
-  };
+  const updateField = (field, value) =>
+    dispatch(setProductField({ field, value }));
 
   const RemoveImageInPopup = (url) => {
-    dispatch(removeProductImage({ image: url }));
+    const newImageList = productImages.filter((item) => item !== url);
+    updateField("images", newImageList);
   };
 
-  const handleReplacePrimaryImage = () => {
+  const handleAddMore = (event) => {
+    const acceptedFiles = event.target.files;
+    if (!acceptedFiles) return;
+    const newFiles = Array.from(acceptedFiles).map((file) =>
+      URL.createObjectURL(file)
+    );
+    dispatch(addProductImages(newFiles));
+  };
+
+  const handleReplaceClick = () => {
     const inputElement = document.createElement("input");
     inputElement.type = "file";
     inputElement.accept = "image/*";
     inputElement.onchange = (event) => {
       if (event.target && event.target.files) {
         const file = event.target.files[0];
-        dispatch(replacePrimaryImage({ new_image: URL.createObjectURL(file) }));
+        dispatch(replaceProductImage(URL.createObjectURL(file)));
       }
     };
     inputElement.click();
-  };
-
-  const handleRemovePrimaryImage = () => {
-    dispatch(removePrimaryImage());
   };
 
   return (
@@ -98,15 +97,15 @@ const ProdImages = () => {
           <DialogTitle>All Images</DialogTitle>
           <DialogContent className="w-full h-[600px] p-6">
             <div className="flex items-start justify-between w-full h-full">
-              {productImages?.length > 0 && (
-                <div className="w-1/2 p-3 h-full">
+              <div className="w-1/2 p-3 h-full">
+                {productImages?.length > 0 && (
                   <img
                     src={primaryImage || productImages[0]}
                     alt="Primary"
                     className="w-full h-full object-cover rounded-lg"
                   />
-                </div>
-              )}
+                )}
+              </div>
 
               <Grid2 className="w-1/2 p-3 max-h-full" container spacing={3}>
                 {productImages.map((item, index) => (
@@ -123,14 +122,7 @@ const ProdImages = () => {
                       src={item}
                       alt={`Image ${index + 1}`}
                       className="w-full h-full object-cover rounded-lg cursor-pointer"
-                      onClick={() =>
-                        dispatch(
-                          setProductField({
-                            field: "primaryImage",
-                            value: item,
-                          })
-                        )
-                      }
+                      onClick={() => dispatch(setPrimaryImage(item))}
                     />
 
                     {primaryImage === item ? (
@@ -165,7 +157,7 @@ const ProdImages = () => {
                   type="file"
                   accept="image/*"
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  onChange={(e) => addImageInPopup(e.target.files)}
+                  onChange={handleAddMore}
                 />
               </div>
             )}
@@ -230,14 +222,21 @@ const ProdImages = () => {
               <Button
                 className="text-white"
                 variant="contained"
-                onClick={() => handleReplacePrimaryImage()}
+                onClick={() => handleReplaceClick()}
               >
                 Replace
               </Button>
               <Button
                 className="text-white"
                 variant="contained"
-                onClick={() => handleRemovePrimaryImage()}
+                onClick={() => {
+                  dispatch(removeProductImage(primaryImage));
+                  dispatch(
+                    setPrimaryImage(
+                      productImages.length > 0 ? productImages[0] : ""
+                    )
+                  );
+                }}
               >
                 Remove
               </Button>

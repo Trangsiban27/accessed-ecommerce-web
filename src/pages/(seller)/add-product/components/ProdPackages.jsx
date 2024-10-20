@@ -17,6 +17,14 @@ const ProdPackages = () => {
   const breadth = useSelector((state) => state.product.breadth);
   const weightUnit = useSelector((state) => state.product.weightUnit);
 
+  const handleDimensionChange = (dimension, value) => {
+    dispatch(setProductField({ field: dimension, value }));
+  };
+
+  const handleWeightUnitChange = (e) => {
+    dispatch(setProductField({ field: "weightUnit", value: e.target.value }));
+  };
+
   return (
     <div className="w-full rounded-lg mb-2 p-3">
       <p className="font-medium text-lg text-start">Shipping and Delivery</p>
@@ -34,10 +42,7 @@ const ProdPackages = () => {
               value={weight}
               onChange={(e) =>
                 dispatch(
-                  setProductField({
-                    field: "weight",
-                    value: e.target.value || "",
-                  })
+                  setProductField({ field: "weight", value: e.target.value })
                 )
               }
             />
@@ -46,14 +51,7 @@ const ProdPackages = () => {
               size="small"
               className="outline-none"
               value={weightUnit || "Kg"}
-              onChange={(e) =>
-                dispatch(
-                  setProductField({
-                    field: "weightUnit",
-                    value: e.target.value,
-                  })
-                )
-              }
+              onChange={handleWeightUnitChange}
               sx={{
                 "& .MuiOutlinedInput-notchedOutline": {
                   border: "none",
@@ -94,14 +92,7 @@ const ProdPackages = () => {
                       ? breadth
                       : height
                   }
-                  onChange={(e) =>
-                    dispatch(
-                      setProductField({
-                        field: dim,
-                        value: e.target.value,
-                      })
-                    )
-                  }
+                  onChange={(e) => handleDimensionChange(dim, e.target.value)}
                 />
               </div>
             ))}

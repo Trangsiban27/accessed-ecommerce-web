@@ -11,16 +11,17 @@ export const variantSlice = createSlice({
   name: "variants",
   initialState,
   reducers: {
+    // dispatch(setInitialVariants( [{id: 1, type: 'Color', values: ['Red', 'Blue']}] ))
     setInitialVariants: (state, action) => {
-      const { variants } = action.payload;
-      state.variants = variants;
+      state.variants = action.payload;
     },
 
+    // dispatch(setPrimaryVariantType('Color'))
     setPrimaryVariantType: (state, action) => {
-      const { primaryVariant } = action.payload;
-      state.primaryVariantType = primaryVariant;
+      state.primaryVariantType = action.payload;
     },
 
+    // dispatch(addVariantValue({ type: "Color", value: 'Green' }))
     addVariantValue: (state, action) => {
       const { type, value } = action.payload;
       const variant = state.variants.find((v) => v.type === type);
@@ -29,6 +30,7 @@ export const variantSlice = createSlice({
       }
     },
 
+    // dispatch(removeVariantValue({ type: "Color", value: 'Green' }))
     removeVariantValue: (state, action) => {
       const { type, value } = action.payload;
       const variant = state.variants.find((v) => v.type === type);
@@ -37,6 +39,7 @@ export const variantSlice = createSlice({
       }
     },
 
+    // dispatch(generateVariantOptionsTable())
     generateVariantOptionsTable: (state) => {
       const variantTypes = state.variants.reduce((acc, variant) => {
         acc[variant.type] = variant.values;
@@ -74,32 +77,47 @@ export const variantSlice = createSlice({
       });
     },
 
+    // dispatch(updateVariantOptionField({ index: 0, field: 'price', value: 100 }))
     updateVariantOptionField: (state, action) => {
       const { index, field, value } = action.payload;
       state.variantOptionsTable[index][field] = value;
     },
 
+    // dispatch(updateAllVariantOptionBaseValues({ price: 100, salePrice: 90, quantity: 50, mrpPrice: 110, sku: 'SKU123' }))
     updateAllVariantOptionBaseValues: (state, action) => {
+      const {
+        sellingPrice,
+        discountedPrice,
+        quantityAvailable,
+        originalPrice,
+        sku,
+      } = action.payload;
       state.variantOptionsTable = state.variantOptionsTable.map((item) => ({
         ...item,
-        ...action.payload,
+        sellingPrice,
+        discountedPrice,
+        quantityAvailable,
+        originalPrice,
+        sku,
       }));
     },
 
+    // dispatch(setVariantImages([{type: "Color" , value: "Blue" , images: ['url1']}]))
     setVariantImages: (state, action) => {
-      const { variantImages } = action.payload;
-      state.variantImages = variantImages;
+      state.variantImages = action.payload;
     },
 
+    // dispatch(addNewVariantImages({value: "Blue" , new_images: ['url1']}))
     addNewVariantImages: (state, action) => {
       const { value, new_images } = action.payload;
       state.variantImages = state.variantImages.map((item) =>
         item.value === value
-          ? { ...item, images: [...item.images, ...new_images] }
+          ? { ...item, images: [...item.images, ...new_images] } // Return a new object with updated images
           : item
       );
     },
 
+    // dispatch(removeVariantImage({value: "Blue" , remove_image: 'url1'}))
     removeVariantImage: (state, action) => {
       const { value, remove_image } = action.payload;
       state.variantImages = state.variantImages.map((item) =>
@@ -110,6 +128,30 @@ export const variantSlice = createSlice({
             }
           : item
       );
+    },
+    // dispatch(addVariant())
+    addVariant: (state) => {
+      state.variants.push({
+        id: state.variants.length,
+        type: "",
+        values: [],
+      });
+    },
+
+    // dispatch(removeVariant({ id: 1 }))
+    removeVariant: (state, action) => {
+      state.variants = state.variants
+        .filter((item) => item.id !== action.payload.id)
+        .map((item, index) => ({ ...item, id: index }));
+    },
+
+    // dispatch(setVariantType({ id: 1, type: 'Size' }))
+    setVariantType: (state, action) => {
+      const { id, type } = action.payload;
+      const variant = state.variants.find((v) => v.id === id);
+      if (variant) {
+        variant.type = type;
+      }
     },
   },
 });
@@ -123,6 +165,9 @@ export const {
   updateVariantOptionField,
   updateAllVariantOptionBaseValues,
   setVariantImages,
+  addVariant,
+  removeVariant,
+  setVariantType,
   addNewVariantImages,
   removeVariantImage,
 } = variantSlice.actions;

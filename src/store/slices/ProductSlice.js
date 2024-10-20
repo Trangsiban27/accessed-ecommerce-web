@@ -23,66 +23,101 @@ const initialState = {
   primaryImage: "",
   productImages: [],
   collections: [],
-  categoryIds: [],
-  specifications: [],
+  categories: [],
+  specifications: {},
 };
-
 
 export const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
+    // Payload: { field: string, value: any }
+    // Ví dụ: dispatch(setProductField({ field: 'name', value: 'New Product Name' }))
     setProductField: (state, action) => {
       const { field, value } = action.payload;
       state[field] = value;
     },
 
-    setSpecificationField: (state, action) => {
-      const { key, value } = action.payload;
-      state.specifications.find(item => item.key === key).value = value;
+    // Payload: Không có
+    // Ví dụ: dispatch(resetProductData())
+    resetProductData: () => initialState,
+
+    // Payload: { name: string, value: string }
+    // Ví dụ: dispatch(addSpecification({ name: 'Color', value: 'Red' }))
+    addSpecification: (state, action) => {
+      state.specifications.push(action.payload);
     },
 
+    // Payload: string (tên của thông số kỹ thuật cần xóa)
+    // Ví dụ: dispatch(removeSpecification('Color'))
+    removeSpecification: (state, action) => {
+      state.specifications = state.specifications.filter(
+        (spec) => spec.name !== action.payload
+      );
+    },
+
+    // Payload: { name: string, value: string }
+    // Ví dụ: dispatch(updateSpecification({ name: 'Color', value: 'Blue' }))
+    updateSpecification: (state, action) => {
+      const { name, value } = action.payload;
+      state.specifications[name] = value;
+    },
+
+    // Payload: string (URL hoặc đường dẫn của hình ảnh)
+    // Ví dụ: dispatch(addProductImages(['https://example.com/image.jpg']))
     addProductImages: (state, action) => {
-      const { images } = action.payload;
-      state.productImages = [...state.productImages, ...images];
-      if (state.primaryImage === "") state.primaryImage = state.productImages[0];
+      state.productImages = [...state.productImages, ...action.payload];
     },
 
+    // Payload: string (URL hoặc đường dẫn của hình ảnh)
+    // Ví dụ: dispatch(replaceProductImage(['https://example.com/image.jpg']))
+    replaceProductImage: (state, action) => {
+      state.productImages = state.productImages.map((img) =>
+        img === state.primaryImage ? action.payload : img
+      );
+      state.primaryImage = action.payload;
+    },
+
+    // Payload: string (URL hoặc đường dẫn của hình ảnh)
+    // Ví dụ: dispatch(addProductImage('https://example.com/image.jpg'))
     removeProductImage: (state, action) => {
-      const { image } = action.payload;
-      state.productImages = state.productImages.filter((img) => img !== image);
+      state.productImages = state.productImages.filter(
+        (image) => image !== action.payload
+      );
     },
 
+    // Payload: string (URL hoặc đường dẫn của hình ảnh chính)
+    // Ví dụ: dispatch(setPrimaryImage('https://example.com/main-image.jpg'))
     setPrimaryImage: (state, action) => {
       state.primaryImage = action.payload;
     },
 
-    removePrimaryImage: (state) => {
-      state.productImages = state.productImages.filter((img) => img !== state.primaryImage);
-      if(state.productImages.length) state.primaryImage = state.productImages[0]
+    // Payload: Array<string> (mảng chứa các ID danh mục)
+    // Ví dụ: dispatch(setCategories(['category1', 'category2']))
+    setCategories: (state, action) => {
+      state.categories = action.payload;
     },
 
-    replacePrimaryImage: (state, action) => {
-      const { new_image } = action.payload;
-      state.productImages = state.productImages.map((img) =>
-        img === state.primaryImage ? new_image : img
-      );
-      state.primaryImage = new_image;
+    // Payload: Không có
+    // Ví dụ: dispatch(toggleHasVariants())
+    toggleHasVariants: (state) => {
+      state.hasVariants = !state.hasVariants;
     },
-
-    resetProductData: () => initialState,
   },
 });
 
 export const {
   setProductField,
-  setSpecificationField,
+  resetProductData,
+  addSpecification,
+  removeSpecification,
+  updateSpecification,
   addProductImages,
   removeProductImage,
-  removePrimaryImage,
-  replacePrimaryImage,
-  resetProductData,
+  replaceProductImage,
   setPrimaryImage,
+  setCategories,
+  toggleHasVariants,
 } = productSlice.actions;
 
 export default productSlice.reducer;

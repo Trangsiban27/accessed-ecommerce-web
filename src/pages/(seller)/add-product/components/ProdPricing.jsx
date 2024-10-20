@@ -4,13 +4,13 @@ import { setProductField } from "../../../../store/slices/productSlice";
 
 const ProdPricing = () => {
   const dispatch = useDispatch();
-  const hasVariants = useSelector((state) => state.product.hasVariants);
   const pricing = useSelector((state) => ({
     originalPrice: state.product.originalPrice,
     discountedPrice: state.product.discountedPrice,
     sellingPrice: state.product.sellingPrice,
   }));
 
+  const hasVariants = useSelector((state) => state.product.hasVariants);
   if (hasVariants) return <></>;
 
   return (
@@ -51,17 +51,18 @@ const ProdPricing = () => {
                     ? pricing.originalPrice
                     : pricing.discountedPrice
                 }
-                onChange={(e) =>
+                onChange={(e) => {
+                  const value = e.target.value;
                   dispatch(
                     setProductField({
                       field:
                         label === "originalPrice"
                           ? "originalPrice"
                           : "discountedPrice",
-                      value: e.target.value,
+                      value,
                     })
-                  )
-                }
+                  );
+                }}
               />
             </div>
           ))}
@@ -89,15 +90,15 @@ const ProdPricing = () => {
             placeholder="00.00"
             className="w-full rounded-md"
             value={pricing.sellingPrice}
-            onChange={(e) =>
-              // updateProductField(dispatch, "sellingPrice", e.target.value)
+            onChange={(e) => {
+              const value = e.target.value;
               dispatch(
                 setProductField({
                   field: "sellingPrice",
-                  value: e.target.value,
+                  value,
                 })
-              )
-            }
+              );
+            }}
           />
         </div>
       </div>

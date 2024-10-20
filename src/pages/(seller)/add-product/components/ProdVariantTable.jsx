@@ -6,25 +6,21 @@ import {
   TableBody,
   Table,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { styled } from "@mui/material/styles";
 import { Box, Button, Divider, TextField } from "@mui/material";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import {
   generateVariantOptionsTable,
   updateAllVariantOptionBaseValues,
   updateVariantOptionField,
-} from "../../../../store/slices/variantsSlice";
+} from "../../../../store/slices/VariantSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProdVariantTable = () => {
   const dispatch = useDispatch();
   const variants = useSelector((state) => state.variants.variants);
-  const categoryIds = useSelector((state) => state.product.categoryIds);
-  const primaryVariantType = useSelector(
-    (state) => state.variants.primaryVariantType
-  );
-
+  const hasVariants = useSelector((state) => state.product.hasVariants);
   const variantOptionsTable = useSelector(
     (state) => state.variants.variantOptionsTable
   );
@@ -36,15 +32,17 @@ const ProdVariantTable = () => {
     sku: "",
   });
 
+  console.log(variantOptionsTable);
+
   const handleInputChange = (index, field, value) => {
     dispatch(updateVariantOptionField({ index, field, value }));
   };
 
   useEffect(() => {
     dispatch(generateVariantOptionsTable());
-  }, [dispatch, variants, primaryVariantType]);
+  }, [variants, dispatch]);
 
-  if (variantOptionsTable.length === 0 || categoryIds.length === 0) return <></>
+  if (!hasVariants) return <></>;
 
   return (
     <div className="w-full rounded-lg p-5">
@@ -124,15 +122,13 @@ const ProdVariantTable = () => {
           variant="contained"
           className="bg-[drakGreen] text-white"
           onClick={() => {
-            dispatch(updateAllVariantOptionBaseValues(baseValues));
+            dispatch(updateAllVariantOptionBaseValues({ ...baseValues }));
           }}
         >
           Apply all
         </Button>
       </Box>
-
       <Divider className="my-5" />
-
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>

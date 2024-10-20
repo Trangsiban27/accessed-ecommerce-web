@@ -9,31 +9,49 @@ import {
   InputBase,
   Alert,
 } from "@mui/material";
-
-import { PlusOne } from "@mui/icons-material";
+import {
+  addVariantValue,
+  removeVariantValue,
+  setInitialVariants,
+  setPrimaryVariantType,
+  generateVariantOptionsTable,
+  setVariantImages,
+  addNewVariantImages,
+  removeVariantImage,
+} from "../../../../store/slices/VariantSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { PRODUCT_VARIANTS } from "../../../../constants/constant_variants";
+import { PlusOne } from "@mui/icons-material";
+import PropTypes from "prop-types";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import PropTypes from "prop-types";
-import {
-  addNewVariantImages,
-  addVariantValue,
-  removeVariantImage,
-  removeVariantValue,
-  setPrimaryVariantType,
-  setVariantImages,
-} from "../../../../store/slices/variantsSlice";
 
 const VariantOption = ({ type, values }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const variants = useSelector((state) => state.variants.variants);
   const variantImages = useSelector((state) => state.variants.variantImages);
   const primaryVariantType = useSelector(
     (state) => state.variants.primaryVariantType
   );
+
+  useEffect(() => {
+    if (type === primaryVariantType)
+      dispatch(
+        setVariantImages(
+          values.map((item) => ({
+            type,
+            value: item,
+            images: [],
+          }))
+        )
+      );
+  }, [dispatch, primaryVariantType, values, type]);
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
 
   const handleInputKeyDown = (event) => {
     if (
@@ -41,38 +59,31 @@ const VariantOption = ({ type, values }) => {
       inputValue.trim() !== ""
     ) {
       event.preventDefault();
-      if (values?.includes(inputValue.trim())) return;
+      if (values?.includes(inputValue.trim())) {
+        return;
+      }
       dispatch(addVariantValue({ type, value: inputValue.trim() }));
       setInputValue("");
-    } else if (
+    }
+
+    if (
       event.key === "Backspace" &&
       inputValue.trim() === "" &&
       values?.length > 0
     ) {
-      dispatch(
-        removeVariantValue({ type, value: values[values.length - 1].trim() })
-      );
+      dispatch(removeVariantValue({ type, value: values[values.length - 1] }));
       setInputValue("");
     }
   };
 
   const handleInputBlur = () => {
     if (inputValue.trim() === "") return;
-    if (values?.includes(inputValue.trim())) return;
+    if (values?.includes(inputValue.trim())) {
+      return;
+    }
     dispatch(addVariantValue({ type, value: inputValue.trim() }));
     setInputValue("");
   };
-
-  useEffect(() => {
-    if (type === primaryVariantType) {
-      const variantImages = values?.map((item) => ({
-        type,
-        value: item,
-        images: [],
-      }));
-      dispatch(setVariantImages({ variantImages }));
-    }
-  }, [dispatch, primaryVariantType, values, type, variants]);
 
   return (
     <Box className="variant-option">
@@ -81,7 +92,8 @@ const VariantOption = ({ type, values }) => {
           <Checkbox
             checked={primaryVariantType === type}
             onChange={() => {
-              dispatch(setPrimaryVariantType({ primaryVariant: type }));
+              dispatch(setPrimaryVariantType(type));
+              dispatch(generateVariantOptionsTable());
             }}
             className="hover:bg-blue-50"
           />
@@ -117,7 +129,7 @@ const VariantOption = ({ type, values }) => {
               size="small"
               className="px-1 bg-blue-50 hover:bg-blue-100"
               onDelete={() =>
-                dispatch(removeVariantValue({ type, value: chip.trim() }))
+                dispatch(removeVariantValue({ type, value: chip }))
               }
             />
           ))}
@@ -125,13 +137,14 @@ const VariantOption = ({ type, values }) => {
             size="small"
             variant="standard"
             value={inputValue}
-            onChange={(event) => setInputValue(event.target.value)}
+            onChange={handleInputChange}
             onKeyDown={handleInputKeyDown}
             onBlur={handleInputBlur}
             className="flex-grow min-w-[50px] mt-1"
             placeholder={values?.length === 0 ? "Enter values" : ""}
             InputProps={{
               disableUnderline: true,
+              className: "px-2",
             }}
           />
         </Box>
@@ -174,7 +187,7 @@ const VariantOption = ({ type, values }) => {
                       <img
                         src={url}
                         alt={`Preview`}
-                        className="w-full h-32 object-contain rounded-lg"
+                        className="w-full h-32 object-cover rounded-lg"
                       />
                       <button
                         className="absolute -top-3 -right-3 w-6 h-6 flex items-center justify-center bg-gray-500 rounded-full cursor-pointer hover:bg-gray-500/60"
@@ -230,10 +243,29 @@ const VariantOption = ({ type, values }) => {
 };
 
 const ProdVariants = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const variants = useSelector((state) => state.variants.variants);
-  // const hasVariants = useSelector((state) => state.product.hasVariants);
-  // if (!hasVariants) return null;
+  const hasVariants = useSelector((state) => state.product.hasVariants);
+  const categories = useSelector((state) => state.product.categories);
+
+  useEffect(() => {
+    const primaryCategory =
+      categories[1]?.name?.toUpperCase() ||
+      categories[0]?.name?.toUpperCase() ||
+      "IPHONE";
+
+    const productVariant = PRODUCT_VARIANTS.find(
+      (item) => item.name.toUpperCase() === primaryCategory
+    );
+
+    if (productVariant?.default_variants) {
+      dispatch(setInitialVariants(productVariant.default_variants));
+      dispatch(setPrimaryVariantType(productVariant.default_variants[0].type));
+      // dispatch(generateVariantOptionsTable());
+    }
+  }, [categories, dispatch]);
+
+  if (!hasVariants) return null;
 
   return (
     <Box className="w-full rounded-lg mb-2 px-5">

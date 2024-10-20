@@ -6,6 +6,7 @@ import { Button, TextField } from "@mui/material";
 import { RichTextEditor, Link } from "@mantine/tiptap";
 import { BubbleMenu, useEditor } from "@tiptap/react";
 import { useDispatch, useSelector } from "react-redux";
+import { setProductField } from "../../../../store/slices/productSlice";
 
 import "@mantine/core/styles.css";
 import "@mantine/tiptap/styles.css";
@@ -16,7 +17,6 @@ import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import SubScript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
-import { setProductField } from "../../../../store/slices/productSlice";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -30,37 +30,13 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const colorList = [
-  "#25262b",
-  "#868e96",
-  "#fa5252",
-  "#e64980",
-  "#be4bdb",
-  "#7950f2",
-  "#4c6ef5",
-  "#228be6",
-  "#15aabf",
-  "#12b886",
-  "#40c057",
-  "#82c91e",
-  "#fab005",
-  "#fd7e14",
-];
-
 const ProdDescription = () => {
   const dispatch = useDispatch();
-  const name = useSelector((state) => state.product.name);
   const description = useSelector((state) => state.product.description);
+  const name = useSelector((state) => state.product.name);
+
   const fileInputRef = useRef(null);
   const editor = useEditor({
-    content: description,
-    onUpdate: ({ editor: _editor }) =>
-      dispatch(
-        setProductField({
-          field: "descriptions",
-          value: _editor.getHTML(),
-        })
-      ),
     extensions: [
       StarterKit,
       Underline,
@@ -72,6 +48,12 @@ const ProdDescription = () => {
       TextStyle,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
+    content: description,
+    onUpdate: ({ editor: _editor }) => {
+      dispatch(
+        setProductField({ field: "description", value: _editor.getHTML() })
+      );
+    },
   });
 
   const handleParseTxtFile = (event) => {
@@ -89,15 +71,14 @@ const ProdDescription = () => {
           .replace(/'/g, "&#039;")
           .replace(/\n/g, "<br>")
           .replace(/ {2,}/g, (match) => "&nbsp;".repeat(match.length));
-        dispatch(
-          setProductField({
-            field: "descriptions",
-            value: htmlContent,
-          })
-        ),
-          editor?.commands.setContent(htmlContent);
-        if (fileInputRef.current) fileInputRef.current.value = "";
+
+        dispatch(setProductField({ field: "description", value: htmlContent }));
+        editor?.commands.setContent(htmlContent);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
       };
+
       reader.readAsText(file);
     } else {
       alert("Please upload a valid .txt file.");
@@ -122,10 +103,7 @@ const ProdDescription = () => {
             value={name}
             onChange={(e) =>
               dispatch(
-                setProductField({
-                  field: "name",
-                  value: e.target.value,
-                })
+                setProductField({ field: "name", value: e.target.value })
               )
             }
           />
@@ -167,14 +145,33 @@ const ProdDescription = () => {
             }}
           >
             <RichTextEditor.Toolbar>
-              <RichTextEditor.ColorPicker colors={colorList} />
+              <RichTextEditor.ColorPicker
+                colors={[
+                  "#25262b",
+                  "#868e96",
+                  "#fa5252",
+                  "#e64980",
+                  "#be4bdb",
+                  "#7950f2",
+                  "#4c6ef5",
+                  "#228be6",
+                  "#15aabf",
+                  "#12b886",
+                  "#40c057",
+                  "#82c91e",
+                  "#fab005",
+                  "#fd7e14",
+                ]}
+              />
 
               <RichTextEditor.ControlsGroup>
                 <RichTextEditor.Bold />
                 <RichTextEditor.Italic />
                 <RichTextEditor.Underline />
                 <RichTextEditor.Strikethrough />
+                {/* <RichTextEditor.ClearFormatting /> */}
                 <RichTextEditor.Highlight />
+                {/* <RichTextEditor.Code /> */}
               </RichTextEditor.ControlsGroup>
 
               <RichTextEditor.ControlsGroup>
@@ -184,6 +181,15 @@ const ProdDescription = () => {
                 <RichTextEditor.H4 />
               </RichTextEditor.ControlsGroup>
 
+              {/* <RichTextEditor.ControlsGroup>
+                <RichTextEditor.Blockquote />
+                <RichTextEditor.Hr />
+                <RichTextEditor.BulletList />
+                <RichTextEditor.OrderedList />
+                <RichTextEditor.Subscript />
+                <RichTextEditor.Superscript />
+              </RichTextEditor.ControlsGroup> */}
+
               <RichTextEditor.ControlsGroup>
                 <RichTextEditor.Link />
                 <RichTextEditor.Unlink />
@@ -192,8 +198,14 @@ const ProdDescription = () => {
               <RichTextEditor.ControlsGroup>
                 <RichTextEditor.AlignLeft />
                 <RichTextEditor.AlignCenter />
+                {/* <RichTextEditor.AlignJustify /> */}
                 <RichTextEditor.AlignRight />
               </RichTextEditor.ControlsGroup>
+
+              {/* <RichTextEditor.ControlsGroup>
+                <RichTextEditor.Undo />
+                <RichTextEditor.Redo />
+              </RichTextEditor.ControlsGroup> */}
             </RichTextEditor.Toolbar>
 
             {editor && (
