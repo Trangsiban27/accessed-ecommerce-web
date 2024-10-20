@@ -1,13 +1,15 @@
 // categoriesService.js
-import { PRODUCT_CATEGORIES } from "../constants/constant_category";
-
-let server_response = PRODUCT_CATEGORIES;
+import categories from "../pages/(seller)/add-product/dummy_data/constant_categories_lv1.json";
+import sub_categories from "../pages/(seller)/add-product/dummy_data/constant_categories_lv2.json";
 
 export const getCagegories = () => {
-  return server_response;
+  return categories;
 };
 
 export const getSubCategoriesById = (id) => {
-  const categoryIndex = server_response.findIndex((item) => item.id === id);
-  return server_response[categoryIndex]?.subCategories || [];
+  if (categories.data.find(item => item.id === id)?.children?.length) {
+    console.log("get categories by id", id);
+    return sub_categories;
+  }
+  return {data: []}
 };

@@ -7,35 +7,60 @@ import {
   OutlinedInput,
   Select,
 } from "@mui/material";
-import { getCagegories } from "../../../../services/categoriesService";
+import { getCagegories, getSubCategoriesById } from "../../../../services/categoriesService";
 import { setProductField } from "../../../../store/slices/productSlice";
-import { PRODUCT_CATEGORIES } from "../../../../constants/constant_category";
 
 const ProdCategory = () => {
   const dispatch = useDispatch();
-  const categories = useSelector((state) => state.product.categories);
+  const categoryIds = useSelector((state) => state.product.categoryIds);
   const [mainCategories, setMainCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
 
-  const getSubCategoriesById = (id) => {
-    const categoryIndex = PRODUCT_CATEGORIES.findIndex(
-      (item) => item.id === id
-    );
-    return PRODUCT_CATEGORIES[categoryIndex]?.subCategories || [];
-  };
-
   useEffect(() => {
     const response = getCagegories();
-    setMainCategories(response);
+    if (response?.data) setMainCategories(response.data);
   }, []);
 
   useEffect(() => {
-    if (!categories[0]) return;
-    const subCategories = getSubCategoriesById(categories[0].id);
-    setSubCategories(subCategories);
-  }, [categories]);
+    if (!categoryIds[0]) return;
+    const response = getSubCategoriesById(categoryIds[0]);
+    if (response?.data) setSubCategories(response?.data);
+  }, [categoryIds]);
 
-  console.log(JSON.stringify(categories, null, 2));
+  useEffect(() => {
+    if (categoryIds.length === 0) return;
+  
+    const getCategoryData = () => {
+      if (categoryIds.length === 1) {
+        return mainCategories.find(item => item.id === categoryIds[0]);
+      }
+      if (categoryIds.length === 2) {
+        return subCategories.find(item => item.id === categoryIds[1]);
+      }
+      return null;
+    };
+  
+    const createInitialSpecifications = (specificationOptions) => 
+      specificationOptions?.map(item => ({
+        key: item,
+        value: ""
+      }));
+  
+    const createInitialVariants = (variantOptions) =>
+      variantOptions?.map(item => ({
+        type: item,
+        values: ""
+      }));
+  
+    const category = getCategoryData();
+    if (!category) return;
+  
+    const initialSpecifications = createInitialSpecifications(category.specificationOptions);
+    const initialVariants = createInitialVariants(category.variantOptions);
+    dispatch(setProductField({ field: "specifications", value: initialSpecifications }));
+    dispatch(setProductField({ field: "variants", value: initialVariants }));
+  
+  }, [categoryIds, mainCategories, subCategories, dispatch]);
 
   return (
     <div className="w-full rounded-lg mb-2 p-3">
@@ -52,12 +77,12 @@ const ProdCategory = () => {
             <Select
               id="demo-multiple-chip"
               inputProps={{ "aria-label": "Without label" }}
-              value={categories[0] || ""}
+              value={categoryIds[0] || ""}
               onChange={(e) =>
                 dispatch(
                   setProductField({
-                    field: "categories",
-                    value: [e.target.value],
+                    field: "categoryIds",
+                    value: [e.target.value.id],
                   })
                 )
               }
@@ -75,7 +100,7 @@ const ProdCategory = () => {
               renderValue={() => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                   <span className="text-sm font-medium">
-                    {categories[0]?.name}
+                    {mainCategories.find(item => item.id === categoryIds[0])?.name}
                   </span>
                 </Box>
               )}
@@ -91,12 +116,12 @@ const ProdCategory = () => {
 
         <div className="mt-2">
           <p className="my-0 mb-1 text-[#212020] text-sm text-start">
-            {categories[0]?.name || "Product"}
+            {mainCategories.find(item => item.id === categoryIds[0])?.name || "Product"}
             {"'s"} categories
           </p>
           <FormControl className="w-full relative">
             {subCategories?.length === 0 && (
-              <div className="absolute z-100 cursor-not-allowed top-0 right-0 left-0 bottom-0 flex items-center justify-center bg-slate-100 text-sm font-light text-gray-300">
+              <div className="absolute z-100 cursor-not-allowed top-0 right-0 left-0 bottom-0 flex items-center justify-start px-3 bg-slate-100 text-sm font-light text-gray-300">
                 No sub-category
               </div>
             )}
@@ -105,12 +130,12 @@ const ProdCategory = () => {
               displayEmpty
               id="demo-multiple-chip"
               inputProps={{ "aria-label": "Without label" }}
-              value={categories[1] || ""}
+              value={categoryIds[1] || ""}
               onChange={(e) =>
                 dispatch(
                   setProductField({
-                    field: "categories",
-                    value: [categories[0], e.target.value],
+                    field: "categoryIds",
+                    value: [categoryIds[0], e.target.value.id],
                   })
                 )
               }
@@ -127,7 +152,7 @@ const ProdCategory = () => {
               renderValue={() => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                   <span className="text-sm font-medium">
-                    {categories[1]?.name}
+                    {subCategories.find(item => item.id === categoryIds[1])?.name}
                   </span>
                 </Box>
               )}

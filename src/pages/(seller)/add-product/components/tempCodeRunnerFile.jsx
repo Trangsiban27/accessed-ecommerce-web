@@ -1,0 +1,1 @@
+  console.log(productImages, primaryImage);

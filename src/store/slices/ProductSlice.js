@@ -23,9 +23,10 @@ const initialState = {
   primaryImage: "",
   productImages: [],
   collections: [],
-  categories: [],
-  specifications: {},
+  categoryIds: [],
+  specifications: [],
 };
+
 
 export const productSlice = createSlice({
   name: "product",
@@ -37,17 +38,14 @@ export const productSlice = createSlice({
     },
 
     setSpecificationField: (state, action) => {
-      const { field, value } = action.payload;
-      state.specifications[field] = value;
-    },
-
-    setPrimaryImage: (state, action) => {
-      state.primaryImage = action.payload;
+      const { key, value } = action.payload;
+      state.specifications.find(item => item.key === key).value = value;
     },
 
     addProductImages: (state, action) => {
       const { images } = action.payload;
       state.productImages = [...state.productImages, ...images];
+      if (state.primaryImage === "") state.primaryImage = state.productImages[0];
     },
 
     removeProductImage: (state, action) => {
@@ -55,11 +53,21 @@ export const productSlice = createSlice({
       state.productImages = state.productImages.filter((img) => img !== image);
     },
 
-    replaceProductImage: (state, action) => {
-      const { image } = action.payload;
+    setPrimaryImage: (state, action) => {
+      state.primaryImage = action.payload;
+    },
+
+    removePrimaryImage: (state) => {
+      state.productImages = state.productImages.filter((img) => img !== state.primaryImage);
+      if(state.productImages.length) state.primaryImage = state.productImages[0]
+    },
+
+    replacePrimaryImage: (state, action) => {
+      const { new_image } = action.payload;
       state.productImages = state.productImages.map((img) =>
-        img === state.primaryImage ? image : img
+        img === state.primaryImage ? new_image : img
       );
+      state.primaryImage = new_image;
     },
 
     resetProductData: () => initialState,
@@ -71,7 +79,8 @@ export const {
   setSpecificationField,
   addProductImages,
   removeProductImage,
-  replaceProductImage,
+  removePrimaryImage,
+  replacePrimaryImage,
   resetProductData,
   setPrimaryImage,
 } = productSlice.actions;

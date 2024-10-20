@@ -1,7 +1,7 @@
-import { COLLECTIONS } from "../constants/constant_collections";
-
-let server_response = COLLECTIONS;
+import collections_data from "../pages/(seller)/add-product/dummy_data/constant_collections.json";
 
 export function getCollections() {
-  return server_response;
+  return collections_data;
 }
+
+

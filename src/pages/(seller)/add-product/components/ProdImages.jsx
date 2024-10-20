@@ -1,7 +1,8 @@
 import {
   addProductImages,
+  removePrimaryImage,
   removeProductImage,
-  replaceProductImage,
+  replacePrimaryImage,
   setProductField,
 } from "../../../../store/slices/productSlice";
 import { useRef, useState } from "react";
@@ -60,22 +61,22 @@ const ProdImages = () => {
     dispatch(removeProductImage({ image: url }));
   };
 
-  const handleReplaceClick = () => {
+  const handleReplacePrimaryImage = () => {
     const inputElement = document.createElement("input");
     inputElement.type = "file";
     inputElement.accept = "image/*";
     inputElement.onchange = (event) => {
       if (event.target && event.target.files) {
         const file = event.target.files[0];
-        dispatch(replaceProductImage({ image: URL.createObjectURL(file) }));
+        dispatch(replacePrimaryImage({ new_image: URL.createObjectURL(file) }));
       }
     };
     inputElement.click();
   };
 
-  const handleRemoveClick = () => {
-    dispatch(removeProductImage({ image: primaryImage }));
-  };
+  const handleRemovePrimaryImage = () => {
+    dispatch(removePrimaryImage())
+  }
 
   return (
     <div className={`w-full rounded-lg mb-2 p-3`}>
@@ -231,14 +232,14 @@ const ProdImages = () => {
               <Button
                 className="text-white"
                 variant="contained"
-                onClick={() => handleReplaceClick()}
+                onClick={() => handleReplacePrimaryImage()}
               >
                 Replace
               </Button>
               <Button
                 className="text-white"
                 variant="contained"
-                onClick={handleRemoveClick}
+                onClick={() => handleRemovePrimaryImage()}
               >
                 Remove
               </Button>

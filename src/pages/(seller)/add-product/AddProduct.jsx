@@ -1,15 +1,15 @@
-import { MantineProvider } from "@mantine/core";
-import ProdDescription from "./components/ProdDescription";
+// import { MantineProvider } from "@mantine/core";
+// import ProdDescription from "./components/ProdDescription";
 import ProdCategory from "./components/ProdCategory";
-import ProdPackages from "./components/ProdPackages";
-import ProdPricing from "./components/ProdPricing";
-import ProdBranchFeature from "./components/ProdBranchFeature";
-import ProdInventory from "./components/ProdInventory";
-import ProdSellingType from "./components/ProdSellingType";
-import ProdImages from "./components/ProdImages";
+// import ProdPackages from "./components/ProdPackages";
+// import ProdPricing from "./components/ProdPricing";
+// import ProdBranchFeature from "./components/ProdBranchFeature";
+// import ProdInventory from "./components/ProdInventory";
+// import ProdSellingType from "./components/ProdSellingType";
+// import ProdImages from "./components/ProdImages";
 import ProdSpecification from "./components/ProdSpecification";
-import ProdVariants from "./components/ProdVariants";
-import ProdVariantTable from "./components/ProdVariantTable";
+// import ProdVariants from "./components/ProdVariants";
+// import ProdVariantTable from "./components/ProdVariantTable";
 
 const AddProduct = () => {
   return (
@@ -18,22 +18,22 @@ const AddProduct = () => {
         <div className="w-full flex items-start justify-center p-2 gap-3">
           <div className="w-1/2 flex flex-col items-center justify-start">
             <ProdCategory />
-            <MantineProvider>
+            {/* <MantineProvider>
               <ProdDescription />
             </MantineProvider>
             <ProdPackages />
-            <ProdPricing />
+            <ProdPricing /> */}
           </div>
           <div className="w-1/2 flex flex-col items-center justify-start">
-            <ProdBranchFeature />
+            {/* <ProdBranchFeature />
             <ProdInventory />
             <ProdSellingType />
-            <ProdImages />
+            <ProdImages /> */}
             <ProdSpecification />
           </div>
         </div>
-        <ProdVariants />
-        <ProdVariantTable />
+        {/* <ProdVariants />
+        <ProdVariantTable /> */}
       </div>
     </div>
   );
