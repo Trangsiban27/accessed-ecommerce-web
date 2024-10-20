@@ -23,7 +23,7 @@ const ProdVariantTable = () => {
   const primaryVariantType = useSelector(
     (state) => state.variants.primaryVariantType
   );
-  const hasVariants = useSelector((state) => state.product.hasVariants);
+
   const variantOptionsTable = useSelector(
     (state) => state.variants.variantOptionsTable
   );
@@ -43,9 +43,7 @@ const ProdVariantTable = () => {
     dispatch(generateVariantOptionsTable());
   }, [dispatch, variants, primaryVariantType]);
 
-  console.log(JSON.stringify(variants, null, 2));
-
-  if (!hasVariants) return <></>;
+  if (variantOptionsTable.length === 0) return <></>
 
   return (
     <div className="w-full rounded-lg p-5">
@@ -131,7 +129,9 @@ const ProdVariantTable = () => {
           Apply all
         </Button>
       </Box>
+
       <Divider className="my-5" />
+
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
