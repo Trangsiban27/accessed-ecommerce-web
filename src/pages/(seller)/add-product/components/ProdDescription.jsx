@@ -5,7 +5,6 @@ import { IconUpload } from "@tabler/icons-react";
 import { Button, TextField } from "@mui/material";
 import { RichTextEditor, Link } from "@mantine/tiptap";
 import { BubbleMenu, useEditor } from "@tiptap/react";
-import { useDispatch, useSelector } from "react-redux";
 
 import "@mantine/core/styles.css";
 import "@mantine/tiptap/styles.css";
@@ -16,7 +15,7 @@ import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import SubScript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
-import { setProductField } from "../../../../store/slices/productSlice";
+import { Controller, useFormContext } from "react-hook-form";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -48,19 +47,15 @@ const colorList = [
 ];
 
 const ProdDescription = () => {
-  const dispatch = useDispatch();
-  const name = useSelector((state) => state.product.name);
-  const description = useSelector((state) => state.product.description);
   const fileInputRef = useRef(null);
+  const {
+    control,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useFormContext();
+
   const editor = useEditor({
-    content: description,
-    onUpdate: ({ editor: _editor }) =>
-      dispatch(
-        setProductField({
-          field: "descriptions",
-          value: _editor.getHTML(),
-        })
-      ),
     extensions: [
       StarterKit,
       Underline,
@@ -72,6 +67,10 @@ const ProdDescription = () => {
       TextStyle,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
+    content: getValues("description"),
+    onUpdate: ({ editor: _editor }) => {
+      setValue("description", _editor.getHTML());
+    },
   });
 
   const handleParseTxtFile = (event) => {
@@ -80,7 +79,6 @@ const ProdDescription = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
         const content = e.target?.result;
-
         const htmlContent = content
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
@@ -89,12 +87,7 @@ const ProdDescription = () => {
           .replace(/'/g, "&#039;")
           .replace(/\n/g, "<br>")
           .replace(/ {2,}/g, (match) => "&nbsp;".repeat(match.length));
-        dispatch(
-          setProductField({
-            field: "descriptions",
-            value: htmlContent,
-          })
-        ),
+        setValue("description", htmlContent),
           editor?.commands.setContent(htmlContent);
         if (fileInputRef.current) fileInputRef.current.value = "";
       };
@@ -114,20 +107,20 @@ const ProdDescription = () => {
           <p className="my-0 mb-1 text-[#212020] text-sm text-start">
             Product name <span className="text-red-600"> *</span>
           </p>
-          <TextField
-            variant="outlined"
-            fullWidth
-            required
-            size="small"
-            value={name}
-            onChange={(e) =>
-              dispatch(
-                setProductField({
-                  field: "name",
-                  value: e.target.value,
-                })
-              )
-            }
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                error={!!errors.name}
+                helperText={errors.name?.message}
+                variant="outlined"
+                required
+                size="small"
+              />
+            )}
           />
         </div>
         <div>

@@ -27,7 +27,7 @@ const ProductSpecification = ({ specifications = [] }) => {
                 <p className="w-[10%] text-start font-semibold">
                   {capitalizeFirstLetter(item.name)}:{" "}
                 </p>
-                <span className="w-full w-[90%] text-ellipsis overflow-hidden">
+                <span className="w-[90%] text-ellipsis overflow-hidden">
                   {item.value}
                 </span>
               </div>

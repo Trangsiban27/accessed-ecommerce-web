@@ -15,7 +15,7 @@ import {
   generateVariantOptionsTable,
   updateAllVariantOptionBaseValues,
   updateVariantOptionField,
-} from "../../../../store/slices/variantsSlice";
+} from "../../../../store/slices/VariantsSlice";
 
 const ProdVariantTable = () => {
   const dispatch = useDispatch();
@@ -44,7 +44,8 @@ const ProdVariantTable = () => {
     dispatch(generateVariantOptionsTable());
   }, [dispatch, variants, primaryVariantType]);
 
-  if (variantOptionsTable.length === 0 || categoryIds.length === 0) return <></>
+  if (variantOptionsTable.length === 0 || categoryIds.length === 0)
+    return <></>;
 
   return (
     <div className="w-full rounded-lg p-5">

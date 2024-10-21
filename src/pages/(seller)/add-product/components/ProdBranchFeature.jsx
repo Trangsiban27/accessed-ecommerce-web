@@ -12,8 +12,6 @@ import { setProductField } from "../../../../store/slices/productSlice";
 import { getBrandNames } from "../../../../services/brandNameService";
 import { useEffect, useState } from "react";
 
-
-
 const ProdBranchFeature = () => {
   const dispatch = useDispatch();
   const brandName = useSelector((state) => state.product.brandName);
@@ -22,10 +20,10 @@ const ProdBranchFeature = () => {
 
   useEffect(() => {
     const response = getBrandNames();
-    const parseBrandName = response.data.map(item => item.name) 
-    setbrandNames(parseBrandName)
-  }, [])
-  
+    const parseBrandName = response.data.map((item) => item.name);
+    setbrandNames(parseBrandName);
+  }, []);
+
   return (
     <div className="w-full rounded-lg mb-2 p-3">
       <p className="font-medium text-lg text-start">Brand and Collections</p>

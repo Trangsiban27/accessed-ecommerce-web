@@ -23,7 +23,7 @@ import {
   removeVariantValue,
   setPrimaryVariantType,
   setVariantImages,
-} from "../../../../store/slices/variantsSlice";
+} from "../../../../store/slices/VariantsSlice";
 
 const VariantOption = ({ type, values }) => {
   const dispatch = useDispatch();
