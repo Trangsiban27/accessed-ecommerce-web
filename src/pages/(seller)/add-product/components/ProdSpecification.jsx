@@ -4,6 +4,7 @@ import {
   TextField,
   Box,
   Grid2,
+  Alert,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
@@ -57,7 +58,18 @@ const ProdSpecification = () => {
     name: "specifications",
   });
 
-  if (fields.length === 0) return <></>;
+  if (fields.length === 0)
+    return (
+      <>
+        <p className="font-medium text-lg text-start mb-3 px-3">
+          Specifications
+        </p>
+        <Alert severity="info" className="mt-4 mx-3">
+          No specifications available. They will be loaded based on the selected
+          product category.
+        </Alert>
+      </>
+    );
 
   const specificationFormData = groupSpecificationForm(fields);
 

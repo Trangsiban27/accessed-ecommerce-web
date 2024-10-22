@@ -5,7 +5,6 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
-  Switch,
   Checkbox,
   TextField,
   Autocomplete,
@@ -86,7 +85,9 @@ const ProdBranchFeature = () => {
                     ))}
                   </Select>
                   {error && (
-                    <span className="text-red-600">{error.message}</span>
+                    <span className="text-red-600 text-start text-sm mt-1">
+                      {error.message}
+                    </span>
                   )}
                 </>
               )}
@@ -96,7 +97,8 @@ const ProdBranchFeature = () => {
 
         <Box className="mt-2">
           <p className="my-0 mb-1 text-[#212020] text-sm text-start">
-            Collections <span className="text-red-600"> *</span>
+            Collections
+            {/* <span className="text-red-600"> *</span> */}
           </p>
           <Controller
             name="collections"
@@ -142,28 +144,6 @@ const ProdBranchFeature = () => {
             )}
           />
         </Box>
-
-        <div className="flex items-center justify-start gap-3 w-1/2">
-          <label>
-            <span
-              aria-label="hasVariants"
-              className="cursor-pointer font-medium"
-            >
-              Have variants?
-            </span>
-          </label>
-          <Controller
-            name="hasVariants"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <Switch
-                checked={value}
-                onChange={(e) => onChange(e.target.checked)}
-                id="hasVariants"
-              />
-            )}
-          />
-        </div>
       </div>
     </div>
   );

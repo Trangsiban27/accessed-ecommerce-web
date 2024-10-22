@@ -23,14 +23,14 @@ export const productSchema = yup.object().shape({
     .required("Tên sản phẩm là bắt buộc")
     .min(3, "Tên sản phẩm phải có ít nhất 3 ký tự"),
 
-  // description: yup
-  //   .string()
-  //   .required("Mô tả sản phẩm là bắt buộc")
-  //   .min(10, "Mô tả phải có ít nhất 10 ký tự"),
+  description: yup
+    .string()
+    .required("Mô tả sản phẩm là bắt buộc")
+    .min(10, "Mô tả phải có ít nhất 10 ký tự"),
 
-  // categoryId: yup.array().of(yup.string()).required("Please select a category"),
+  category: yup.object().required("Please select a category"),
 
-  // brandName: yup.string().required("Tên thương hiệu là bắt buộc"),
+  brandName: yup.string().required("Tên thương hiệu là bắt buộc"),
 
   // sellingType: yup
   //   .string()
@@ -66,14 +66,13 @@ export const productSchema = yup.object().shape({
   //     }
   //   ),
 
-  // quantityAvailable: yup
-  //   .number()
-  //   .integer("Số lượng phải là số nguyên")
-  //   .min(0, "Số lượng không được âm")
-  //   .when("hasVariants", {
-  //     is: false,
-  //     then: (schema) => schema.required("Số lượng là bắt buộc"),
-  //   }),
+  quantityAvailable: yup
+    .integer("Số lượng phải là số nguyên")
+    .min(0, "Số lượng không được âm")
+    .when("hasVariants", {
+      is: false,
+      then: (schema) => schema.required("Số lượng là bắt buộc"),
+    }),
 
   // weight: yup
   //   .number()
@@ -107,7 +106,7 @@ export const productSchema = yup.object().shape({
   //   .of(yup.string())
   //   .min(1, "Phải có ít nhất một ảnh sản phẩm"),
 
-  // collections: yup.array().of(yup.string()),
+  collections: yup.array().of(yup.object()),
 
   // specifications: yup
   //   .array()

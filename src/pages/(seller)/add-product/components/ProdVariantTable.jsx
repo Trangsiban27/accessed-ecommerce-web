@@ -11,6 +11,7 @@ import {
   Button,
   Divider,
   TextField,
+  Alert,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -41,7 +42,21 @@ const ProdVariantTable = () => {
     });
   };
 
-  if (variantOptionsTable?.length === 0) return null;
+  if (variantOptionsTable?.length === 0)
+    return (
+      <div className="w-full rounded-lg p-5">
+        <p className="font-medium text-lg text-start mb-3">
+          Product Variants Table{" "}
+          <span className="text-gray-400 font-normal text-[16px]">
+            (pricing, quantity)
+          </span>
+        </p>
+        <Alert severity="info" className="mt-4">
+          No variant table is currently available. It will be generated based on
+          the {"product's"} variant values
+        </Alert>
+      </div>
+    );
 
   return (
     <div className="w-full rounded-lg p-5">
@@ -138,7 +153,7 @@ const ProdVariantTable = () => {
               {variants.map((item, index) => (
                 <StyledTableCell
                   className="uppercase"
-                  align="center"
+                  align="start"
                   key={index}
                 >
                   {item.type}
@@ -185,7 +200,7 @@ const ProdVariantTable = () => {
                         size="small"
                         className="max-w-[150px]"
                         value={field.value === 0 ? "" : field.value}
-                        // onChange={(e) => field.onChange(e.target.value)}
+                        onChange={(e) => field.onChange(e.target.value)}
                         InputLabelProps={{ shrink: true }}
                       />
                     )}

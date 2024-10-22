@@ -2,7 +2,7 @@ import { Color } from "@tiptap/extension-color";
 import { useRef } from "react";
 import { styled } from "@mui/material/styles";
 import { IconUpload } from "@tabler/icons-react";
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import { RichTextEditor, Link } from "@mantine/tiptap";
 import { BubbleMenu, useEditor } from "@tiptap/react";
 
@@ -15,7 +15,7 @@ import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import SubScript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
-import { Controller, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -49,7 +49,6 @@ const colorList = [
 const ProdDescription = () => {
   const fileInputRef = useRef(null);
   const {
-    control,
     setValue,
     getValues,
     formState: { errors },
@@ -104,30 +103,11 @@ const ProdDescription = () => {
       </p>
       <div className="border-[2px] border-solid mt-3 border-gray-200 shadow-sm rounded-lg p-5 h-full flex flex-col gap-3">
         <div>
-          <p className="my-0 mb-1 text-[#212020] text-sm text-start">
-            Product name <span className="text-red-600"> *</span>
-          </p>
-          <Controller
-            name="name"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                fullWidth
-                error={!!errors.name}
-                helperText={errors.name?.message}
-                variant="outlined"
-                required
-                size="small"
-              />
-            )}
-          />
-        </div>
-        <div>
           <div className="flex items-center justify-between gap-3 ">
-            <p className="my-0 pb-1 text-[#212020] text-sm">
+            <p className="my-0 pb-1 text-[#212020] text-md font-semibold">
               Business Description <span className="text-red-600"> *</span>
             </p>
+
             <Button
               component="label"
               role={undefined}
@@ -202,6 +182,11 @@ const ProdDescription = () => {
 
             <RichTextEditor.Content />
           </RichTextEditor>
+          {errors.description && (
+            <p className="text-sm text-start text-red-600 mt-1">
+              {errors.description.message}
+            </p>
+          )}
         </div>
       </div>
     </div>

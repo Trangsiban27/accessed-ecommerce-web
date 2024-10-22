@@ -78,13 +78,13 @@ const ProdVariantImages = () => {
   };
 
   return (
-    <Box className="mt-4 w-[80%] mx-auto p-4 bg-gray-50 rounded-lg mb-4">
+    <Box className="mt-4 w-full mx-auto p-4 bg-gray-50 rounded-lg mb-4">
       <div className="space-y-3 pb-10 image-section transition ease-in-out delay-500">
         {variantImages.map((item, itemIndex) => (
           <div key={item.value} className="space-y-2">
-            <p className="text-start">
+            <p className="text-start capitalize">
               <span className="font-bold uppercase">{item.type}</span>:{" "}
-              {item.value}
+              <span className="pl-2">{item.value}</span>
             </p>
             <div className="grid grid-cols-5 gap-4">
               {item.images.map((url, imageIndex) => (

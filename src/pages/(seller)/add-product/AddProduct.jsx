@@ -14,6 +14,7 @@ import {
   ProdPricing,
   ProdSellingType,
   ProdSpecification,
+  ProductName,
   ProdVariantImages,
   ProdVariants,
   ProdVariantTable,
@@ -30,7 +31,7 @@ const AddProduct = () => {
     defaultValues: productModel,
     mode: "onSubmit",
   });
-  const [tabIndex, setTabIndex] = useState(1);
+  const [tabIndex, setTabIndex] = useState("1");
   const handleChangeTabIndex = (e, new_value) => setTabIndex(new_value);
 
   const onSubmit = async (data) => {
@@ -53,64 +54,64 @@ const AddProduct = () => {
                 <TabList
                   onChange={handleChangeTabIndex}
                   aria-label="lab API tabs example"
+                  className="relative"
                 >
                   <Tab label="Basic Info" value="1" />
                   <Tab label="Details Info" value="2" />
                   <Tab label="Product Variant" value="3" />
                   <Tab label="Product Images" value="4" />
                   <Tab label="Shipping" value="5" />
+                  <div className="flex items-center justify-end gap-3 px-4 my-[30px] mb-0 absolute z-50 bottom-0 -right-3">
+                    <Button
+                      className="rounded-md capitalize"
+                      variant="outlined"
+                      onClick={() => methods.reset()}
+                      type="button"
+                    >
+                      Discard
+                    </Button>
+                    <Button
+                      className="rounded-md capitalize"
+                      variant="contained"
+                      type="submit"
+                    >
+                      {methods.formState.isSubmitting
+                        ? "Adding..."
+                        : "Create Product"}
+                    </Button>
+                  </div>
                 </TabList>
               </Box>
-              <TabPanel value="1">
+              <TabPanel value="1" className="w-4/5">
+                <ProductName />
                 <div className="w-full flex items-start justify-center gap-3">
                   <div className="w-1/2 flex flex-col items-center justify-start gap-4">
-                    <ProdCategory />
-                    <ProdPricing />
+                    <ProdCategory /> <ProdSellingType />
                   </div>
                   <div className="w-1/2 flex flex-col items-center justify-start gap-4">
-                    <ProdBranchCollections />
-                    <ProdSellingType />
+                    <ProdBranchCollections /> <ProdPricing />
                   </div>
                 </div>
               </TabPanel>
-              <TabPanel value="2">
+              <TabPanel value="2" className="w-4/5">
                 <MantineProvider>
                   <ProdDescription />
                 </MantineProvider>
                 <ProdSpecification />
               </TabPanel>
-              <TabPanel value="3">
+              <TabPanel value="3" className="w-4/5">
                 <ProdVariants />
                 <ProdVariantTable />
               </TabPanel>
-              <TabPanel value="4">
+              <TabPanel value="4" className="w-4/5">
                 <ProdImages />
                 <ProdVariantImages />
               </TabPanel>
-              <TabPanel value="5">
+              <TabPanel value="5" className="w-4/5">
                 <ProdInventory />
                 <ProdPackages />
               </TabPanel>
             </TabContext>
-
-            {/* Action Buttons */}
-            <div className="w-full flex items-center justify-end gap-3 px-4 my-[30px] mb-[10px]">
-              <Button
-                className="rounded-md capitalize"
-                variant="outlined"
-                onClick={() => methods.reset()}
-                type="button"
-              >
-                Discard
-              </Button>
-              <Button
-                className="rounded-md capitalize"
-                variant="contained"
-                type="submit"
-              >
-                {methods.formState.isSubmitting ? "Adding..." : "Add Product"}
-              </Button>
-            </div>
           </div>
         </div>
       </form>

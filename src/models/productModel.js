@@ -1,9 +1,9 @@
 export const productModel = {
   name: "",
   description: "",
-  category: "",
   specifications: [],
-  subCategory: "",
+  category: null,
+  subCategory: null,
   variants: [],
   primaryVariantType: "",
   width: null,

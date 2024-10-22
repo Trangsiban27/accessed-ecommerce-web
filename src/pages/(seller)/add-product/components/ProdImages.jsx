@@ -77,8 +77,8 @@ const ProdImages = () => {
   };
 
   return (
-    <div className={`w-[80%] mx-auto rounded-lg mb-2 p-3`}>
-      <div className="flex items-center justify-between">
+    <div className={`w-full mx-auto rounded-lg mb-2 p-3`}>
+      <div className="flex w-[80%] items-center justify-between">
         <p className="font-medium text-lg">
           Product images <span className="text-red-600"> * </span>
           <span className="text-blue-700 text-sm">

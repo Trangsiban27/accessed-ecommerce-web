@@ -13,7 +13,7 @@ const ProdSellingType = () => {
       <p className="font-medium text-lg text-start">
         Selling Type <span className="text-red-600"> *</span>
       </p>
-      <div className="border-[2px] border-solid mt-3 border-gray-200 shadow-sm rounded-lg p-5 py-2 h-full flex gap-3 text-sm">
+      <div className="border-[2px] border-solid mt-3 border-gray-200 shadow-sm rounded-lg p-5 py-2 pb-5 h-full flex gap-3 text-sm">
         <Controller
           name="sellingType"
           control={control}

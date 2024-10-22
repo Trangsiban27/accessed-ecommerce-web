@@ -13,6 +13,7 @@ import {
   OutlinedInput,
   Select,
   FormHelperText,
+  Switch,
 } from "@mui/material";
 
 const createInitialSpecifications = (specificationOptions) =>
@@ -87,6 +88,8 @@ const ProdCategory = () => {
                   id="main-category-select"
                   input={<OutlinedInput />}
                   displayEmpty
+                  error={!!errors.category}
+                  helperText={errors.name?.category}
                   renderValue={(selected) => (
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                       <span className="text-sm font-medium">
@@ -104,8 +107,10 @@ const ProdCategory = () => {
                     </MenuItem>
                   ))}
                 </Select>
-                {errors.mainCategory && (
-                  <FormHelperText>{errors.mainCategory.message}</FormHelperText>
+                {errors.category && (
+                  <p className="text-red-600 text-start text-sm my-1">
+                    {errors.category.message}
+                  </p>
                 )}
               </FormControl>
             )}
@@ -158,6 +163,28 @@ const ProdCategory = () => {
                   <FormHelperText>{errors.subCategory.message}</FormHelperText>
                 )}
               </FormControl>
+            )}
+          />
+        </div>
+
+        <div className="flex items-center justify-start gap-3 w-1/2">
+          <label>
+            <span
+              aria-label="hasVariants"
+              className="cursor-pointer font-medium"
+            >
+              Have variants?
+            </span>
+          </label>
+          <Controller
+            name="hasVariants"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Switch
+                checked={value}
+                onChange={(e) => onChange(e.target.checked)}
+                id="hasVariants"
+              />
             )}
           />
         </div>

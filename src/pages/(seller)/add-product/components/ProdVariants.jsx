@@ -14,6 +14,7 @@ import {
   Checkbox,
   InputBase,
   Alert,
+  Switch,
 } from "@mui/material";
 
 import PropTypes from "prop-types";
@@ -66,7 +67,7 @@ const VariantOption = ({ index }) => {
 
   return (
     <Box className="variant-option">
-      <Box className="flex items-center mb-2">
+      <Box className="flex items-center mb-4 mt-0">
         <Box className="w-[150px] flex items-center">
           <Controller
             name="primaryVariantType"
@@ -140,8 +141,10 @@ const VariantOption = ({ index }) => {
             }}
           />
         </Box>
+        <Box className="w-[100px]">
+          <Switch defaultChecked />
+        </Box>
       </Box>
-
       <Divider />
     </Box>
   );
@@ -176,9 +179,7 @@ const ProdVariants = () => {
           <p className="w-full my-1 text-start font-medium mr-[30px]">
             Variant values
           </p>
-          {/* <p className="w-[250px] text-start my-1 font-medium px-2">
-            Variant Images
-          </p> */}
+          <p className="w-[100px] text-center my-1 font-medium px-2">Active</p>
         </div>
 
         {fields.length > 0 ? (
