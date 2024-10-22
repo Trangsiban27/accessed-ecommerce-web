@@ -77,7 +77,7 @@ const ProdImages = () => {
   };
 
   return (
-    <div className={`w-full rounded-lg mb-2 p-3`}>
+    <div className={`w-[80%] mx-auto rounded-lg mb-2 p-3`}>
       <div className="flex items-center justify-between">
         <p className="font-medium text-lg">
           Product images <span className="text-red-600"> * </span>
@@ -176,7 +176,7 @@ const ProdImages = () => {
         </Dialog>
       </div>
 
-      <div className="flex w-full items-center p-2 px-5 rounded-lg border-2 h-[325px] border-solid border-gray-200 gap-3 relative mt-3">
+      <div className="flex items-center p-2 px-5 rounded-lg border-2 h-[400px] w-4/5 border-solid border-gray-200 gap-3 relative mt-3">
         <div
           {...getRootProps()}
           className={`${

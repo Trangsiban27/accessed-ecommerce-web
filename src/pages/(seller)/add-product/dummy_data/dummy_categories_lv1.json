@@ -5,21 +5,9 @@
       "name": "SmartPhone",
       "icon": "https://firebasestorage.googleapis.com/v0/b/ecom-accessed.appspot.com/o/category%2Fcamera-svgrepo-com%20-%20Copy.svg?alt=media",
       "level": 1,
-      "children": [
-        "66ed972e4463802942e6cfaa",
-        "66ed97714463802942e6cfab"
-      ],
-      "variantOptions": [
-        "COLOR",
-        "RAM",
-        "STORAGE"
-      ],
-      "specificationOptions": [
-        "DISPLAY",
-        "RAM",
-        "NETWORK",
-        "OS"
-      ],
+      "children": ["66ed972e4463802942e6cfaa", "66ed97714463802942e6cfab"],
+      "variantOptions": ["COLOR", "RAM", "STORAGE"],
+      "specificationOptions": ["DISPLAY", "RAM", "NETWORK", "OS"],
       "isFeatured": false
     },
     {
@@ -28,19 +16,9 @@
       "icon": "https://firebasestorage.googleapis.com/v0/b/ecom-accessed.appspot.com/o/category%2Fcamera.jpg?alt=media",
       "level": 1,
       "children": [],
-      "variantOptions": [
-        "COLOR",
-        "SIZE",
-        "MATERIAL"
-      ],
-      "specificationOptions": [
-        "WEIGHT",
-        "WIDTH",
-        "HEIGHT", 
-        "ENSU"
-      ],
+      "variantOptions": ["COLOR", "MATERIAL"],
+      "specificationOptions": ["WEIGHT", "WIDTH", "HEIGHT", "ENSU"],
       "isFeatured": false
     }
   ]
 }
- 

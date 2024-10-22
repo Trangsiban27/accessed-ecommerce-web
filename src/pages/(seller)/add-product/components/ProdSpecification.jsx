@@ -66,7 +66,7 @@ const ProdSpecification = () => {
       <p className="font-medium text-lg text-start mb-3">Specifications</p>
       <div className="rounded-lg h-full text-sm">
         {specificationFormData?.map((section, sectionIndex) => (
-          <Accordion key={sectionIndex}>
+          <Accordion key={sectionIndex} defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Box className="flex items-center justify-start p-1 px-0">
                 {GROUP_ICONS[section.group_name] || <IconId size={22} />}

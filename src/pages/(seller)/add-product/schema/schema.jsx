@@ -1,21 +1,21 @@
 import * as yup from "yup";
 
-const SELLING_TYPES = ["ONLINE", "INSTORE", "BOTH"];
-const PACKAGE_UNITS = ["cm", "inch"];
-const UNIT_WEIGHTS = ["kg", "g"];
+// const SELLING_TYPES = ["ONLINE", "INSTORE", "BOTH"];
+// const PACKAGE_UNITS = ["cm", "inch"];
+// const UNIT_WEIGHTS = ["kg", "g"];
 
-const specificationSchema = yup.object().shape({
-  name: yup.string().required("Tên thông số kỹ thuật là bắt buộc"),
-  value: yup.string().required("Giá trị thông số kỹ thuật là bắt buộc"),
-});
+// const specificationSchema = yup.object().shape({
+//   name: yup.string().required("Tên thông số kỹ thuật là bắt buộc"),
+//   value: yup.string().required("Giá trị thông số kỹ thuật là bắt buộc"),
+// });
 
-const variantValueSchema = yup.object().shape({
-  name: yup.string().required("Tên biến thể là bắt buộc"),
-  values: yup
-    .array()
-    .of(yup.string())
-    .min(1, "Cần ít nhất một giá trị cho biến thể"),
-});
+// const variantValueSchema = yup.object().shape({
+//   name: yup.string().required("Tên biến thể là bắt buộc"),
+//   values: yup
+//     .array()
+//     .of(yup.string())
+//     .min(1, "Cần ít nhất một giá trị cho biến thể"),
+// });
 
 export const productSchema = yup.object().shape({
   name: yup

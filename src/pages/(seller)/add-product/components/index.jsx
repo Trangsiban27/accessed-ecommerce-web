@@ -9,3 +9,4 @@ export { default as ProdSellingType } from "./ProdSellingType";
 export { default as ProdSpecification } from "./ProdSpecification";
 export { default as ProdVariants } from "./ProdVariants";
 export { default as ProdVariantTable } from "./ProdVariantTable";
+export { default as ProdVariantImages } from "./ProdVariantImages";
