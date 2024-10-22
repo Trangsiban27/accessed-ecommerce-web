@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { Box } from "@mui/material";
+import { Alert, Box } from "@mui/material";
 import { PlusOne } from "@mui/icons-material";
 
 const ProdVariantImages = () => {
@@ -42,15 +42,12 @@ const ProdVariantImages = () => {
     }
   }, [primaryVariant, setValue, variantImages]);
 
-  useEffect(() => {
-    console.log("Primary Variant:", primaryVariant);
-    console.log("Variant Images:", variantImages);
-  }, [primaryVariant, variantImages]);
-
   if (!primaryVariant) {
     return (
       <Box className="mt-4 w-full p-4 bg-gray-50 rounded-lg mb-4">
-        <p className="text-gray-500">Please select a primary variant first</p>
+        <Alert severity="info" className="mt-4">
+          Please select a category and enter the primary variant values.
+        </Alert>
       </Box>
     );
   }

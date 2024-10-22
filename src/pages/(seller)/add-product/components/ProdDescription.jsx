@@ -183,7 +183,7 @@ const ProdDescription = () => {
             <RichTextEditor.Content />
           </RichTextEditor>
           {errors.description && (
-            <p className="text-sm text-start text-red-600 mt-1">
+            <p className="text-sm text-start text-red-600 mt-1 px-2">
               {errors.description.message}
             </p>
           )}

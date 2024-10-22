@@ -82,7 +82,7 @@ const AddProduct = () => {
                   </div>
                 </TabList>
               </Box>
-              <TabPanel value="1" className="w-4/5">
+              <TabPanel value="1">
                 <ProductName />
                 <div className="w-full flex items-start justify-center gap-3">
                   <div className="w-1/2 flex flex-col items-center justify-start gap-4">
@@ -93,21 +93,21 @@ const AddProduct = () => {
                   </div>
                 </div>
               </TabPanel>
-              <TabPanel value="2" className="w-4/5">
+              <TabPanel value="2">
                 <MantineProvider>
                   <ProdDescription />
                 </MantineProvider>
                 <ProdSpecification />
               </TabPanel>
-              <TabPanel value="3" className="w-4/5">
+              <TabPanel value="3">
                 <ProdVariants />
                 <ProdVariantTable />
               </TabPanel>
-              <TabPanel value="4" className="w-4/5">
+              <TabPanel value="4">
                 <ProdImages />
                 <ProdVariantImages />
               </TabPanel>
-              <TabPanel value="5" className="w-4/5">
+              <TabPanel value="5">
                 <ProdInventory />
                 <ProdPackages />
               </TabPanel>

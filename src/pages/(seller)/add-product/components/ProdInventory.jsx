@@ -26,7 +26,6 @@ const ProdInventory = () => {
                 <TextField
                   {...field}
                   fullWidth
-                  required
                   size="small"
                   type="number"
                   error={!!error}
@@ -37,7 +36,7 @@ const ProdInventory = () => {
                       return;
                     }
                   }}
-                  onChange={(e) => field.onChange(e.target.value)}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
                 />
               )}
             />

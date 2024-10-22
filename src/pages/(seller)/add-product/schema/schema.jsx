@@ -2,7 +2,7 @@ import * as yup from "yup";
 
 // const SELLING_TYPES = ["ONLINE", "INSTORE", "BOTH"];
 // const PACKAGE_UNITS = ["cm", "inch"];
-// const UNIT_WEIGHTS = ["kg", "g"];
+const UNIT_WEIGHTS = ["kg", "g"];
 
 // const specificationSchema = yup.object().shape({
 //   name: yup.string().required("Tên thông số kỹ thuật là bắt buộc"),
@@ -20,75 +20,72 @@ import * as yup from "yup";
 export const productSchema = yup.object().shape({
   name: yup
     .string()
-    .required("Tên sản phẩm là bắt buộc")
-    .min(3, "Tên sản phẩm phải có ít nhất 3 ký tự"),
+    .required("Please enter product name")
+    .min(3, "Product name requires at least 3 characters"),
 
   description: yup
     .string()
-    .required("Mô tả sản phẩm là bắt buộc")
-    .min(10, "Mô tả phải có ít nhất 10 ký tự"),
+    .required("Please enter product description")
+    .min(200, "Description requires at least 200 characters"),
 
   category: yup.object().required("Please select a category"),
 
-  brandName: yup.string().required("Tên thương hiệu là bắt buộc"),
+  brandName: yup.string().required("Please select a brand"),
 
-  // sellingType: yup
-  //   .string()
-  //   .oneOf(SELLING_TYPES, "Loại bán hàng không hợp lệ")
-  //   .required("Loại bán hàng là bắt buộc"),
-
-  // hasVariants: yup.boolean().required(),
-
-  // originalPrice: yup
-  //   .number()
-  //   .positive("Giá gốc phải lớn hơn 0")
-  //   .when("hasVariants", {
-  //     is: false,
-  //     then: (schema) => schema.required("Giá gốc là bắt buộc"),
-  //   }),
-
-  // sellingPrice: yup
-  //   .number()
-  //   .positive("Giá bán phải lớn hơn 0")
-  //   .when("hasVariants", {
-  //     is: false,
-  //     then: (schema) => schema.required("Giá bán là bắt buộc"),
-  //   })
-  //   .test(
-  //     "selling-price",
-  //     "Giá bán không được lớn hơn giá gốc",
-  //     function (value) {
-  //       return (
-  //         !value ||
-  //         !this.parent.originalPrice ||
-  //         value <= this.parent.originalPrice
-  //       );
-  //     }
-  //   ),
-
-  quantityAvailable: yup
-    .integer("Số lượng phải là số nguyên")
-    .min(0, "Số lượng không được âm")
+  originalPrice: yup
+    .number()
+    .nullable()
+    .positive("The mrsp price must be a positive number")
     .when("hasVariants", {
       is: false,
-      then: (schema) => schema.required("Số lượng là bắt buộc"),
+      then: (schema) => schema.required("Please enter the mrsp price"),
     }),
 
-  // weight: yup
-  //   .number()
-  //   .positive("Cân nặng phải lớn hơn 0")
-  //   .required("Cân nặng sản phẩm là bắt buộc"),
+  sellingPrice: yup
+    .number()
+    .nullable()
+    .positive("The price must be a positive number")
+    .when("hasVariants", {
+      is: false,
+      then: (schema) => schema.required("Please enter the price"),
+    })
+    .test(
+      "selling-price",
+      "Price must be larger than mrsp price",
+      function (value) {
+        return (
+          !value ||
+          !this.parent.originalPrice ||
+          value > this.parent.originalPrice
+        );
+      }
+    ),
 
-  // unitWeight: yup
-  //   .string()
-  //   .oneOf(UNIT_WEIGHTS, "Đơn vị cân nặng không hợp lệ")
-  //   .required("Đơn vị cân nặng là bắt buộc"),
+  quantityAvailable: yup
+    .number()
+    .nullable()
+    .min(0, "Quantity must be a positive number")
+    .when("hasVariants", {
+      is: false,
+      then: (schema) => schema.required("Please enter the quantity"),
+    }),
 
-  // length: yup.number().positive("Chiều dài phải lớn hơn 0"),
+  weight: yup
+    .number()
+    .nullable()
+    .positive("Weight must be greater than 0")
+    .required("Product weight is required"),
 
-  // width: yup.number().positive("Chiều rộng phải lớn hơn 0"),
+  unitWeight: yup
+    .string()
+    .oneOf(UNIT_WEIGHTS, "Invalid weight unit")
+    .required("Weight unit is required"),
 
-  // height: yup.number().positive("Chiều cao phải lớn hơn 0"),
+  length: yup.number().nullable().positive("Length must be greater than 0"),
+
+  width: yup.number().nullable().positive("Width must be greater than 0"),
+
+  height: yup.number().nullable().positive("Height must be greater than 0"),
 
   // packageUnit: yup
   //   .string()
@@ -105,8 +102,6 @@ export const productSchema = yup.object().shape({
   //   .array()
   //   .of(yup.string())
   //   .min(1, "Phải có ít nhất một ảnh sản phẩm"),
-
-  collections: yup.array().of(yup.object()),
 
   // specifications: yup
   //   .array()
