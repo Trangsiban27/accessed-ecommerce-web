@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { useFieldArray, useFormContext, Controller } from "react-hook-form";
+import {
+  useFieldArray,
+  useFormContext,
+  Controller,
+  useWatch,
+} from "react-hook-form";
 import {
   TextField,
   Chip,
@@ -15,6 +20,7 @@ import { PlusOne } from "@mui/icons-material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PropTypes from "prop-types";
+import { generateVariantOptionsTable } from "../utils";
 
 const VariantOption = ({ index }) => {
   const { control, watch, setValue } = useFormContext();
@@ -234,14 +240,18 @@ const VariantOption = ({ index }) => {
 };
 
 const ProdVariants = () => {
-  const { control, watch } = useFormContext();
-  const variantsRef = watch("variants");
+  const { control, setValue } = useFormContext();
   const { fields } = useFieldArray({
     control,
     name: "variants",
   });
 
-  useEffect(() => {}, [variantsRef]);
+  const variants = useWatch({ control, name: "variants" });
+
+  useEffect(() => {
+    const combinationVariantsTable = generateVariantOptionsTable(variants);
+    setValue("variantOptionsTable", combinationVariantsTable);
+  }, [variants, setValue]);
 
   return (
     <Box className="w-full rounded-lg mb-2 px-5">

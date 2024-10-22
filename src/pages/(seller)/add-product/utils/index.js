@@ -1,4 +1,5 @@
 export const generateVariantOptionsTable = (variants) => {
+  console.log("generate variants table", variants);
   const variantTypes = variants.reduce((acc, variant) => {
     acc[variant.type] = variant.values;
     return acc;

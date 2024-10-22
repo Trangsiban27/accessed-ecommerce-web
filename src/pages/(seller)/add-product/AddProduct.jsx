@@ -35,9 +35,6 @@ const AddProduct = () => {
 
   const handleSubmit = methods.handleSubmit(onSubmit);
 
-  const data = methods.getValues();
-  console.log(data);
-
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit} noValidate>
