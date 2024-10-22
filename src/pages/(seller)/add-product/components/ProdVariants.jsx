@@ -1,3 +1,5 @@
+import React, { useEffect } from "react";
+import { useFieldArray, useFormContext, Controller } from "react-hook-form";
 import {
   TextField,
   Chip,
@@ -9,31 +11,20 @@ import {
   InputBase,
   Alert,
 } from "@mui/material";
-
 import { PlusOne } from "@mui/icons-material";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PropTypes from "prop-types";
-import {
-  addNewVariantImages,
-  addVariantValue,
-  removeVariantImage,
-  removeVariantValue,
-  setPrimaryVariantType,
-  setVariantImages,
-} from "../../../../store/slices/VariantsSlice";
 
-const VariantOption = ({ type, values }) => {
-  const dispatch = useDispatch();
-  const [show, setShow] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-  const variants = useSelector((state) => state.variants.variants);
-  const variantImages = useSelector((state) => state.variants.variantImages);
-  const primaryVariantType = useSelector(
-    (state) => state.variants.primaryVariantType
-  );
+const VariantOption = ({ index }) => {
+  const { control, watch, setValue } = useFormContext();
+  const [show, setShow] = React.useState(false);
+  const [inputValue, setInputValue] = React.useState("");
+
+  const type = watch(`variants.${index}.type`);
+  const values = watch(`variants.${index}.values`);
+  const primaryVariantType = watch("primaryVariantType");
+  const variantImages = watch("variantImages") || [];
 
   const handleInputKeyDown = (event) => {
     if (
@@ -41,62 +32,72 @@ const VariantOption = ({ type, values }) => {
       inputValue.trim() !== ""
     ) {
       event.preventDefault();
-      if (values?.includes(inputValue.trim())) return;
-      dispatch(addVariantValue({ type, value: inputValue.trim() }));
+      if (values.includes(inputValue.trim())) return;
+      setValue(`variants.${index}.values`, [...values, inputValue.trim()]);
       setInputValue("");
     } else if (
       event.key === "Backspace" &&
       inputValue.trim() === "" &&
-      values?.length > 0
+      values.length > 0
     ) {
-      dispatch(
-        removeVariantValue({ type, value: values[values.length - 1].trim() })
-      );
+      setValue(`variants.${index}.values`, values.slice(0, -1));
       setInputValue("");
     }
   };
 
   const handleInputBlur = () => {
     if (inputValue.trim() === "") return;
-    if (values?.includes(inputValue.trim())) return;
-    dispatch(addVariantValue({ type, value: inputValue.trim() }));
+    if (values.includes(inputValue.trim())) return;
+    setValue(`variants.${index}.values`, [...values, inputValue.trim()]);
     setInputValue("");
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (type === primaryVariantType) {
-      const variantImages = values?.map((item) => ({
+      const newVariantImages = values.map((item) => ({
         type,
         value: item,
         images: [],
       }));
-      dispatch(setVariantImages({ variantImages }));
+      setValue("variantImages", newVariantImages);
     }
-  }, [dispatch, primaryVariantType, values, type, variants]);
+  }, [primaryVariantType, values, type, setValue]);
 
   return (
     <Box className="variant-option">
       <Box className="flex items-center mb-2">
         <Box className="w-[150px] flex items-center">
-          <Checkbox
-            checked={primaryVariantType === type}
-            onChange={() => {
-              dispatch(setPrimaryVariantType({ primaryVariant: type }));
-            }}
-            className="hover:bg-blue-50"
+          <Controller
+            name="primaryVariantType"
+            control={control}
+            render={({ field }) => (
+              <Checkbox
+                checked={field.value === type}
+                onChange={() => field.onChange(type)}
+                className="hover:bg-blue-50"
+              />
+            )}
           />
         </Box>
-        <InputBase
-          placeholder="Enter type"
-          className={`${
-            primaryVariantType === type ? "border-blue-300" : "border-[#c8c3c3]"
-          } w-1/4 border-solid border-2 rounded-[4px] p-[2.5px] px-3 text-[16px] transition-colors duration-200`}
-          value={type}
-          slotProps={{ input: { readOnly: true } }}
+        <Controller
+          name={`variants.${index}.type`}
+          control={control}
+          render={({ field }) => (
+            <InputBase
+              {...field}
+              placeholder="Enter type"
+              className={`${
+                primaryVariantType === type
+                  ? "border-blue-300"
+                  : "border-[#c8c3c3]"
+              } w-1/4 border-solid border-2 rounded-[4px] p-[2.5px] px-3 text-[16px] transition-colors duration-200`}
+              readOnly
+            />
+          )}
         />
         <Divider
           className={`w-[30px] transition-colors duration-200 ${
-            values?.length > 0
+            values.length > 0
               ? primaryVariantType === type
                 ? "bg-blue-300"
                 : "bg-gray-300"
@@ -110,15 +111,18 @@ const VariantOption = ({ type, values }) => {
               : "border-2 border-solid border-[#c8c3c3]"
           }`}
         >
-          {values?.map((chip) => (
+          {values.map((chip) => (
             <Chip
               key={chip}
               label={chip}
               size="small"
               className="px-1 bg-blue-50 hover:bg-blue-100"
-              onDelete={() =>
-                dispatch(removeVariantValue({ type, value: chip.trim() }))
-              }
+              onDelete={() => {
+                setValue(
+                  `variants.${index}.values`,
+                  values.filter((value) => value !== chip)
+                );
+              }}
             />
           ))}
           <TextField
@@ -129,7 +133,7 @@ const VariantOption = ({ type, values }) => {
             onKeyDown={handleInputKeyDown}
             onBlur={handleInputBlur}
             className="flex-grow min-w-[50px] mt-1"
-            placeholder={values?.length === 0 ? "Enter values" : ""}
+            placeholder={values.length === 0 ? "Enter values" : ""}
             InputProps={{
               disableUnderline: true,
             }}
@@ -137,7 +141,7 @@ const VariantOption = ({ type, values }) => {
         </Box>
         <Divider
           className={`w-[30px] transition-colors duration-200 ${
-            values?.length > 0
+            values.length > 0
               ? primaryVariantType === type
                 ? "bg-blue-300"
                 : "bg-gray-300"
@@ -156,21 +160,21 @@ const VariantOption = ({ type, values }) => {
       </Box>
 
       {show && primaryVariantType === type && (
-        <Box className="mt-4  w-full p-4 bg-gray-50 rounded-lg mb-4">
+        <Box className="mt-4 w-full p-4 bg-gray-50 rounded-lg mb-4">
           <div
-            className={`space-y-3 p-3 px-10 pb-10 image-section transition ease-in-out delay-500 
-              ${show ? "show" : ""}
-               ${!show ? "hidden" : ""}`}
+            className={`space-y-3 p-3 px-10 pb-10 image-section transition ease-in-out delay-500 ${
+              show ? "show" : ""
+            } ${!show ? "hidden" : ""}`}
           >
-            {variantImages?.map((item) => (
+            {variantImages.map((item, itemIndex) => (
               <div key={item.value} className="space-y-2">
                 <p className="text-start">
                   <span className="font-bold uppercase"> {item.type} </span>:{" "}
                   {item.value}
                 </p>
                 <div className="grid grid-cols-5 gap-4">
-                  {item.images?.map((url, index) => (
-                    <div key={index} className="relative group">
+                  {item.images.map((url, imageIndex) => (
+                    <div key={imageIndex} className="relative group">
                       <img
                         src={url}
                         alt={`Preview`}
@@ -179,11 +183,12 @@ const VariantOption = ({ type, values }) => {
                       <button
                         className="absolute -top-3 -right-3 w-6 h-6 flex items-center justify-center bg-gray-500 rounded-full cursor-pointer hover:bg-gray-500/60"
                         onClick={() => {
-                          dispatch(
-                            removeVariantImage({
-                              value: item.value,
-                              remove_image: url,
-                            })
+                          const newImages = item.images.filter(
+                            (_, idx) => idx !== imageIndex
+                          );
+                          setValue(
+                            `variantImages.${itemIndex}.images`,
+                            newImages
                           );
                         }}
                       >
@@ -199,20 +204,19 @@ const VariantOption = ({ type, values }) => {
                   >
                     <input
                       type="file"
-                      id={`file-${item?.value}`}
+                      id={`file-${item.value}`}
                       accept="image/*"
                       className="hidden"
                       multiple
                       onChange={(e) => {
                         const files = Array.from(e.target.files);
-                        dispatch(
-                          addNewVariantImages({
-                            value: item.value,
-                            new_images: files.map((file) =>
-                              URL.createObjectURL(file)
-                            ),
-                          })
+                        const newImages = files.map((file) =>
+                          URL.createObjectURL(file)
                         );
+                        setValue(`variantImages.${itemIndex}.images`, [
+                          ...item.images,
+                          ...newImages,
+                        ]);
                       }}
                     />
                     <PlusOne className="h-8 w-8 text-gray-400" />
@@ -230,10 +234,14 @@ const VariantOption = ({ type, values }) => {
 };
 
 const ProdVariants = () => {
-  // const dispatch = useDispatch();
-  const variants = useSelector((state) => state.variants.variants);
-  // const hasVariants = useSelector((state) => state.product.hasVariants);
-  // if (!hasVariants) return null;
+  const { control, watch } = useFormContext();
+  const variantsRef = watch("variants");
+  const { fields } = useFieldArray({
+    control,
+    name: "variants",
+  });
+
+  useEffect(() => {}, [variantsRef]);
 
   return (
     <Box className="w-full rounded-lg mb-2 px-5">
@@ -255,14 +263,10 @@ const ProdVariants = () => {
           </p>
         </div>
 
-        {variants?.length > 0 ? (
+        {fields.length > 0 ? (
           <Stack spacing={2}>
-            {variants.map((item, index) => (
-              <VariantOption
-                key={item.id || index}
-                type={item.type}
-                values={item.values}
-              />
+            {fields.map((item, index) => (
+              <VariantOption key={item.id} index={index} />
             ))}
           </Stack>
         ) : (
@@ -279,6 +283,5 @@ const ProdVariants = () => {
 export default ProdVariants;
 
 VariantOption.propTypes = {
-  type: PropTypes.string.isRequired,
-  values: PropTypes.array.isRequired,
+  index: PropTypes.number.isRequired,
 };

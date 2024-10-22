@@ -1,15 +1,12 @@
-import { useDispatch, useSelector } from "react-redux";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import { setProductField } from "../../../../store/slices/productSlice";
+import { useFormContext, Controller } from "react-hook-form";
 
-// Define the constants
-const ONLINE = "Online selling only";
-const OFFLINE = "In-store selling only";
-const BOTH = "Available both online and in-store";
+const ONLINE = "ONLINE";
+const OFFLINE = "OFFLINE";
+const BOTH = "BOTH";
 
 const ProdSellingType = () => {
-  const dispatch = useDispatch();
-  const sellingType = useSelector((state) => state.product.sellingType);
+  const { control } = useFormContext();
 
   return (
     <div className="w-full rounded-lg mb-2 p-3">
@@ -17,66 +14,55 @@ const ProdSellingType = () => {
         Selling Type <span className="text-red-600"> *</span>
       </p>
       <div className="border-[2px] border-solid mt-3 border-gray-200 shadow-sm rounded-lg p-5 py-2 h-full flex gap-3 text-sm">
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={sellingType === "ONLINE"}
-                onChange={() =>
-                  dispatch(
-                    setProductField({
-                      field: "sellingType",
-                      value: "ONLINE",
-                    })
-                  )
+        <Controller
+          name="sellingType"
+          control={control}
+          rules={{ required: "Selling type is required" }}
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={value === ONLINE}
+                    onChange={() => onChange(ONLINE)}
+                    value={ONLINE}
+                    size="small"
+                  />
                 }
-                value={ONLINE}
-                size="small"
+                label={<span className="text-sm">Online selling only</span>}
               />
-            }
-            label={<span className="text-sm">Online selling only</span>}
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={sellingType === "OFFLINE"}
-                onChange={() =>
-                  dispatch(
-                    setProductField({
-                      field: "sellingType",
-                      value: "OFFLINE",
-                    })
-                  )
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={value === OFFLINE}
+                    onChange={() => onChange(OFFLINE)}
+                    size="small"
+                    value={OFFLINE}
+                  />
                 }
-                size="small"
-                value={OFFLINE}
+                label={<span className="text-sm">In-store selling only</span>}
               />
-            }
-            label={<span className="text-sm">In-store selling only</span>}
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={sellingType === "BOTH"}
-                size="small"
-                onChange={() =>
-                  dispatch(
-                    setProductField({
-                      field: "sellingType",
-                      value: "BOTH",
-                    })
-                  )
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={value === BOTH}
+                    size="small"
+                    onChange={() => onChange(BOTH)}
+                    value={BOTH}
+                  />
                 }
-                value={BOTH}
+                label={
+                  <span className="text-sm">
+                    Available both online and in-store
+                  </span>
+                }
               />
-            }
-            label={
-              <span className="text-sm">
-                Available both online and in-store
-              </span>
-            }
-          />
-        </FormGroup>
+              {error && (
+                <span className="text-red-600 text-sm">{error.message}</span>
+              )}
+            </FormGroup>
+          )}
+        />
       </div>
     </div>
   );

@@ -1,0 +1,11 @@
+export { default as ProdBranchCollections } from "./ProdBranchCollections";
+export { default as ProdCategory } from "./ProdCategory";
+export { default as ProdDescription } from "./ProdDescription";
+export { default as ProdImages } from "./ProdImages";
+export { default as ProdInventory } from "./ProdInventory";
+export { default as ProdPackages } from "./ProdPackages";
+export { default as ProdPricing } from "./ProdPricing";
+export { default as ProdSellingType } from "./ProdSellingType";
+export { default as ProdSpecification } from "./ProdSpecification";
+export { default as ProdVariants } from "./ProdVariants";
+export { default as ProdVariantTable } from "./ProdVariantTable";

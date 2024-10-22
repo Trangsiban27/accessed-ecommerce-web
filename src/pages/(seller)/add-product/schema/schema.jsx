@@ -1,8 +1,8 @@
 import * as yup from "yup";
 
-// const SELLING_TYPES = ["ONLINE", "INSTORE", "BOTH"];
-// const PACKAGE_UNITS = ["cm", "inch"];
-// const UNIT_WEIGHTS = ["kg", "g"];
+const SELLING_TYPES = ["ONLINE", "INSTORE", "BOTH"];
+const PACKAGE_UNITS = ["cm", "inch"];
+const UNIT_WEIGHTS = ["kg", "g"];
 
 // const specificationSchema = yup.object().shape({
 //   name: yup.string().required("Tên thông số kỹ thuật là bắt buộc"),
@@ -30,75 +30,75 @@ export const productSchema = yup.object().shape({
 
   categoryId: yup.array().of(yup.string()).required("Please select a category"),
 
-  // brandName: yup.string().required("Tên thương hiệu là bắt buộc"),
+  brandName: yup.string().required("Tên thương hiệu là bắt buộc"),
 
-  // sellingType: yup
-  //   .string()
-  //   .oneOf(SELLING_TYPES, "Loại bán hàng không hợp lệ")
-  //   .required("Loại bán hàng là bắt buộc"),
+  sellingType: yup
+    .string()
+    .oneOf(SELLING_TYPES, "Loại bán hàng không hợp lệ")
+    .required("Loại bán hàng là bắt buộc"),
 
-  // hasVariants: yup.boolean().required(),
+  hasVariants: yup.boolean().required(),
 
-  // originalPrice: yup
-  //   .number()
-  //   .positive("Giá gốc phải lớn hơn 0")
-  //   .when("hasVariants", {
-  //     is: false,
-  //     then: (schema) => schema.required("Giá gốc là bắt buộc"),
-  //   }),
+  originalPrice: yup
+    .number()
+    .positive("Giá gốc phải lớn hơn 0")
+    .when("hasVariants", {
+      is: false,
+      then: (schema) => schema.required("Giá gốc là bắt buộc"),
+    }),
 
-  // sellingPrice: yup
-  //   .number()
-  //   .positive("Giá bán phải lớn hơn 0")
-  //   .when("hasVariants", {
-  //     is: false,
-  //     then: (schema) => schema.required("Giá bán là bắt buộc"),
-  //   })
-  //   .test(
-  //     "selling-price",
-  //     "Giá bán không được lớn hơn giá gốc",
-  //     function (value) {
-  //       return (
-  //         !value ||
-  //         !this.parent.originalPrice ||
-  //         value <= this.parent.originalPrice
-  //       );
-  //     }
-  //   ),
+  sellingPrice: yup
+    .number()
+    .positive("Giá bán phải lớn hơn 0")
+    .when("hasVariants", {
+      is: false,
+      then: (schema) => schema.required("Giá bán là bắt buộc"),
+    })
+    .test(
+      "selling-price",
+      "Giá bán không được lớn hơn giá gốc",
+      function (value) {
+        return (
+          !value ||
+          !this.parent.originalPrice ||
+          value <= this.parent.originalPrice
+        );
+      }
+    ),
 
-  // quantityAvailable: yup
-  //   .number()
-  //   .integer("Số lượng phải là số nguyên")
-  //   .min(0, "Số lượng không được âm")
-  //   .when("hasVariants", {
-  //     is: false,
-  //     then: (schema) => schema.required("Số lượng là bắt buộc"),
-  //   }),
+  quantityAvailable: yup
+    .number()
+    .integer("Số lượng phải là số nguyên")
+    .min(0, "Số lượng không được âm")
+    .when("hasVariants", {
+      is: false,
+      then: (schema) => schema.required("Số lượng là bắt buộc"),
+    }),
 
-  // weight: yup
-  //   .number()
-  //   .positive("Cân nặng phải lớn hơn 0")
-  //   .required("Cân nặng sản phẩm là bắt buộc"),
+  weight: yup
+    .number()
+    .positive("Cân nặng phải lớn hơn 0")
+    .required("Cân nặng sản phẩm là bắt buộc"),
 
-  // unitWeight: yup
-  //   .string()
-  //   .oneOf(UNIT_WEIGHTS, "Đơn vị cân nặng không hợp lệ")
-  //   .required("Đơn vị cân nặng là bắt buộc"),
+  unitWeight: yup
+    .string()
+    .oneOf(UNIT_WEIGHTS, "Đơn vị cân nặng không hợp lệ")
+    .required("Đơn vị cân nặng là bắt buộc"),
 
-  // length: yup.number().positive("Chiều dài phải lớn hơn 0"),
+  length: yup.number().positive("Chiều dài phải lớn hơn 0"),
 
-  // width: yup.number().positive("Chiều rộng phải lớn hơn 0"),
+  width: yup.number().positive("Chiều rộng phải lớn hơn 0"),
 
-  // height: yup.number().positive("Chiều cao phải lớn hơn 0"),
+  height: yup.number().positive("Chiều cao phải lớn hơn 0"),
 
-  // packageUnit: yup
-  //   .string()
-  //   .oneOf(PACKAGE_UNITS, "Đơn vị kích thước không hợp lệ")
-  //   .when(["length", "width", "height"], {
-  //     is: (length, width, height) => length || width || height,
-  //     then: (schema) =>
-  //       schema.required("Đơn vị kích thước là bắt buộc khi có kích thước"),
-  //   }),
+  packageUnit: yup
+    .string()
+    .oneOf(PACKAGE_UNITS, "Đơn vị kích thước không hợp lệ")
+    .when(["length", "width", "height"], {
+      is: (length, width, height) => length || width || height,
+      then: (schema) =>
+        schema.required("Đơn vị kích thước là bắt buộc khi có kích thước"),
+    }),
 
   // primaryImage: yup.string().required("Ảnh chính của sản phẩm là bắt buộc"),
 
@@ -107,7 +107,7 @@ export const productSchema = yup.object().shape({
   //   .of(yup.string())
   //   .min(1, "Phải có ít nhất một ảnh sản phẩm"),
 
-  // collections: yup.array().of(yup.string()),
+  collections: yup.array().of(yup.string()),
 
   // specifications: yup
   //   .array()

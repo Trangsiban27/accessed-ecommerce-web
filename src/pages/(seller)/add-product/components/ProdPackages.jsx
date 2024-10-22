@@ -6,16 +6,13 @@ import {
   TextField,
   InputAdornment,
 } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { setProductField } from "../../../../store/slices/productSlice";
+import { useFormContext, Controller } from "react-hook-form";
 
 const ProdPackages = () => {
-  const dispatch = useDispatch();
-  const weight = useSelector((state) => state.product.weight);
-  const length = useSelector((state) => state.product.length);
-  const height = useSelector((state) => state.product.height);
-  const breadth = useSelector((state) => state.product.breadth);
-  const weightUnit = useSelector((state) => state.product.weightUnit);
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <div className="w-full rounded-lg mb-2 p-3">
@@ -25,46 +22,48 @@ const ProdPackages = () => {
           <p className="my-0 pb-1 text-[#212020] text-sm text-start">
             Item weight
           </p>
-          <div className="w-full flex items-center justify-between px-1 border-[1px] h-[40px] border-solid border-[#c8c3c3] rounded-md">
-            <InputBase
-              sx={{ ml: 1, flex: 1 }}
-              placeholder="00.00"
-              type="number"
-              className="h-[40px]"
-              value={weight}
-              onChange={(e) =>
-                dispatch(
-                  setProductField({
-                    field: "weight",
-                    value: e.target.value || "",
-                  })
-                )
-              }
+          <div className="w-full flex items-center px-1 border-[1px] h-[40px] border-solid border-[#c8c3c3] rounded-md">
+            <Controller
+              name="weight"
+              control={control}
+              render={({ field }) => (
+                <InputBase
+                  {...field}
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="00.00"
+                  type="number"
+                  className="h-[40px]"
+                  error={!!errors.weight}
+                  helperText={errors.weight?.message}
+                />
+              )}
             />
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-            <Select
-              size="small"
-              className="outline-none"
-              value={weightUnit || "Kg"}
-              onChange={(e) =>
-                dispatch(
-                  setProductField({
-                    field: "weightUnit",
-                    value: e.target.value,
-                  })
-                )
-              }
-              sx={{
-                "& .MuiOutlinedInput-notchedOutline": {
-                  border: "none",
-                  height: "42px",
-                },
-              }}
-            >
-              <MenuItem value="Kg">Kg</MenuItem>
-              <MenuItem value="Pound">Pb</MenuItem>
-            </Select>
+            <Controller
+              name="weightUnit"
+              control={control}
+              defaultValue="Kg"
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  size="small"
+                  className="outline-none"
+                  sx={{
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      border: "none",
+                      height: "42px",
+                    },
+                  }}
+                >
+                  <MenuItem value="Kg">Kg</MenuItem>
+                  <MenuItem value="Pound">Pb</MenuItem>
+                </Select>
+              )}
+            />
           </div>
+          {errors.weight && (
+            <p className="text-red-600 text-sm mt-1">{errors.weight.message}</p>
+          )}
         </div>
         <div>
           <div className="flex items-start justify-between gap-5 mt-4">
@@ -76,32 +75,26 @@ const ProdPackages = () => {
                 <p className="my-0 pb-1 text-[#212020] text-sm">
                   {dim.charAt(0).toUpperCase() + dim.slice(1)}
                 </p>
-                <TextField
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">In</InputAdornment>
-                    ),
-                  }}
-                  size="small"
-                  variant="outlined"
-                  placeholder="00.00"
-                  className="w-full rounded-md"
-                  type="number"
-                  value={
-                    dim === "length"
-                      ? length
-                      : dim === "width"
-                      ? breadth
-                      : height
-                  }
-                  onChange={(e) =>
-                    dispatch(
-                      setProductField({
-                        field: dim,
-                        value: e.target.value,
-                      })
-                    )
-                  }
+                <Controller
+                  name={dim}
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">In</InputAdornment>
+                        ),
+                      }}
+                      size="small"
+                      variant="outlined"
+                      placeholder="00.00"
+                      className="w-full rounded-md"
+                      type="number"
+                      error={!!errors[dim]}
+                      helperText={errors[dim]?.message}
+                    />
+                  )}
                 />
               </div>
             ))}
