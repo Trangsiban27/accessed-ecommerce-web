@@ -36,7 +36,6 @@ const ProdCategory = () => {
     setValue,
     formState: { errors },
   } = useFormContext();
-  const categoryIds = useSelector((state) => state.product.categoryIds);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const categoryRef = watch("category");
@@ -119,9 +118,7 @@ const ProdCategory = () => {
 
         <div className="mt-2">
           <p className="my-0 mb-1 text-[#212020] text-sm text-start">
-            {categories.find((item) => item.id === categoryIds[0])?.name ||
-              "Product"}
-            {"'s"} categories
+            Sub categories
           </p>
           <Controller
             name="subCategory"

@@ -4,12 +4,11 @@ import { Alert, Box } from "@mui/material";
 import { PlusOne } from "@mui/icons-material";
 
 const ProdVariantImages = () => {
-  const { watch, setValue, control } = useFormContext();
+  const { setValue, control } = useFormContext();
   const [primaryVariant, setPrimaryVariant] = useState(null);
-
   const variants = useWatch({ control, name: "variants" });
+  const variantImages = useWatch({ control, name: "variantImages" });
   const primaryVariantType = useWatch({ control, name: "primaryVariantType" });
-  const variantImages = watch("variantImages");
 
   useEffect(() => {
     if (variants && primaryVariantType) {
@@ -35,22 +34,9 @@ const ProdVariantImages = () => {
         return existingItem || newItem;
       });
 
-      setValue("variantImages", updatedImages, {
-        shouldDirty: true,
-        shouldTouch: true,
-      });
+      setValue("variantImages", updatedImages);
     }
-  }, [primaryVariant, setValue, variantImages]);
-
-  if (!primaryVariant) {
-    return (
-      <Box className="mt-4 w-full p-4 bg-gray-50 rounded-lg mb-4">
-        <Alert severity="info" className="mt-4">
-          Please select a category and enter the primary variant values.
-        </Alert>
-      </Box>
-    );
-  }
+  }, []);
 
   const handleImageDelete = (itemIndex, imageIndex) => {
     const newImages = [...variantImages];
@@ -73,6 +59,16 @@ const ProdVariantImages = () => {
       shouldTouch: true,
     });
   };
+
+  if (!primaryVariant) {
+    return (
+      <Box className="mt-4 w-full p-4 bg-gray-50 rounded-lg mb-4">
+        <Alert severity="info" className="mt-4">
+          Please select a category and enter the primary variant values.
+        </Alert>
+      </Box>
+    );
+  }
 
   return (
     <Box className="mt-4 w-full mx-auto p-4 bg-gray-50 rounded-lg mb-4">

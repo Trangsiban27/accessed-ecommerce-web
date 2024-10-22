@@ -22,6 +22,7 @@ export const productModel = {
   hasVariants: false,
   collections: [],
   variantOptionsTable: [],
+  variantImages: [],
   // variantImages: [],
   // primaryImage: "",
   // productImages: [],
